@@ -1,0 +1,4 @@
+{
+    "parent" : "item/generated",
+    "textures" : {"layer0" : "industrialism:item/copper_nugget"}
+}

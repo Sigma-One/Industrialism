@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "industrialism",
+  "version": "${version}",
+  "name": "Industrialism",
+  "description": "Industrial automation mod, but without magical grey cubes",
+  "authors": [
+    "Sigma-One"
+  ],
+  "contact": {},
+  "license": "Blu's License of Common Sense",
+  "icon": "assets/industrialism/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "sigmaone.industrialism.client.IndustrialismClient"
+    ],
+    "main": [
+      "sigmaone.industrialism.Industrialism"
+    ]
+  },
+  "mixins": [
+    "industrialism.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.9.0+build.204",
+    "fabric": "*",
+    "minecraft": "1.16.1"
+  }
+}
