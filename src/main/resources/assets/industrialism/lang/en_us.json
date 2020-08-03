@@ -2,5 +2,10 @@
     "block.industrialism.malachite_ore" : "Malachite Ore",
     "block.industrialism.copper_block"  : "Block of Copper",
     "item.industrialism.copper_ingot"   : "Copper Ingot",
-    "item.industrialism.copper_nugget"  : "Copper Nugget"
+    "item.industrialism.copper_nugget"  : "Copper Nugget",
+    "item.industrialism.copper_pickaxe" : "Copper Pickaxe",
+    "item.industrialism.copper_axe"     : "Copper Axe",
+    "item.industrialism.copper_shovel"  : "Copper Shovel",
+    "item.industrialism.copper_sword"   : "Copper Sword",
+    "item.industrialism.copper_hoe"     : "Copper Hoe"
 }

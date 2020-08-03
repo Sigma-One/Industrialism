@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": { "model": "industrialism:block/copper_block" }
+        "": {
+            "model": "industrialism:block/copper_block"
+        }
     }
 }
-
-

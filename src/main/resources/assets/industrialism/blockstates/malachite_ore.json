@@ -1,7 +1,7 @@
 {
     "variants": {
-        "": { "model": "industrialism:block/malachite_ore" }
+        "": {
+            "model": "industrialism:block/malachite_ore"
+        }
     }
 }
-
-

@@ -1,0 +1,10 @@
+{
+    "replace": false,
+    "values": [
+        "industrialism:copper_pickaxe",
+        "industrialism:copper_axe",
+        "industrialism:copper_shovel",
+        "industrialism:copper_sword",
+        "industrialism:copper_hoe"
+    ]
+}
