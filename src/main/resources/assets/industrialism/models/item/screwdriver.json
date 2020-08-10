@@ -1,6 +1,12 @@
 {
-    "parent": "item/handheld",
-    "textures": {
-        "layer0": "industrialism:item/screwdriver"
-    }
+    "parent" : "item/handheld",
+    "textures" : {
+        "layer0" : "industrialism:item/screwdriver"
+    },
+
+    "overrides" : [
+        {
+            "predicate" : {"custom_model_data":1}, "model": "industrialism:item/screwdriver_opposite"
+        }
+    ]
 }
