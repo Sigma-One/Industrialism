@@ -13,7 +13,7 @@
   "environment": "*",
   "entrypoints": {
     "client": [
-      "sigmaone.industrialism.client.IndustrialismClient"
+      "sigmaone.industrialism.IndustrialismClient"
     ],
     "main": [
       "sigmaone.industrialism.Industrialism"

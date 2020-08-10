@@ -7,5 +7,40 @@
     "item.industrialism.copper_axe"     : "Copper Axe",
     "item.industrialism.copper_shovel"  : "Copper Shovel",
     "item.industrialism.copper_sword"   : "Copper Sword",
-    "item.industrialism.copper_hoe"     : "Copper Hoe"
+    "item.industrialism.copper_hoe"     : "Copper Hoe",
+    
+    "block.industrialism.galena_ore"  : "Galena Ore",
+    "block.industrialism.lead_block"  : "Block of lead",
+    "item.industrialism.lead_ingot"   : "Lead Ingot",
+    "item.industrialism.lead_nugget"  : "Lead Nugget",
+    "item.industrialism.lead_pickaxe" : "Lead Pickaxe",
+    "item.industrialism.lead_axe"     : "Lead Axe",
+    "item.industrialism.lead_shovel"  : "Lead Shovel",
+    "item.industrialism.lead_sword"   : "Lead Sword",
+    "item.industrialism.lead_hoe"     : "Lead Hoe",
+    
+    "item.industrialism.screwdriver" : "Screwdriver",
+    "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",
+    "item.industrialism.screwdriver.popup.config_opposite" : "Configuring opposite side",
+    
+    "itemGroup.industrialism.materials" : "Industrialism: Materials",
+    "itemGroup.industrialism.tools"     : "Industrialism: Tools",
+    "itemGroup.industrialism.machines"  : "Industrialism: Machines",
+    
+    "block.industrialism.basic_battery" : "Basic Battery",
+    "block.industrialism.manual_generator" : "Hand Crank Generator",
+    
+    "variable.industrialism.side.down"  : "down",
+    "variable.industrialism.side.up"    : "up",
+    "variable.industrialism.side.north" : "north",
+    "variable.industrialism.side.south" : "south",
+    "variable.industrialism.side.east"  : "east",
+    "variable.industrialism.side.west"  : "west",
+    
+    "variable.industrialism.ioconfig.none" : "none",
+    "variable.industrialism.ioconfig.input" : "input",
+    "variable.industrialism.ioconfig.output" : "output",
+    
+    "popup.industrialism.ioconfig.set" : "Set side %s to %s",
+    "popup.industrialism.energyamount.get" : "%d / %d FFU"
 }

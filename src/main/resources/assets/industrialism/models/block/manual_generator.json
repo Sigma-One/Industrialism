@@ -1,0 +1,11 @@
+{
+    "parent": "block/cube_all",
+    "textures": {
+        "up": "industrialism:block/manual_generator/top",
+        "down": "industrialism:block/manual_generator/bottom",
+        "north": "industrialism:block/manual_generator/side",
+        "south": "industrialism:block/manual_generator/side",
+        "east": "industrialism:block/manual_generator/side",
+        "west": "industrialism:block/manual_generator/side"
+    }
+}

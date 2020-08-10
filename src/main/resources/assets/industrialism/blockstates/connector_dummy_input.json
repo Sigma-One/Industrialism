@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "industrialism:block/connector_dummy_input"
+        }
+    }
+}
