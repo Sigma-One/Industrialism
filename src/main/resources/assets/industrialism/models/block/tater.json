@@ -1,0 +1,73 @@
+{
+	"credit": "Made with Blockbench",
+	"textures": {
+		"0": "industrialism:block/tater",
+		"particle": "industrialism:block/tater"
+	},
+	"elements": [
+		{
+			"name": "tater",
+			"from": [6, 0.01, 6],
+			"to": [10, 7, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [14, 8, 14]},
+			"faces": {
+				"north": {"uv": [0, 2.667, 2.667, 7.333], "texture": "#0"},
+				"east": {"uv": [8, 2.667, 10.667, 7.333], "texture": "#0"},
+				"south": {"uv": [5.667, 2.667, 8, 7.333], "texture": "#0"},
+				"west": {"uv": [2.667, 2.667, 5.332, 7.333], "texture": "#0"},
+				"up": {"uv": [2.667, 0, 5.333, 2.667], "texture": "#0"},
+				"down": {"uv": [5.333, 0, 8, 2.667], "texture": "#0"}
+			}
+		},
+		{
+			"name": "outfit",
+			"from": [5.875, 0, 5.875],
+			"to": [10.125, 7.125, 10.125],
+			"rotation": {"angle": 0, "axis": "y", "origin": [13.5, 8, 13.5]},
+			"faces": {
+				"north": {"uv": [0, 10, 2.665, 14], "texture": "#0"},
+				"east": {"uv": [8, 10, 10.666, 14], "texture": "#0"},
+				"south": {"uv": [5.333, 10, 7.998, 14], "texture": "#0"},
+				"west": {"uv": [2.667, 10, 5.333, 14], "texture": "#0"},
+				"up": {"uv": [2.667, 7.333, 5.334, 10], "rotation": 90, "texture": "#0"},
+				"down": {"uv": [10.333, 13.667, 10.666, 14], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 90, 0],
+			"translation": [0, 3.5, 1],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 3.5, 1],
+			"scale": [0.5, 0.5, 0.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 90, 0],
+			"translation": [0, 7.5, 1]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 7.5, 1]
+		},
+		"ground": {
+			"translation": [0, 5.25, 0]
+		},
+		"gui": {
+			"rotation": [30, 45, 0],
+			"translation": [0, 6, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"head": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 14.25, 0]
+		},
+		"fixed": {
+			"rotation": [0, -90, 0],
+			"translation": [0, 4.5, 0]
+		}
+	}
+}

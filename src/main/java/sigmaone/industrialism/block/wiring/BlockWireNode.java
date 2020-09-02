@@ -25,7 +25,7 @@ public class BlockWireNode extends FacingBlock {
     public static final IntProperty STATE = IntProperty.of("state", 0, 2);
     public BlockWireNode(AbstractBlock.Settings settings) {
         super(settings.nonOpaque());
-        setDefaultState(this.getStateManager().getDefaultState().with(STATE, 0).with(FACING, Direction.DOWN));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(STATE, 0).with(FACING, Direction.DOWN));
     }
 
     @Override

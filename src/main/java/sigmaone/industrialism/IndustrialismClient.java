@@ -16,6 +16,7 @@ public class IndustrialismClient implements ClientModInitializer {
 	public void onInitializeClient() {
 		BlockRenderLayerMap.INSTANCE.putBlock(Industrialism.BATTERY_BLOCK, RenderLayer.getCutout());
 		BlockRenderLayerMap.INSTANCE.putBlock(Industrialism.CONNECTOR_DUMMY, RenderLayer.getCutout());
+		BlockRenderLayerMap.INSTANCE.putBlock(Industrialism.TATER, RenderLayer.getCutout());
 		BlockEntityRendererRegistry.INSTANCE.register(Industrialism.BATTERY, BlockEntitySidedEnergyContainerRenderer::new);
 		BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T0, WireRenderer::new);
 		//BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T1, WireRenderer::new);

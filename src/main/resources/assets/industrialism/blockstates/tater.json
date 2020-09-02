@@ -1,0 +1,20 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "industrialism:block/tater",
+            "y" : 270
+        },
+        "facing=south": {
+            "model": "industrialism:block/tater",
+            "y" : 90
+        },
+        "facing=east": {
+            "model": "industrialism:block/tater",
+            "y" : 0
+        },
+        "facing=west": {
+            "model": "industrialism:block/tater",
+            "y" : 180
+        }
+    }
+}

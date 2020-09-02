@@ -14,6 +14,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import sigmaone.industrialism.block.BlockConnectorDummy;
+import sigmaone.industrialism.block.BlockTater;
 import sigmaone.industrialism.block.machine.BlockBattery;
 import sigmaone.industrialism.block.machine.BlockEntityBattery;
 import sigmaone.industrialism.block.machine.BlockEntityManualGenerator;
@@ -71,6 +72,8 @@ public class Industrialism implements ModInitializer {
     public static Block CONNECTOR_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "connector_dummy"), new BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)));
 
     // Misc
+    public static Block TATER;
+
     public enum InputConfig {
         NONE,
         INPUT,
@@ -83,6 +86,8 @@ public class Industrialism implements ModInitializer {
         MATERIALS_TAB = materialsTabBuilder.icon(() -> new ItemStack(COPPER.ingot)).build();
         TOOLS_TAB = toolsTabBuilder.icon(() -> new ItemStack(COPPER.pickaxe)).build();
         MACHINES_TAB = machinesTabBuilder.icon(() -> new ItemStack(BATTERY_BLOCK)).build();
+
+        TATER = registerBlock("tater", new BlockTater(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(2.0f)), Industrialism.TOOLS_TAB);
 
         SCREWDRIVER = registerItem("screwdriver", new ItemScrewdriver(new Item.Settings().group(Industrialism.TOOLS_TAB)));
 

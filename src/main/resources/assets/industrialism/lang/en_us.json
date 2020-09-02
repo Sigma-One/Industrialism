@@ -32,7 +32,9 @@
     "itemGroup.industrialism.materials" : "Industrialism: Materials",
     "itemGroup.industrialism.tools"     : "Industrialism: Tools",
     "itemGroup.industrialism.machines"  : "Industrialism: Machines",
-    
+
+    "block.industrialism.tater" : "Tiny Engineer Potato",
+
     "block.industrialism.basic_battery" : "Basic Battery",
     "block.industrialism.manual_generator" : "Hand Crank Generator",
 
