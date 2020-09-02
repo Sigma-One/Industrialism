@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.Ingredient;
+import net.minecraft.world.gen.feature.ConfiguredFeature;
 import sigmaone.industrialism.Industrialism;
 import sigmaone.industrialism.tool.*;
 
@@ -13,7 +14,7 @@ import static sigmaone.industrialism.util.RegistryHelper.*;
 
 public class Metal {
     // Misc
-    private String name;
+    private final String name;
 
     // Intermediates
     public Item ingot;
@@ -47,7 +48,7 @@ public class Metal {
 
     public Metal addOre(String ore_name, int miningLevel, int veins, int size, int low_y, int high_y) {
         ore = registerBlock(ore_name+"_ore", new Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(3.0f).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB);
-        registerOreGen(0, ore, size, veins, low_y, 0, high_y);
+        registerOreGen(ore_name+"ore", 0, ore, size, veins, low_y, 0, high_y);
         return this;
     }
 
@@ -57,23 +58,23 @@ public class Metal {
     }
 
     public Metal addPickaxe(int attackDamage, float attackSpeed) {
-        pickaxe = (ToolItem) registerItem(name+"_pickaxe", new ToolPickaxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        pickaxe = registerItem(name+"_pickaxe", new ToolPickaxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addAxe(float attackDamage, float attackSpeed) {
-        axe = (ToolItem) registerItem(name+"_axe", new ToolAxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        axe = registerItem(name+"_axe", new ToolAxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addShovel(float attackDamage, float attackSpeed) {
-        shovel = (ToolItem) registerItem(name+"_shovel", new ToolShovel(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        shovel = registerItem(name+"_shovel", new ToolShovel(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addSword(int attackDamage, float attackSpeed) {
-        sword = (ToolItem) registerItem(name+"_sword", new ToolSword(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        sword = registerItem(name+"_sword", new ToolSword(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addHoe(int attackDamage, float attackSpeed) {
-        hoe = (ToolItem) registerItem(name+"_hoe", new ToolHoe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        hoe = registerItem(name+"_hoe", new ToolHoe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
 }

@@ -8,9 +8,10 @@
     "Sigma-One"
   ],
   "contact": {},
-  "license": "Blu's License of Common Sense",
+  "license": "CNPLv5+",
   "icon": "assets/industrialism/icon.png",
   "environment": "*",
+  "accessWidener" : "industrialism.accesswidener",
   "entrypoints": {
     "client": [
       "sigmaone.industrialism.IndustrialismClient"
@@ -25,6 +26,9 @@
   "depends": {
     "fabricloader": ">=0.9.0+build.204",
     "fabric": "*",
-    "minecraft": "1.16.1"
+    "minecraft": "1.16.2"
+  },
+  "custom": {
+    "modsoftheworld:splashes": "industrialism:assets/industrialism/misc/splashes.txt"
   }
 }

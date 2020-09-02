@@ -8,15 +8,15 @@ import java.util.HashMap;
 
 public class BlockEntityManualGenerator extends BlockEntitySidedEnergyContainer {
 
-    private static HashMap<Direction, Industrialism.SideEnergyConfig> sideConfig = new HashMap<>();
+    private static HashMap<Direction, Industrialism.InputConfig> sideConfig = new HashMap<>();
 
     static {
-        sideConfig.put(Direction.NORTH, Industrialism.SideEnergyConfig.OUTPUT);
-        sideConfig.put(Direction.SOUTH, Industrialism.SideEnergyConfig.OUTPUT);
-        sideConfig.put(Direction.EAST , Industrialism.SideEnergyConfig.OUTPUT);
-        sideConfig.put(Direction.WEST , Industrialism.SideEnergyConfig.OUTPUT);
-        sideConfig.put(Direction.UP   , Industrialism.SideEnergyConfig.NONE);
-        sideConfig.put(Direction.DOWN  , Industrialism.SideEnergyConfig.NONE);
+        sideConfig.put(Direction.NORTH, Industrialism.InputConfig.OUTPUT);
+        sideConfig.put(Direction.SOUTH, Industrialism.InputConfig.OUTPUT);
+        sideConfig.put(Direction.EAST , Industrialism.InputConfig.OUTPUT);
+        sideConfig.put(Direction.WEST , Industrialism.InputConfig.OUTPUT);
+        sideConfig.put(Direction.UP   , Industrialism.InputConfig.NONE);
+        sideConfig.put(Direction.DOWN  , Industrialism.InputConfig.NONE);
     }
 
     public BlockEntityManualGenerator() {

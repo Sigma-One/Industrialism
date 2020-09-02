@@ -1,4 +1,4 @@
-package sigmaone.industrialism.energy;
+package sigmaone.industrialism.block;
 
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.util.math.Direction;

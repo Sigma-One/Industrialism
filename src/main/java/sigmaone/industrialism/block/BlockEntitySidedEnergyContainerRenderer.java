@@ -34,7 +34,7 @@ public class BlockEntitySidedEnergyContainerRenderer<T extends BlockEntitySidedE
                 default: throw new IllegalStateException("Loop machine br0ke");
             }
             // @formatter on
-            Industrialism.SideEnergyConfig conf = entity.getSideConfig(dir);
+            Industrialism.InputConfig conf = entity.getSideConfig(dir);
             // @formatter off
             switch (conf) {
                 case NONE:   state = Industrialism.CONNECTOR_DUMMY.getStateManager().getStates().get(i * 3    ); break;

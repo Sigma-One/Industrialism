@@ -42,18 +42,25 @@ public class BlockBattery extends Block implements BlockEntityProvider {
                     String modeTranslated;
                     if (!((ItemScrewdriver) player.getStackInHand(hand).getItem()).opposite) {
                         ((BlockEntityBattery) blockEntity).cycleSideConfig(hit.getSide());
-                        sideTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".side."+hit.getSide().toString().toLowerCase()).getString();
-                        modeTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".ioconfig."+((BlockEntityBattery) blockEntity).getSideConfig(hit.getSide()).toString().toLowerCase()).getString();
+                        sideTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".side."+hit.getSide()
+                                .toString().toLowerCase()).getString();
+                        modeTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".ioconfig."+((BlockEntityBattery) blockEntity)
+                                .getSideConfig(hit.getSide())
+                                .toString().toLowerCase()).getString();
                     }
                     else {
                         ((BlockEntityBattery) blockEntity).cycleSideConfig(hit.getSide().getOpposite());
-                        sideTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".side."+hit.getSide().getOpposite().toString().toLowerCase()).getString();
-                        modeTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".ioconfig."+((BlockEntityBattery) blockEntity).getSideConfig(hit.getSide().getOpposite()).toString().toLowerCase()).getString();
+                        sideTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".side."+hit.getSide()
+                                .getOpposite()
+                                .toString().toLowerCase()).getString();
+                        modeTranslated = new TranslatableText("variable."+Industrialism.MOD_ID+".ioconfig."+((BlockEntityBattery) blockEntity)
+                                .getSideConfig(hit.getSide().getOpposite())
+                                .toString().toLowerCase()).getString();
                     }
                     player.sendMessage(new TranslatableText("popup."+Industrialism.MOD_ID+".ioconfig.set", sideTranslated, modeTranslated), true);
                 }
                 else {
-                    player.sendMessage(new TranslatableText("popup."+Industrialism.MOD_ID+".energyamount.get", ((BlockEntityBattery) blockEntity).getStoredEnergy(), ((BlockEntityBattery) blockEntity).getMaxEnergy()), true);
+                    player.sendMessage(new TranslatableText("popup."+ Industrialism.MOD_ID+".energyamount.get", ((BlockEntityBattery) blockEntity).getStoredEnergy(), ((BlockEntityBattery) blockEntity).getMaxEnergy()), true);
                 }
             }
         }

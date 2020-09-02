@@ -22,6 +22,12 @@
     "item.industrialism.screwdriver" : "Screwdriver",
     "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",
     "item.industrialism.screwdriver.popup.config_opposite" : "Configuring opposite side",
+
+    "item.industrialism.debug_linker" : "Infinite Wire Generator (Creative)",
+    "item.industrialism.wire.popup.failed" : "Linking failed",
+    "item.industrialism.wire.popup.failed.self" : "Cannot link connector to itself",
+    "item.industrialism.wire.popup.source" : "Linking %s...",
+    "item.industrialism.wire.popup.linked" : "Linked %s to %s",
     
     "itemGroup.industrialism.materials" : "Industrialism: Materials",
     "itemGroup.industrialism.tools"     : "Industrialism: Tools",
@@ -29,6 +35,8 @@
     
     "block.industrialism.basic_battery" : "Basic Battery",
     "block.industrialism.manual_generator" : "Hand Crank Generator",
+
+    "block.industrialism.connector_t0" : "Cable Connector (Tier 0)",
     
     "variable.industrialism.side.down"  : "down",
     "variable.industrialism.side.up"    : "up",
@@ -41,6 +49,7 @@
     "variable.industrialism.ioconfig.input" : "input",
     "variable.industrialism.ioconfig.output" : "output",
     
-    "popup.industrialism.ioconfig.set" : "Set side %s to %s",
-    "popup.industrialism.energyamount.get" : "%d / %d FFU"
+    "popup.industrialism.ioconfig.set" : "Set side %s mode to %s",
+    "popup.industrialism.ioconfig.set_noside" : "Set mode to %s",
+    "popup.industrialism.energyamount.get" : "%f / %f FFU"
 }

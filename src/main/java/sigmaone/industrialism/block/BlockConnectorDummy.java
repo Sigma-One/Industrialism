@@ -20,6 +20,4 @@ public class BlockConnectorDummy extends FacingBlock {
         stateBuilder.add(STATE);
         stateBuilder.add(Properties.FACING);
     }
-
-
 }

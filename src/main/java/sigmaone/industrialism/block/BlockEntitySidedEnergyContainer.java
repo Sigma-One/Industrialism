@@ -8,29 +8,27 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import sigmaone.industrialism.Industrialism.SideEnergyConfig;
-import sigmaone.industrialism.energy.IBlockEnergyHandler;
-import sigmaone.industrialism.energy.ISidedBlockEnergyHandler;
+import sigmaone.industrialism.Industrialism.InputConfig;
 
 import java.util.HashMap;
 import java.util.Vector;
 
 public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyContainer implements BlockEntityClientSerializable, IBlockEnergyHandler, ISidedBlockEnergyHandler, Tickable {
 
-    private HashMap<Direction, SideEnergyConfig> sideConfig = new HashMap<>();
-    private int maxTransfer;
+    private HashMap<Direction, InputConfig> sideConfig;
+    protected float maxTransfer;
 
     @Override
     protected void refresh() {
         super.refresh();
-        if (!this.getWorld().isClient) {
+        if (this.getWorld() != null && !this.getWorld().isClient) {
             this.sync();
         }
     }
 
-    public BlockEntitySidedEnergyContainer(BlockEntityType<?> blockEntity, int maxEnergy, HashMap<Direction, SideEnergyConfig> sideConfig) {
+    public BlockEntitySidedEnergyContainer(BlockEntityType<?> blockEntity, float maxEnergy, HashMap<Direction, InputConfig> sideConfig) {
         super(blockEntity, maxEnergy);
-        this.sideConfig = (HashMap<Direction, SideEnergyConfig>)sideConfig.clone();
+        this.sideConfig = (HashMap<Direction, InputConfig>)sideConfig.clone();
         this.maxTransfer = 1;
     }
 
@@ -42,15 +40,15 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
         else {
             ord += 1;
         }
-        this.setSideConfig(side, SideEnergyConfig.values()[ord]);
+        this.setSideConfig(side, InputConfig.values()[ord]);
     }
 
-    public void setSideConfig(Direction side, SideEnergyConfig state) {
+    public void setSideConfig(Direction side, InputConfig state) {
         this.sideConfig.put(side, state);
-        refresh();
+        this.refresh();
     }
 
-    public SideEnergyConfig getSideConfig(Direction side) {
+    public InputConfig getSideConfig(Direction side) {
         return this.sideConfig.get(side);
     }
 
@@ -63,9 +61,9 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
         Vector<Direction> acceptors = new Vector<Direction>() {};
         for (Direction dir : Direction.values()) {
             if (!(this.getNeighbour(dir) == null)) {
-                if (this.getSideConfig(dir) == SideEnergyConfig.OUTPUT) {
+                if (this.getSideConfig(dir) == InputConfig.OUTPUT) {
                     if (this.getNeighbour(dir) instanceof BlockEntitySidedEnergyContainer) {
-                        if (((BlockEntitySidedEnergyContainer) this.getNeighbour(dir)).getSideConfig(dir.getOpposite()) == SideEnergyConfig.INPUT) {
+                        if (((BlockEntitySidedEnergyContainer) this.getNeighbour(dir)).getSideConfig(dir.getOpposite()) == InputConfig.INPUT) {
                             acceptors.add(dir);
                         }
                     }
@@ -76,15 +74,22 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
     }
 
     @Override
-    public void sendEnergy(BlockPos pos) {
+    public void sendEnergy(BlockPos pos, float amount) {
         if (this.getWorld().getBlockEntity(pos) instanceof BlockEntityEnergyContainer) {
             BlockEntityEnergyContainer blockEntity = (BlockEntityEnergyContainer) this.getWorld().getBlockEntity(pos);
-            int packet = this.maxTransfer;
-            if(blockEntity.getAvailableEnergyCapacity() < this.maxTransfer) {
+
+            float packet = amount;
+            if (amount > this.maxTransfer) {
+                amount = this.maxTransfer;
+            }
+            if(blockEntity.getAvailableEnergyCapacity() < amount) {
                 packet = blockEntity.getAvailableEnergyCapacity();
             }
+
             packet = this.takeEnergy(packet);
-            blockEntity.putEnergy(packet);
+            float leftover = blockEntity.putEnergy(packet);
+            this.putEnergy(leftover);
+            this.refresh();
         }
     }
 
@@ -93,7 +98,7 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
         Vector<Direction> acceptors = this.getAcceptingNeighbours();
         for (Direction d : acceptors) {
             if (this.getNeighbour(d) instanceof BlockEntitySidedEnergyContainer) {
-                this.sendEnergy(this.getNeighbour(d).getPos());
+                this.sendEnergy(this.getNeighbour(d).getPos(), this.maxTransfer);
             }
         }
     }
@@ -111,8 +116,9 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
         for (Direction direction : sideConfig.keySet()) {
-            this.sideConfig.put(direction, SideEnergyConfig.values()[tag.getInt(direction.toString())]);
+            this.sideConfig.put(direction, InputConfig.values()[tag.getInt(direction.toString())]);
         }
+        this.refresh();
     }
 
     @Override
@@ -126,7 +132,7 @@ public abstract class BlockEntitySidedEnergyContainer extends BlockEntityEnergyC
     @Override
     public void fromClientTag(CompoundTag tag) {
         for (Direction direction : this.sideConfig.keySet()) {
-            this.setSideConfig(direction, SideEnergyConfig.values()[tag.getInt(direction.toString())]);
+            this.setSideConfig(direction, InputConfig.values()[tag.getInt(direction.toString())]);
         }
     }
 }

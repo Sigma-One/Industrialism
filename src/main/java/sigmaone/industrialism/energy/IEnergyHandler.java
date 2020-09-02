@@ -6,7 +6,7 @@ public interface IEnergyHandler {
      *
      * @param amount How much energy to insert
      */
-    void putEnergy(int amount);
+    float putEnergy(float amount);
     /*
      * Extracts energy from the handler
      *
@@ -14,5 +14,5 @@ public interface IEnergyHandler {
      *
      * @return Amount of energy extracted
      */
-    int takeEnergy(int amount);
+    float takeEnergy(float amount);
 }

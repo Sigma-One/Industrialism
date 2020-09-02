@@ -1,12 +1,10 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "industrialism.industrialism.mixin",
-  "compatibilityLevel": "JAVA_8",
-  "mixins": [
-  ],
-  "client": [
-  ],
+  "package": "sigmaone.industrialism.util.mixin",
+  "compatibilityLevel": "JAVA_14",
+  "mixins": [],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }

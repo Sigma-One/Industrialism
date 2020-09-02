@@ -6,17 +6,17 @@ public interface IEnergyContainer {
      *
      * @return Energy amount
      */
-    int getStoredEnergy();
+    float getStoredEnergy();
     /*
      * Returns the maximum energy capacity
      *
      * @return Maximum energy amount
      */
-    int getMaxEnergy();
+    float getMaxEnergy();
     /*
      * Returns the amount of free space in the energy buffer
      *
      * @return Free space
      */
-    int getAvailableEnergyCapacity();
+    float getAvailableEnergyCapacity();
 }

@@ -9,19 +9,24 @@ import sigmaone.industrialism.energy.IEnergyHandler;
 
 public abstract class BlockEntityEnergyContainer extends BlockEntity implements IEnergyContainer, IEnergyHandler {
 
-    private int maxEnergy;
-    private int storedEnergy;
+    private float maxEnergy;
+    private float storedEnergy;
 
     protected void refresh() {
         this.markDirty();
     }
 
-    public BlockEntityEnergyContainer(BlockEntityType<?> blockEntity, int maxEnergy) {
+    public BlockEntityEnergyContainer(BlockEntityType<?> blockEntity, float maxEnergy) {
         super(blockEntity);
         this.maxEnergy = maxEnergy;
     }
 
-    public int takeEnergy(int amount) {
+    public void setMaxEnergy(float amount) {
+        this.maxEnergy = amount;
+        this.refresh();
+    }
+
+    public float takeEnergy(float amount) {
         if (this.storedEnergy - amount < 0) {
             amount = this.storedEnergy;
         }
@@ -30,36 +35,42 @@ public abstract class BlockEntityEnergyContainer extends BlockEntity implements 
         return amount;
     }
 
-    public void putEnergy(int amount) {
+    public float putEnergy(float amount) {
+        float leftover = 0;
         if (storedEnergy + amount > maxEnergy) {
             amount -= storedEnergy + amount - maxEnergy;
+            leftover = storedEnergy + amount - maxEnergy;
         }
         this.storedEnergy += amount;
         this.refresh();
+        return leftover;
     }
 
-    public int getMaxEnergy() {
+    public float getMaxEnergy() {
         return this.maxEnergy;
     }
 
-    public int getStoredEnergy() {
+    public float getStoredEnergy() {
         return this.storedEnergy;
     }
 
-    public int getAvailableEnergyCapacity() {
+    public float getAvailableEnergyCapacity() {
         return this.maxEnergy - this.storedEnergy;
     }
 
     @Override
     public CompoundTag toTag(CompoundTag tag) {
         super.toTag(tag);
-        tag.putInt("energy", this.storedEnergy);
+        tag.putFloat("max_energy", this.maxEnergy);
+        tag.putFloat("energy", this.storedEnergy);
         return tag;
     }
 
     @Override
     public void fromTag(BlockState state, CompoundTag tag) {
         super.fromTag(state, tag);
-        this.storedEnergy = tag.getInt("energy");
+        this.maxEnergy = tag.getFloat("max_energy");
+        this.storedEnergy = tag.getFloat("energy");
+        this.refresh();
     }
 }
