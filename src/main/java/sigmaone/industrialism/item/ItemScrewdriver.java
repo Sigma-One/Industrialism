@@ -1,21 +1,19 @@
 package sigmaone.industrialism.item;
 
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.*;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import sigmaone.industrialism.Industrialism;
 import sigmaone.industrialism.block.IConfigurable;
+import java.util.HashSet;
 
-public class ItemScrewdriver extends Item {
+public class ItemScrewdriver extends MiningToolItem {
     public boolean opposite;
-    public ItemScrewdriver(Settings settings) {
-        super(settings.maxCount(1));
+    public ItemScrewdriver(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
+        super(attackDamage, attackSpeed, material, new HashSet<>(), settings);
     }
 
     public void switchMode(World world, PlayerEntity user, Hand hand) {

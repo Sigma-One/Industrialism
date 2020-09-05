@@ -19,12 +19,12 @@ public class Metal {
     public Item ingot;
     public Item nugget;
     /*
-    public static Item dust;
-    public static Item plate;
-    public static Item wire;
-    public static Item gear;
-    public static Item rod;
-    */
+    public Item dust;
+    public Item plate;
+    public Item wire;
+    public Item gear;
+     */
+    public Item stick;
 
     // Blocks
     public Block block;
@@ -38,42 +38,59 @@ public class Metal {
     public ToolItem sword;
     public ToolItem hoe;
 
-    public Metal(String metal_name, float hardness) {
-        name = metal_name;
-        ingot = registerItem(name+"_ingot", new Item(new Item.Settings().group(Industrialism.MATERIALS_TAB)));
-        nugget = registerItem(name+"_nugget", new Item(new Item.Settings().group(Industrialism.MATERIALS_TAB)));
-        block = registerBlock(name+"_block", new Block(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(hardness).breakByTool(FabricToolTags.PICKAXES, 1).requiresTool()), Industrialism.MATERIALS_TAB);
+    public Metal(String metal_name) {
+        this.name = metal_name;
+    }
+
+    public Metal addIngot() {
+        this.ingot = registerItem(this.name +"_ingot", new Item(new Item.Settings().group(Industrialism.MATERIALS_TAB)));
+        return this;
+    }
+
+    public Metal addNugget() {
+        this.nugget = registerItem(this.name +"_nugget", new Item(new Item.Settings().group(Industrialism.MATERIALS_TAB)));
+        return this;
+    }
+
+    public Metal addStick() {
+        this.stick = registerItem(this.name+"_stick", new Item(new Item.Settings().group(Industrialism.MATERIALS_TAB)));
+        return this;
+    }
+
+    public Metal addBlock(int miningLevel, float hardness) {
+        this.block = registerBlock(this.name +"_block", new Block(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(hardness).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB);
+        return this;
     }
 
     public Metal addOre(String ore_name, int miningLevel, int veins, int size, int low_y, int high_y) {
-        ore = registerBlock(ore_name+"_ore", new Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(3.0f).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB);
-        registerOreGen(ore_name+"ore", 0, ore, size, veins, low_y, 0, high_y);
+        this.ore = registerBlock(ore_name+"_ore", new Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(3.0f).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB);
+        registerOreGen(ore_name+"ore", 0, this.ore, size, veins, low_y, 0, high_y);
         return this;
     }
 
     public Metal addToolMaterial(int baseAttackDamage, int durability, int miningLevel, float miningSpeed, int enchantability) {
-        toolMaterial = new MetalToolMaterial(miningLevel, durability, miningSpeed, baseAttackDamage-1, enchantability, () -> {return Ingredient.ofItems(this.ingot);});
+        this.toolMaterial = new MetalToolMaterial(miningLevel, durability, miningSpeed, baseAttackDamage-1, enchantability, () -> {return Ingredient.ofItems(this.ingot);});
         return this;
     }
 
     public Metal addPickaxe(int attackDamage, float attackSpeed) {
-        pickaxe = registerItem(name+"_pickaxe", new ToolPickaxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        this.pickaxe = registerItem(this.name +"_pickaxe", new ToolPickaxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addAxe(float attackDamage, float attackSpeed) {
-        axe = registerItem(name+"_axe", new ToolAxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        this.axe = registerItem(this.name +"_axe", new ToolAxe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addShovel(float attackDamage, float attackSpeed) {
-        shovel = registerItem(name+"_shovel", new ToolShovel(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        this.shovel = registerItem(this.name +"_shovel", new ToolShovel(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addSword(int attackDamage, float attackSpeed) {
-        sword = registerItem(name+"_sword", new ToolSword(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        this.sword = registerItem(this.name +"_sword", new ToolSword(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
     public Metal addHoe(int attackDamage, float attackSpeed) {
-        hoe = registerItem(name+"_hoe", new ToolHoe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        this.hoe = registerItem(this.name +"_hoe", new ToolHoe(this.toolMaterial, attackDamage, attackSpeed-4.0f, new Item.Settings().group(Industrialism.TOOLS_TAB)));
         return this;
     }
 }

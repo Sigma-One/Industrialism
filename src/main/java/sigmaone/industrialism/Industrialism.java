@@ -11,6 +11,7 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ToolMaterials;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import sigmaone.industrialism.block.BlockConnectorDummy;
@@ -58,6 +59,9 @@ public class Industrialism implements ModInitializer {
     public static Metal COPPER;
     public static Metal LEAD;
 
+    public static Metal IRON;
+    public static Metal GOLD;
+
     // Single block machines
     public static Block BATTERY_BLOCK;
     public static BlockEntityType<BlockEntityBattery> BATTERY;
@@ -102,17 +106,25 @@ public class Industrialism implements ModInitializer {
 
         TATER = registerBlock("tater", new BlockTater(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(2.0f)), Industrialism.TOOLS_TAB);
 
-        SCREWDRIVER = registerItem("screwdriver", new ItemScrewdriver(new Item.Settings().group(Industrialism.TOOLS_TAB)));
-        WRENCH = registerItem("wrench", new ItemWrench(new Item.Settings().group(Industrialism.TOOLS_TAB)));
+        SCREWDRIVER = registerItem("screwdriver", new ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, new Item.Settings().group(Industrialism.TOOLS_TAB).maxCount(1)));
+        WRENCH = registerItem("wrench", new ItemWrench(ToolMaterials.IRON, 4, -3.0f, new Item.Settings().group(Industrialism.TOOLS_TAB).maxCount(1)));
 
         DEBUG_LINKER = registerItem("debug_linker", new ItemWireSpool(new Item.Settings().group(Industrialism.DEBUG_TAB)));
 
-        COPPER = new Metal("copper", 4.5f)
+        IRON = new Metal("iron")
+                .addStick();
+
+        GOLD = new Metal("gold")
+                .addStick();
+
+        COPPER = new Metal("copper")
+                .addIngot().addNugget().addStick().addBlock(1, 4.5f)
                 .addOre("malachite", 1, 14, 8, 40, 64)
                 .addToolMaterial(3, 192, 2, 5.0f, 16)
                 .addAxe(6, 0.9f).addPickaxe(1, 1.2f).addShovel(1.5f, 1.0f).addSword(3, 1.6f).addHoe(-2, 3.0f);
 
-        LEAD = new Metal("lead", 4.5f)
+        LEAD = new Metal("lead")
+                .addIngot().addNugget().addStick().addBlock(1, 4.0f)
                 .addOre("galena", 1, 8, 6, 10, 40)
                 .addToolMaterial(2, 135, 1, 3.0f, 7)
                 .addAxe(6, 0.8f).addPickaxe(1, 1.1f).addShovel(1.5f, 0.9f).addSword(3, 1.5f).addHoe(-2, 2.9f);

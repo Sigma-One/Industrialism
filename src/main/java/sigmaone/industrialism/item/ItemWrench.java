@@ -2,13 +2,15 @@ package sigmaone.industrialism.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemUsageContext;
+import net.minecraft.item.MiningToolItem;
+import net.minecraft.item.ToolMaterial;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
+import java.util.HashSet;
 
-public class ItemWrench extends Item {
+public class ItemWrench extends MiningToolItem {
     public static Block[][][] testmb = new Block[][][] {
             { // layer
                     { Blocks.COBBLESTONE, Blocks.COBBLESTONE }, // row
@@ -21,8 +23,8 @@ public class ItemWrench extends Item {
     };
     public static int[] root = new int[] {0, 1, 0};
 
-    public ItemWrench(Settings settings) {
-        super(settings);
+    public ItemWrench(ToolMaterial material, int attackDamage, float attackSpeed, Settings settings) {
+        super(attackDamage, attackSpeed, material, new HashSet<>(), settings);
     }
 
     @Override

@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "I# ",
+    "I# ",
+    " # "
+  ],
+  "key": {
+    "#": {
+      "item": "industrialism:iron_stick"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "industrialism:wrench",
+    "count": 1
+  }
+}
