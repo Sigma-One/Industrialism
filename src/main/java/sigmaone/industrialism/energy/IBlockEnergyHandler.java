@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block;
+package sigmaone.industrialism.energy;
 
 import net.minecraft.util.math.BlockPos;
 

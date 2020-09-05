@@ -1,4 +1,4 @@
-package sigmaone.industrialism.tool;
+package sigmaone.industrialism.item.tool;
 
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.ToolMaterial;

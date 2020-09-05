@@ -37,9 +37,9 @@ public abstract class BlockEntityEnergyContainer extends BlockEntity implements 
 
     public float putEnergy(float amount) {
         float leftover = 0;
-        if (storedEnergy + amount > maxEnergy) {
-            amount -= storedEnergy + amount - maxEnergy;
-            leftover = storedEnergy + amount - maxEnergy;
+        if (this.storedEnergy + amount > this.maxEnergy) {
+            amount -= this.storedEnergy + amount - this.maxEnergy;
+            leftover = this.storedEnergy + amount - this.maxEnergy;
         }
         this.storedEnergy += amount;
         this.refresh();

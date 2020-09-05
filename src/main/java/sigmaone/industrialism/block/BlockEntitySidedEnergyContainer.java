@@ -9,6 +9,8 @@ import net.minecraft.util.Tickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import sigmaone.industrialism.Industrialism.InputConfig;
+import sigmaone.industrialism.energy.IBlockEnergyHandler;
+import sigmaone.industrialism.energy.ISidedBlockEnergyHandler;
 
 import java.util.HashMap;
 import java.util.Vector;

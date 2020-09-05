@@ -11,6 +11,6 @@ public class BlockWireConnectorT1 extends BlockWireNode implements BlockEntityPr
 
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
-        return new BlockEntityWireConnector();
+        return new BlockEntityWireNode();
     }
 }

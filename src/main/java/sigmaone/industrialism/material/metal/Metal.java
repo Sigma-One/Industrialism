@@ -6,9 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ToolItem;
 import net.minecraft.recipe.Ingredient;
-import net.minecraft.world.gen.feature.ConfiguredFeature;
 import sigmaone.industrialism.Industrialism;
-import sigmaone.industrialism.tool.*;
+import sigmaone.industrialism.item.tool.*;
 
 import static sigmaone.industrialism.util.RegistryHelper.*;
 

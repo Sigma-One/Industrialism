@@ -1,11 +1,9 @@
 package sigmaone.industrialism.block;
 
-import jdk.nashorn.internal.runtime.Property;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
-import net.minecraft.datafixer.fix.ChunkPalettedStorageFix;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.state.StateManager;
 import net.minecraft.util.math.BlockPos;

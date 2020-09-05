@@ -18,7 +18,8 @@
     "item.industrialism.lead_shovel"  : "Lead Shovel",
     "item.industrialism.lead_sword"   : "Lead Sword",
     "item.industrialism.lead_hoe"     : "Lead Hoe",
-    
+
+    "item.industrialism.wrench" : "Wrench",
     "item.industrialism.screwdriver" : "Screwdriver",
     "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",
     "item.industrialism.screwdriver.popup.config_opposite" : "Configuring opposite side",
@@ -32,6 +33,7 @@
     "itemGroup.industrialism.materials" : "Industrialism: Materials",
     "itemGroup.industrialism.tools"     : "Industrialism: Tools",
     "itemGroup.industrialism.machines"  : "Industrialism: Machines",
+    "itemGroup.industrialism.debug"  : "Industrialism: Creative Mode",
 
     "block.industrialism.tater" : "Tiny Engineer Potato",
 
