@@ -22,12 +22,17 @@ import sigmaone.industrialism.block.machine.BlockEntityManualGenerator;
 import sigmaone.industrialism.block.machine.BlockManualGenerator;
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild;
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChild;
+import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase;
+import sigmaone.industrialism.block.multiblock.machine.BlockEntityTestMultiblock;
+import sigmaone.industrialism.block.multiblock.machine.BlockTestMultiblock;
 import sigmaone.industrialism.block.wiring.*;
 import sigmaone.industrialism.item.ItemScrewdriver;
 import sigmaone.industrialism.item.ItemWireSpool;
 import sigmaone.industrialism.item.ItemWrench;
 import sigmaone.industrialism.material.metal.Metal;
 
+
+import java.util.HashSet;
 
 import static sigmaone.industrialism.util.RegistryHelper.*;
 
@@ -83,6 +88,13 @@ public class Industrialism implements ModInitializer {
     // Multiblock parts
     public static Block MULTIBLOCK_CHILD_BLOCK;
     public static BlockEntityType<BlockEntityMultiblockChild> MULTIBLOCK_CHILD;
+
+    // Multiblocks
+    public static HashSet<BlockMultiblockRootBase> MULTIBLOCKS = new HashSet<>();
+
+    public static Block TEST_MULTIBLOCK_BLOCK;
+    public static BlockEntityType<BlockEntityTestMultiblock> TEST_MULTIBLOCK;
+    public static Block TEST_MULTIBLOCK_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "test_multiblock_dummy"), new BlockConnectorDummy(FabricBlockSettings.of(Industrialism.MATERIAL_METAL)));
 
     // Dummy blocks for rendering etc.
     public static Block CONNECTOR_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "connector_dummy"), new BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)));
@@ -143,5 +155,9 @@ public class Industrialism implements ModInitializer {
 
         MULTIBLOCK_CHILD_BLOCK = registerBlock("multiblock_child", new BlockMultiblockChild(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(3.0f)), Industrialism.DEBUG_TAB);
         MULTIBLOCK_CHILD = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":"+"multiblock_child", BlockEntityType.Builder.create(BlockEntityMultiblockChild::new, MULTIBLOCK_CHILD_BLOCK).build(null));
+
+        TEST_MULTIBLOCK_BLOCK = registerBlock("test_multiblock", new BlockTestMultiblock(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), Industrialism.DEBUG_TAB);
+        TEST_MULTIBLOCK = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":"+"test_multiblock", BlockEntityType.Builder.create(BlockEntityTestMultiblock::new, TEST_MULTIBLOCK_BLOCK).build(null));
+        MULTIBLOCKS.add((BlockTestMultiblock) TEST_MULTIBLOCK_BLOCK);
     }
 }
