@@ -1,18 +1,15 @@
 package sigmaone.industrialism.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MiningToolItem;
 import net.minecraft.item.ToolMaterial;
-import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import sigmaone.industrialism.Industrialism;
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChild;
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase;
-import sigmaone.industrialism.block.multiblock.machine.BlockTestMultiblock;
-
+import net.minecraft.state.property.Properties;
 import java.util.HashSet;
 
 public class ItemWrench extends MiningToolItem {
@@ -125,7 +122,7 @@ public class ItemWrench extends MiningToolItem {
                 y += 1;
             }
             // Set root block to multiblock root
-            context.getWorld().setBlockState(context.getBlockPos(), Industrialism.TEST_MULTIBLOCK_BLOCK.getDefaultState());
+            context.getWorld().setBlockState(context.getBlockPos(), Industrialism.TEST_MULTIBLOCK_BLOCK.getDefaultState().with(Properties.HORIZONTAL_FACING, context.getSide().getOpposite()));
         }
         return super.useOnBlock(context);
     }

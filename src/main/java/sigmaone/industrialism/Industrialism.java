@@ -94,7 +94,7 @@ public class Industrialism implements ModInitializer {
 
     public static Block TEST_MULTIBLOCK_BLOCK;
     public static BlockEntityType<BlockEntityTestMultiblock> TEST_MULTIBLOCK;
-    public static Block TEST_MULTIBLOCK_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "test_multiblock_dummy"), new BlockConnectorDummy(FabricBlockSettings.of(Industrialism.MATERIAL_METAL)));
+    public static Block TEST_MULTIBLOCK_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "test_multiblock_dummy"), new Block(FabricBlockSettings.of(Industrialism.MATERIAL_METAL)));
 
     // Dummy blocks for rendering etc.
     public static Block CONNECTOR_DUMMY = Registry.register(Registry.BLOCK, new Identifier(Industrialism.MOD_ID, "connector_dummy"), new BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)));
