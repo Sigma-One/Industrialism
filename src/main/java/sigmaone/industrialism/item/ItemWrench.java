@@ -7,7 +7,9 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.math.BlockPos;
 import sigmaone.industrialism.Industrialism;
-import sigmaone.industrialism.block.multiblock.BlockMultiblockChild;
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase;
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase;
+import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase;
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase;
 import net.minecraft.state.property.Properties;
 import java.util.HashSet;
@@ -86,6 +88,7 @@ public class ItemWrench extends MiningToolItem {
             int rootXOffset = -foundMultiblock.getRootPos()[0];
             int rootYOffset = -foundMultiblock.getRootPos()[1];
             int rootZOffset = -foundMultiblock.getRootPos()[2];
+            HashSet<BlockEntityMultiblockChildBase> children = new HashSet<>();
             int x = 0; int y = 0; int z = 0;
             // Clean up all blocks forming the multiblock by replacing with correct multiblock child blocks
             for (Block[][] layer : foundMultiblock.getLayout()) {
@@ -103,7 +106,8 @@ public class ItemWrench extends MiningToolItem {
 
                         BlockPos pos = context.getBlockPos().add(x, y, z).add(rootXOffset, rootYOffset, rootZOffset);
                         context.getWorld().setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.getDefaultState());
-                        ((BlockMultiblockChild) context.getWorld().getBlockState(pos).getBlock()).setShape(foundMultiblock.getShape()[Math.abs(x)][Math.abs(y)][Math.abs(z)]);
+                        ((BlockMultiblockChildBase) context.getWorld().getBlockState(pos).getBlock()).setShape(foundMultiblock.getShape()[Math.abs(x)][Math.abs(y)][Math.abs(z)]);
+                        children.add((BlockEntityMultiblockChildBase) context.getWorld().getBlockEntity(pos));
 
                         switch (context.getSide()) {
                             case EAST  -> z -= 1;
@@ -123,6 +127,10 @@ public class ItemWrench extends MiningToolItem {
             }
             // Set root block to multiblock root
             context.getWorld().setBlockState(context.getBlockPos(), Industrialism.TEST_MULTIBLOCK_BLOCK.getDefaultState().with(Properties.HORIZONTAL_FACING, context.getSide().getOpposite()));
+            // Set child/parent relation stuff
+            for (BlockEntityMultiblockChildBase child : children) {
+                child.setParent((BlockEntityMultiblockRootBase) context.getWorld().getBlockEntity(context.getBlockPos()));
+            }
         }
         return super.useOnBlock(context);
     }

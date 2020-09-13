@@ -20,8 +20,8 @@ import sigmaone.industrialism.block.machine.BlockBattery;
 import sigmaone.industrialism.block.machine.BlockEntityBattery;
 import sigmaone.industrialism.block.machine.BlockEntityManualGenerator;
 import sigmaone.industrialism.block.machine.BlockManualGenerator;
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild;
-import sigmaone.industrialism.block.multiblock.BlockMultiblockChild;
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase;
+import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase;
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase;
 import sigmaone.industrialism.block.multiblock.machine.BlockEntityTestMultiblock;
 import sigmaone.industrialism.block.multiblock.machine.BlockTestMultiblock;
@@ -87,7 +87,7 @@ public class Industrialism implements ModInitializer {
 
     // Multiblock parts
     public static Block MULTIBLOCK_CHILD_BLOCK;
-    public static BlockEntityType<BlockEntityMultiblockChild> MULTIBLOCK_CHILD;
+    public static BlockEntityType<BlockEntityMultiblockChildBase> MULTIBLOCK_CHILD;
 
     // Multiblocks
     public static HashSet<BlockMultiblockRootBase> MULTIBLOCKS = new HashSet<>();
@@ -153,8 +153,8 @@ public class Industrialism implements ModInitializer {
         //CONNECTOR_T1_BLOCK = registerBlock("connector_t1", new BlockWireConnectorT1(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), Industrialism.MACHINES_TAB);
         //CONNECTOR_T1 = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":connector_t1", BlockEntityType.Builder.create(BlockEntityWireConnector::new, CONNECTOR_T0_BLOCK).build(null));
 
-        MULTIBLOCK_CHILD_BLOCK = registerBlock("multiblock_child", new BlockMultiblockChild(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(3.0f)), Industrialism.DEBUG_TAB);
-        MULTIBLOCK_CHILD = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":"+"multiblock_child", BlockEntityType.Builder.create(BlockEntityMultiblockChild::new, MULTIBLOCK_CHILD_BLOCK).build(null));
+        MULTIBLOCK_CHILD_BLOCK = registerBlock("multiblock_child", new BlockMultiblockChildBase(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(3.0f).nonOpaque()), Industrialism.DEBUG_TAB);
+        MULTIBLOCK_CHILD = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":"+"multiblock_child", BlockEntityType.Builder.create(BlockEntityMultiblockChildBase::new, MULTIBLOCK_CHILD_BLOCK).build(null));
 
         TEST_MULTIBLOCK_BLOCK = registerBlock("test_multiblock", new BlockTestMultiblock(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), Industrialism.DEBUG_TAB);
         TEST_MULTIBLOCK = Registry.register(Registry.BLOCK_ENTITY_TYPE, Industrialism.MOD_ID+":"+"test_multiblock", BlockEntityType.Builder.create(BlockEntityTestMultiblock::new, TEST_MULTIBLOCK_BLOCK).build(null));
