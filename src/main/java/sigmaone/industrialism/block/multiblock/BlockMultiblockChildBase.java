@@ -46,7 +46,7 @@ public class BlockMultiblockChildBase extends Block implements BlockEntityProvid
 
     @Override
     public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (world.getBlockEntity(pos) != null) {
+        if (world.getBlockEntity(pos) != null && world.getBlockEntity(pos) != null) {
             ((BlockEntityMultiblockChildBase) world.getBlockEntity(pos)).getParent().disassemble();
         }
         super.onBreak(world, pos, state, player);

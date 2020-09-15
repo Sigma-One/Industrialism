@@ -8,6 +8,7 @@ import sigmaone.industrialism.Industrialism;
 
 public class BlockEntityMultiblockChildBase extends BlockEntity {
     protected BlockEntityMultiblockRootBase parent;
+    protected int[] posInLayout;
 
     public BlockEntityMultiblockChildBase() {
         super(Industrialism.MULTIBLOCK_CHILD);
@@ -20,6 +21,14 @@ public class BlockEntityMultiblockChildBase extends BlockEntity {
 
     public BlockEntityMultiblockRootBase getParent() {
         return this.parent;
+    }
+
+    public void setPosInLayout(int[] pos) {
+        this.posInLayout = pos;
+    }
+
+    public int[] getPosInLayout() {
+        return this.posInLayout;
     }
 
     @Override

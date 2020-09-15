@@ -48,6 +48,9 @@ public class BlockTestMultiblock extends BlockMultiblockRootBase implements Bloc
 
     @Override
     public BlockEntity createBlockEntity(BlockView world) {
-        return new BlockEntityTestMultiblock();
+        BlockEntityTestMultiblock blockEntity = new BlockEntityTestMultiblock();
+        blockEntity.setLayout(this.getLayout());
+        blockEntity.setPosInLayout(this.getRootPos());
+        return blockEntity;
     }
 }

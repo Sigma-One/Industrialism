@@ -107,6 +107,7 @@ public class ItemWrench extends MiningToolItem {
                         BlockPos pos = context.getBlockPos().add(x, y, z).add(rootXOffset, rootYOffset, rootZOffset);
                         context.getWorld().setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.getDefaultState());
                         ((BlockMultiblockChildBase) context.getWorld().getBlockState(pos).getBlock()).setShape(foundMultiblock.getShape()[Math.abs(x)][Math.abs(y)][Math.abs(z)]);
+                        ((BlockEntityMultiblockChildBase) context.getWorld().getBlockEntity(pos)).setPosInLayout(new int[] {Math.abs(x), Math.abs(y), Math.abs(z)});
                         children.add((BlockEntityMultiblockChildBase) context.getWorld().getBlockEntity(pos));
 
                         switch (context.getSide()) {
