@@ -25,11 +25,4 @@ class BlockMultiblockChildBase(settings: Settings?) : Block(settings), BlockEnti
     override fun getCollisionShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape {
         return shape
     }
-
-    override fun onBreak(world: World, pos: BlockPos, state: BlockState, player: PlayerEntity) {
-        if (world.getBlockEntity(pos) != null && world.getBlockEntity(pos) != null) {
-            (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase?)!!.getParent()!!.disassemble()
-        }
-        super.onBreak(world, pos, state, player)
-    }
 }

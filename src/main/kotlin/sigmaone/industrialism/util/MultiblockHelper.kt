@@ -10,7 +10,7 @@ import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
 
 object MultiblockHelper {
     fun testForMultiblock(world: World, blockPos: BlockPos, side: Direction): BlockMultiblockRootBase? {
-        multiblockIdentifyLoop@
+
         for (multiblock in Industrialism.MULTIBLOCKS) {
             val rootBlock = multiblock.layout[multiblock.rootPos[0]][multiblock.rootPos[1]][multiblock.rootPos[2]]
             if (world.getBlockState(blockPos).block == rootBlock) {
@@ -22,7 +22,6 @@ object MultiblockHelper {
                 val rootZOffset = multiblock.rootPos[2]
                 var result = true
 
-                innerMultiblockIdentifyLoop@
                 for ((i, _) in multiblock.layout.withIndex()) {
                     x = 0
 
@@ -42,7 +41,6 @@ object MultiblockHelper {
                             if (worldBlock != block) {
                                 result = false
                             }
-
                             z += 1
                         }
                         x += 1
@@ -65,6 +63,8 @@ object MultiblockHelper {
         val rootYOffset = -multiblock.rootPos[1]
         val rootZOffset = -multiblock.rootPos[2]
 
+        world.setBlockState(blockPos, multiblock.defaultState)
+
         multiblockBuildLoop@
         for ((i, _) in multiblock.layout.withIndex()) {
             x = 0
@@ -81,7 +81,9 @@ object MultiblockHelper {
                         else -> break@multiblockBuildLoop
                     }
 
-                    world.setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.defaultState)
+                    if (pos != blockPos) {
+                        world.setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.defaultState)
+                    }
                     z += 1
                 }
                 x += 1
