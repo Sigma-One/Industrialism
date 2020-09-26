@@ -21,6 +21,7 @@ import sigmaone.industrialism.block.machine.BlockEntityBattery
 import sigmaone.industrialism.block.machine.BlockEntityManualGenerator
 import sigmaone.industrialism.block.machine.BlockManualGenerator
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
 import sigmaone.industrialism.block.multiblock.machine.BlockCokeOvenMultiblock
@@ -116,7 +117,7 @@ class Industrialism : ModInitializer {
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:multiblock_child", BlockEntityType.Builder.create({ BlockEntityMultiblockChildBase() }, MULTIBLOCK_CHILD_BLOCK).build(null))
 
         // Multiblocks
-        val MULTIBLOCKS: Set<BlockMultiblockRootBase> = HashSet()
+        val MULTIBLOCKS: HashSet<BlockMultiblockRootBase> = HashSet()
         val COKE_OVEN_MULTIBLOCK_BLOCK: BlockCokeOvenMultiblock = BlockCokeOvenMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f))
         val COKE_OVEN_MULTIBLOCK: BlockEntityType<BlockEntityCokeOvenMultiblock> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:coke_oven_multiblock", BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null))
 
@@ -135,6 +136,6 @@ class Industrialism : ModInitializer {
         MATERIALS_TAB = materialsTabBuilder.icon { ItemStack(COPPER.ingot)   }.build()
 
         registerBlock("coke_oven_multiblock", COKE_OVEN_MULTIBLOCK_BLOCK, DEBUG_TAB)
-        MULTIBLOCKS.plus(COKE_OVEN_MULTIBLOCK_BLOCK)
+        MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
     }
 }

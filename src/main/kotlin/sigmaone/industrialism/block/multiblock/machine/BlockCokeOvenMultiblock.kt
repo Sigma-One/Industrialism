@@ -14,7 +14,7 @@ class BlockCokeOvenMultiblock(settings: Settings?) : BlockMultiblockRootBase(set
         get() = arrayOf(arrayOf(arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS)), arrayOf(arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.AIR, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS)), arrayOf(arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS), arrayOf(Blocks.BRICKS, Blocks.BRICKS, Blocks.BRICKS)))
 
     override val rootPos: IntArray
-        get() = intArrayOf(0, 1, 1)
+        get() = intArrayOf(1, 1, 0)
 
     override val shape: Array<Array<Array<VoxelShape>>>
         get() = arrayOf(arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())), arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())), arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())))
