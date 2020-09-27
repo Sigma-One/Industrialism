@@ -7,6 +7,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
 import java.util.*
 
@@ -85,6 +87,7 @@ object MultiblockHelper {
 
                     if (pos != blockPos) {
                         world.setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.defaultState)
+                        (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent = world.getBlockEntity(blockPos) as BlockEntityMultiblockRootBase
                     }
                     z += 1
                 }

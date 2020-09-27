@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "industrialism:empty"
+      "model": "industrialism:block/tater"
     }
   }
 }
