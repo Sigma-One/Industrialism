@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 0
+    },
+    "facing=north,lit=false": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 0
+    },
+    "facing=south,lit=false": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 180
+    },
+    "facing=east,lit=false": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 270
+    },
+    "facing=west,lit=false": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 90
+    },
+    "facing=north,lit=true": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 0
+    },
+    "facing=south,lit=true": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 180
+    },
+    "facing=east,lit=true": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 270
+    },
+    "facing=west,lit=true": {
+      "model": "industrialism:block/multiblock/coke_oven",
+      "y" : 90
+    }
+  }
+}

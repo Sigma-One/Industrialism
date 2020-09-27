@@ -1,20 +1,7 @@
 {
   "variants": {
-    "facing=north": {
-      "model": "industrialism:block/multiblock/coke_oven",
-      "y" : 0
-    },
-    "facing=south": {
-      "model": "industrialism:block/multiblock/coke_oven",
-      "y" : 180
-    },
-    "facing=east": {
-      "model": "industrialism:block/multiblock/coke_oven",
-      "y" : 270
-    },
-    "facing=west": {
-      "model": "industrialism:block/multiblock/coke_oven",
-      "y" : 90
+    "": {
+      "model": "industrialism:empty"
     }
   }
 }

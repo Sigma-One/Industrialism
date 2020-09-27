@@ -2,11 +2,13 @@ package sigmaone.industrialism.util
 
 import net.minecraft.block.Block
 import net.minecraft.block.entity.BlockEntityType
+import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
+import java.util.*
 
 object MultiblockHelper {
     fun testForMultiblock(world: World, blockPos: BlockPos, side: Direction): BlockMultiblockRootBase? {
@@ -63,7 +65,7 @@ object MultiblockHelper {
         val rootYOffset = -multiblock.rootPos[1]
         val rootZOffset = -multiblock.rootPos[2]
 
-        world.setBlockState(blockPos, multiblock.defaultState)
+        world.setBlockState(blockPos, multiblock.defaultState.with(Properties.HORIZONTAL_FACING, side))
 
         multiblockBuildLoop@
         for ((i, _) in multiblock.layout.withIndex()) {
