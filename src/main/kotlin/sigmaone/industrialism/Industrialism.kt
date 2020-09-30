@@ -42,24 +42,23 @@ class Industrialism : ModInitializer {
     }
 
     companion object {
-        @kotlin.jvm.JvmField
-        val MOD_ID = "industrialism"
+        const val MOD_ID = "industrialism"
 
         // Materials creative tab
-        val materialsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "materials"))
-        var MATERIALS_TAB: ItemGroup? = null
+        private val materialsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "materials"))
+        var MATERIALS_TAB: ItemGroup = materialsTabBuilder.icon { ItemStack(COPPER.ingot) }.build()
 
         // Tools creative tab
-        val toolsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "tools"))
-        var TOOLS_TAB: ItemGroup? = null
+        private val toolsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "tools"))
+        var TOOLS_TAB: ItemGroup = toolsTabBuilder.icon { ItemStack(COPPER.pickaxe) }.build()
 
         // Machines creative tab
-        val machinesTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "machines"))
-        var MACHINES_TAB: ItemGroup? = null
+        private val machinesTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "machines"))
+        var MACHINES_TAB: ItemGroup = machinesTabBuilder.icon { ItemStack(BATTERY_BLOCK) }.build()
 
         // Debug creative tab
-        val debugTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "debug"))
-        var DEBUG_TAB: ItemGroup? = null
+        private val debugTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "debug"))
+        var DEBUG_TAB: ItemGroup = debugTabBuilder.icon { ItemStack(DEBUG_LINKER) }.build()
 
         // Materials to fix mining levels
         val MATERIAL_STONE: Material = FabricMaterialBuilder(MaterialColor.STONE).build()
@@ -111,7 +110,12 @@ class Industrialism : ModInitializer {
         val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().group(DEBUG_TAB)))
 
         // Multiblock parts
-        val MULTIBLOCK_CHILD_BLOCK: Block = registerBlock("multiblock_child", BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f).nonOpaque()), DEBUG_TAB)
+        val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
+                Registry.BLOCK,
+                Identifier(MOD_ID, "multiblock_child"),
+                BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)
+                )
+        )
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:multiblock_child",
@@ -144,9 +148,6 @@ class Industrialism : ModInitializer {
     }
 
     override fun onInitialize() {
-        TOOLS_TAB     = toolsTabBuilder.icon     { ItemStack(COPPER.pickaxe) }.build()
-        MACHINES_TAB  = machinesTabBuilder.icon  { ItemStack(BATTERY_BLOCK)  }.build()
-        DEBUG_TAB     = debugTabBuilder.icon     { ItemStack(DEBUG_LINKER)   }.build()
-        MATERIALS_TAB = materialsTabBuilder.icon { ItemStack(COPPER.ingot)   }.build()
+        // :tiny_potato:
     }
 }
