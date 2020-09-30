@@ -41,7 +41,7 @@ class Industrialism : ModInitializer {
         NONE, INPUT, OUTPUT
     }
 
-   companion object {
+    companion object {
         @kotlin.jvm.JvmField
         val MOD_ID = "industrialism"
 
@@ -105,8 +105,6 @@ class Industrialism : ModInitializer {
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), MACHINES_TAB)
         val CONNECTOR_T0: BlockEntityType<BlockEntityWireNode> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireNode() }, CONNECTOR_T0_BLOCK).build(null))
 
-        //public static Block CONNECTOR_T1_BLOCK;
-        //public static BlockEntityType<BlockEntityWireConnector> CONNECTOR_T1;
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
@@ -114,12 +112,25 @@ class Industrialism : ModInitializer {
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = registerBlock("multiblock_child", BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f).nonOpaque()), DEBUG_TAB)
-        val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:multiblock_child", BlockEntityType.Builder.create({ BlockEntityMultiblockChildBase() }, MULTIBLOCK_CHILD_BLOCK).build(null))
+        val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                "$MOD_ID:multiblock_child",
+                BlockEntityType.Builder.create({ BlockEntityMultiblockChildBase() }, MULTIBLOCK_CHILD_BLOCK).build(null)
+        )
 
         // Multiblocks
         val MULTIBLOCKS: HashSet<BlockMultiblockRootBase> = HashSet()
-        val COKE_OVEN_MULTIBLOCK_BLOCK: BlockCokeOvenMultiblock = BlockCokeOvenMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f))
-        val COKE_OVEN_MULTIBLOCK: BlockEntityType<BlockEntityCokeOvenMultiblock> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:coke_oven_multiblock", BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null))
+        val COKE_OVEN_MULTIBLOCK_BLOCK: BlockMultiblockRootBase = Registry.register(
+                Registry.BLOCK,
+                Identifier(MOD_ID, "coke_oven_multiblock"),
+                BlockCokeOvenMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)
+                )
+        )
+        val COKE_OVEN_MULTIBLOCK: BlockEntityType<BlockEntityCokeOvenMultiblock> = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                "$MOD_ID:coke_oven_multiblock",
+                BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null)
+        )
 
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
@@ -128,14 +139,14 @@ class Industrialism : ModInitializer {
         val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), TOOLS_TAB)
     }
 
+    init {
+        MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
+    }
 
     override fun onInitialize() {
         TOOLS_TAB     = toolsTabBuilder.icon     { ItemStack(COPPER.pickaxe) }.build()
         MACHINES_TAB  = machinesTabBuilder.icon  { ItemStack(BATTERY_BLOCK)  }.build()
         DEBUG_TAB     = debugTabBuilder.icon     { ItemStack(DEBUG_LINKER)   }.build()
         MATERIALS_TAB = materialsTabBuilder.icon { ItemStack(COPPER.ingot)   }.build()
-
-        registerBlock("coke_oven_multiblock", COKE_OVEN_MULTIBLOCK_BLOCK, DEBUG_TAB)
-        MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
     }
 }

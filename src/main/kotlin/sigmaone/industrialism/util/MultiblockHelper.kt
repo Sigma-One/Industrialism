@@ -1,7 +1,5 @@
 package sigmaone.industrialism.util
 
-import net.minecraft.block.Block
-import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
@@ -10,11 +8,9 @@ import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
-import java.util.*
 
 object MultiblockHelper {
     fun testForMultiblock(world: World, blockPos: BlockPos, side: Direction): BlockMultiblockRootBase? {
-
         for (multiblock in Industrialism.MULTIBLOCKS) {
             val rootBlock = multiblock.layout[multiblock.rootPos[0]][multiblock.rootPos[1]][multiblock.rootPos[2]]
             if (world.getBlockState(blockPos).block == rootBlock) {
@@ -87,7 +83,8 @@ object MultiblockHelper {
 
                     if (pos != blockPos) {
                         world.setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.defaultState)
-                        (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent = world.getBlockEntity(blockPos) as BlockEntityMultiblockRootBase
+                        (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent = blockPos
+                        (world.getBlockEntity(blockPos) as BlockEntityMultiblockRootBase).addChild(pos)
                     }
                     z += 1
                 }

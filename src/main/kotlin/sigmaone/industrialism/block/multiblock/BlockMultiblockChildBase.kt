@@ -42,7 +42,10 @@ class BlockMultiblockChildBase(settings: Settings?) : TransparentBlock(settings)
     }
 
     override fun onBreak(world: World?, pos: BlockPos?, state: BlockState?, player: PlayerEntity?) {
-        (world!!.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent!!.disassemble()
+        val parent = world!!.getBlockEntity((world.getBlockEntity(pos!!) as BlockEntityMultiblockChildBase).parent)
+        if (parent != null) {
+            (parent as BlockEntityMultiblockRootBase).disassemble()
+        }
         super.onBreak(world, pos, state, player)
     }
 }

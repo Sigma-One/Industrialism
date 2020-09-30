@@ -28,9 +28,7 @@ class BlockCokeOvenMultiblock(settings: Settings?) : BlockMultiblockRootBase(set
         stateManager.add(Properties.LIT)
     }
 
-    override fun createBlockEntity(world: BlockView): BlockEntity? {
-        // blockEntity.setLayout(this.getLayout());
-        //blockEntity.setPosInLayout(this.getRootPos());
+    override fun createBlockEntity(world: BlockView): BlockEntity {
         return BlockEntityCokeOvenMultiblock()
     }
 
