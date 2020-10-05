@@ -64,8 +64,9 @@ open class BlockWireNode(settings: Settings) : FacingBlock(settings.nonOpaque())
                     world.setBlockState(pos, state.with(STATE, blockEntity.IOstate.ordinal))
 
                     val modeTranslated: String = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + blockEntity
-                            .sideConfig
+                            .sideConfig[state.get(FACING).opposite]
                             .toString().toLowerCase()).string
+
                     player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set_noside", modeTranslated), true)
                     return ActionResult.SUCCESS
                 }
