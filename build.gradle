@@ -11,6 +11,13 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+repositories {
+    maven {
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
+    }
+}
+
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
@@ -26,6 +33,10 @@ dependencies {
     // TeamReborn's Energy API (https://github.com/TechReborn/Energy)
     modApi 'teamreborn:energy:0.1.0'
     include 'teamreborn:energy:0.1.0'
+
+    // CottonMC LibGui
+    modImplementation "io.github.cottonmc:LibGui:3.0.0+1.16.3"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
