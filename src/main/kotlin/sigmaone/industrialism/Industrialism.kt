@@ -113,7 +113,7 @@ class Industrialism : ModInitializer {
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "multiblock_child"),
-                BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)
+                BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque()
                 )
         )
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(
