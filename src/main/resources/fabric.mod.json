@@ -3,7 +3,7 @@
   "id": "industrialism",
   "version": "${version}",
   "name": "Industrialism",
-  "description": "Industrial automation mod, but without magical grey cubes",
+  "description": "Industrial automation mod, but without white future cubes",
   "authors": [
     "Sigma-One"
   ],
@@ -26,7 +26,7 @@
   "depends": {
     "fabricloader": ">=0.9.0+build.204",
     "fabric": "*",
-    "minecraft": "1.16.2"
+    "minecraft": "1.16.3"
   },
   "custom": {
     "modsoftheworld:splashes": "industrialism:assets/industrialism/misc/splashes.txt"

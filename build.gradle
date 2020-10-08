@@ -1,14 +1,22 @@
 plugins {
     id 'fabric-loom' version '0.5.11'
     id 'maven-publish'
+    id 'org.jetbrains.kotlin.jvm' version '1.4.10'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_14
+targetCompatibility = JavaVersion.VERSION_14
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
+
+repositories {
+    maven {
+        name = "CottonMC"
+        url = "https://server.bbkr.space/artifactory/libs-release"
+    }
+}
 
 dependencies {
     //to change the versions see the gradle.properties file
@@ -25,6 +33,11 @@ dependencies {
     // TeamReborn's Energy API (https://github.com/TechReborn/Energy)
     modApi 'teamreborn:energy:0.1.0'
     include 'teamreborn:energy:0.1.0'
+
+    // CottonMC LibGui
+    modImplementation "io.github.cottonmc:LibGui:3.0.0+1.16.3"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {
@@ -81,5 +94,18 @@ publishing {
     repositories {
         // uncomment to publish to the local maven
         // mavenLocal()
+    }
+}
+repositories {
+    mavenCentral()
+}
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+compileTestKotlin {
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
 }
