@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.multiblock.machine
+package sigmaone.industrialism.block.multiblock.machine.cokeoven
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.RenderLayer
@@ -10,7 +10,6 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.util.math.Vector3f
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
-import net.minecraft.util.math.Quaternion
 import sigmaone.industrialism.IndustrialismClient
 import java.lang.IllegalStateException
 import java.util.*

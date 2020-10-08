@@ -6,12 +6,13 @@ import net.fabricmc.api.Environment
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry
-import net.minecraft.client.MinecraftClient
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry
 import net.minecraft.client.render.RenderLayer
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
-import net.minecraft.client.render.model.BakedModel
 import net.minecraft.client.util.ModelIdentifier
+import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.resource.ResourceManager
+import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import sigmaone.industrialism.Industrialism.Companion.BATTERY
 import sigmaone.industrialism.Industrialism.Companion.BATTERY_BLOCK
@@ -22,7 +23,9 @@ import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_T0
 import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.TATER
 import sigmaone.industrialism.block.BlockEntitySidedEnergyContainerRenderer
-import sigmaone.industrialism.block.multiblock.machine.BlockEntityCokeOvenMultiblockRenderer
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblockRenderer
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGui
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.WireRenderer
 import java.util.function.Consumer
 
@@ -54,6 +57,9 @@ class IndustrialismClient : ClientModInitializer {
         BlockEntityRendererRegistry.INSTANCE.register(COKE_OVEN_MULTIBLOCK) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityCokeOvenMultiblockRenderer(dispatcher) }
         //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T1, WireRenderer::new);
         //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T2, WireRenderer::new);
-        //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.COKE_OVEN_MULTIBLOCK, BlockEntityCokeOvenMultiblockRenderer::new);
+        ScreenRegistry.register(
+                Industrialism.COKE_OVEN_SCREEN_HANDLER_TYPE,
+                { gui: CokeOvenGuiDescription, inventory: PlayerInventory, title: Text -> CokeOvenGui(gui, inventory.player, title) }
+        )
     }
 }

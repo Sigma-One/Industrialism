@@ -24,6 +24,10 @@
     "item.industrialism.iron_stick" : "Iron Rod",
     "item.industrialism.gold_stick" : "Golden Rod",
 
+    "item.industrialism.coke"        : "Coke",
+    "block.industrialism.coke_block" : "Block of Coke",
+    "block.industrialism.coke_oven_multiblock" : "Coke Oven",
+
     "item.industrialism.wrench" : "Wrench",
     "item.industrialism.screwdriver" : "Screwdriver",
     "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",

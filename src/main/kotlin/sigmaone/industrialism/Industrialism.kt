@@ -4,14 +4,19 @@ import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricMaterialBuilder
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
+import net.fabricmc.fabric.api.registry.FuelRegistry
+import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry
 import net.minecraft.block.Block
+import net.minecraft.block.Blocks
 import net.minecraft.block.Material
 import net.minecraft.block.MaterialColor
 import net.minecraft.block.entity.BlockEntityType
-import net.minecraft.item.Item
-import net.minecraft.item.ItemGroup
-import net.minecraft.item.ItemStack
-import net.minecraft.item.ToolMaterials
+import net.minecraft.item.*
+import net.minecraft.recipe.CookingRecipeSerializer
+import net.minecraft.recipe.RecipeSerializer
+import net.minecraft.recipe.RecipeType
+import net.minecraft.screen.ScreenHandlerContext
+import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.block.BlockConnectorDummy
@@ -21,17 +26,18 @@ import sigmaone.industrialism.block.machine.BlockEntityBattery
 import sigmaone.industrialism.block.machine.BlockEntityManualGenerator
 import sigmaone.industrialism.block.machine.BlockManualGenerator
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
-import sigmaone.industrialism.block.multiblock.machine.BlockCokeOvenMultiblock
-import sigmaone.industrialism.block.multiblock.machine.BlockEntityCokeOvenMultiblock
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockCokeOvenMultiblock
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblock
+import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.BlockEntityWireNode
 import sigmaone.industrialism.block.wiring.BlockWireConnectorT0
 import sigmaone.industrialism.item.ItemScrewdriver
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.ItemWrench
 import sigmaone.industrialism.material.metal.Metal
+import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
 import kotlin.collections.HashSet
@@ -94,6 +100,9 @@ class Industrialism : ModInitializer {
         val GOLD: Metal = Metal("gold")
                 .addStick()
 
+        val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
+        val COKE_BLOCK = registerBlock("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)), MATERIALS_TAB)
+
         // Single block machines
         val BATTERY_BLOCK: Block = registerBlock("basic_battery", BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), MACHINES_TAB)
         val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:basic_battery", BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null))
@@ -135,16 +144,27 @@ class Industrialism : ModInitializer {
                 "$MOD_ID:coke_oven_multiblock",
                 BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null)
         )
+        val COKE_OVEN_SCREEN_HANDLER_TYPE: ScreenHandlerType<CokeOvenGuiDescription> = ScreenHandlerRegistry.registerSimple(
+                Identifier(MOD_ID, "coke_oven_multiblock"),
+                { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)}
+        )
 
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
 
         // Misc
         val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), TOOLS_TAB)
+
+        // Recipes
+        val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "coking"), object: RecipeType<CokingRecipe> {})
+        val COKING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "coking"), CookingRecipeSerializer(::CokingRecipe, 500))
     }
 
     init {
         MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
+
+        FuelRegistry.INSTANCE.add(COKE as ItemConvertible, 3200)
+        FuelRegistry.INSTANCE.add(COKE_BLOCK as ItemConvertible, 32000)
     }
 
     override fun onInitialize() {

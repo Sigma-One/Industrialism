@@ -1,0 +1,8 @@
+{
+  "type": "industrialism:coking",
+  "ingredient": {
+    "item": "minecraft:coal"
+  },
+  "result": "industrialism:coke",
+  "cookingtime": 750
+}

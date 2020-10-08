@@ -8,6 +8,9 @@ import net.minecraft.block.ShapeContext
 import net.minecraft.block.TransparentBlock
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.util.ActionResult
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
@@ -47,5 +50,16 @@ class BlockMultiblockChildBase(settings: Settings?) : TransparentBlock(settings)
             (parent as BlockEntityMultiblockRootBase).disassemble()
         }
         super.onBreak(world, pos, state, player)
+    }
+
+    override fun onUse(state: BlockState?, world: World?, pos: BlockPos?, player: PlayerEntity?, hand: Hand?, hit: BlockHitResult?): ActionResult {
+        val parent = world!!.getBlockState((world.getBlockEntity(pos!!) as BlockEntityMultiblockChildBase).parent)
+        return if (parent != null) {
+            parent.block.onUse(parent, world, (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent, player, hand, hit)
+            ActionResult.SUCCESS
+        }
+        else {
+            super.onUse(state, world, pos, player, hand, hit)
+        }
     }
 }
