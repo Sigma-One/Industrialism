@@ -1,6 +1,7 @@
 package sigmaone.industrialism.block.multiblock.machine.cokeoven
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -12,6 +13,7 @@ import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.PropertyDelegate
 import net.minecraft.screen.ScreenHandler
 import net.minecraft.screen.ScreenHandlerContext
+import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Tickable
@@ -22,11 +24,12 @@ import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MULTIBLOCK), IInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder {
+class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MULTIBLOCK), IInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(2, ItemStack.EMPTY)
     var progress = 0
     var startedProcessing: Long = 0
+    var isProcessing = false
 
     @JvmField
     val propertyDelegate: PropertyDelegate = object : PropertyDelegate {
@@ -47,6 +50,13 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
 
         override fun size(): Int {
             return 2
+        }
+    }
+
+    fun refresh() {
+        markDirty()
+        if (getWorld() != null && !getWorld()!!.isClient) {
+            sync()
         }
     }
 
@@ -73,13 +83,22 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
     override fun fromTag(state: BlockState?, tag: CompoundTag?) {
         super.fromTag(state, tag)
         Inventories.fromTag(tag, items)
-        startedProcessing = tag!!.getLong("startedProcessing")
+        startedProcessing = tag!!.getLong("started_processing")
     }
 
     override fun toTag(tag: CompoundTag?): CompoundTag {
         Inventories.toTag(tag, items)
-        tag!!.putLong("startedProcessing", startedProcessing)
+        tag!!.putLong("started_processing", startedProcessing)
         return super.toTag(tag)
+    }
+
+    override fun fromClientTag(tag: CompoundTag?) {
+        isProcessing = tag!!.getBoolean("is_processing")
+    }
+
+    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+        tag!!.putBoolean("is_processing", startedProcessing != 0L)
+        return tag
     }
 
     private fun canProcessRecipe(recipe: Recipe<*>): Boolean {
@@ -96,13 +115,13 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
     }
 
     override fun tick() {
-        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
+        var recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
         val currentTime = world!!.time
         if (recipe != null && canProcessRecipe(recipe) && startedProcessing == 0L) {
             startedProcessing = world!!.time
-            markDirty()
+            refresh()
         }
-        else if (startedProcessing != 0L) {
+        else if (recipe != null && startedProcessing != 0L) {
             if (startedProcessing + (recipe as CokingRecipe).cookTime < currentTime) {
                 startedProcessing = 0
                 progress = 0
@@ -115,14 +134,16 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
                         items[1] = ItemStack(recipe.output.item)
                     }
                 }
-            }
-
-            progress = if (items[0].isEmpty) {
-                0
+                recipe = null
             }
             else {
-                (((currentTime - startedProcessing).toFloat() / recipe.cookTime) * 100).toInt()
+                progress = (((currentTime - startedProcessing).toFloat() / recipe.cookTime) * 100).toInt()
             }
+        }
+        if (recipe == null) {
+            progress = 0
+            startedProcessing = 0
+            refresh()
         }
     }
 }

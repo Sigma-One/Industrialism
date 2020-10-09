@@ -2,6 +2,7 @@ package sigmaone.industrialism.util
 
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
@@ -28,9 +29,9 @@ object RegistryHelper {
     }
 
     @JvmStatic
-    fun registerBlock(id: String, block: Block, category: ItemGroup?): Block {
+    fun registerBlock(id: String, block: Block, itemSettings: Item.Settings = Item.Settings()): Block {
         Registry.register(Registry.BLOCK, Identifier(Industrialism.MOD_ID, id), block)
-        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, Item.Settings().group(category)))
+        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, itemSettings))
         return block
     }
 

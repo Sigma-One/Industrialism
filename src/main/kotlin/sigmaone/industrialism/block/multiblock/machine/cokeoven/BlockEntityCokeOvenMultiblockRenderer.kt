@@ -18,9 +18,8 @@ import java.util.*
 class BlockEntityCokeOvenMultiblockRenderer<T : BlockEntityCokeOvenMultiblock?>(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<T>(dispatcher) {
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
         val blockState = entity!!.world!!.getBlockState(entity.pos)
-        val model: BakedModel
 
-        model = if (blockState.get(Properties.LIT)) {
+        val model: BakedModel = if (entity.isProcessing) {
             MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.cokeOvenModelIDs[1])
         }
         else {

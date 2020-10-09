@@ -1,0 +1,8 @@
+{
+    "type": "minecraft:smelting",
+    "ingredient": {
+        "item": "industrialism:raw_fire_brick"
+    },
+    "result": "industrialism:fire_brick",
+    "cookingtime": 200
+}

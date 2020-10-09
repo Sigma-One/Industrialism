@@ -1,6 +1,7 @@
 package sigmaone.industrialism.material.metal
 
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags
 import net.minecraft.block.Block
 import net.minecraft.item.Item
@@ -51,12 +52,26 @@ class Metal(  // Misc
     }
 
     fun addBlock(miningLevel: Int, hardness: Float): Metal {
-        block = RegistryHelper.registerBlock(name + "_block", Block(FabricBlockSettings.of(Industrialism.MATERIAL_METAL).hardness(hardness).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB)
+        block = RegistryHelper.registerBlock(
+                name + "_block",
+                Block(FabricBlockSettings.of(Industrialism.MATERIAL_METAL)
+                        .hardness(hardness)
+                        .breakByTool(FabricToolTags.PICKAXES, miningLevel)
+                        .requiresTool()),
+                FabricItemSettings().group(Industrialism.MATERIALS_TAB)
+        )
         return this
     }
 
     fun addOre(ore_name: String, miningLevel: Int, veins: Int, size: Int, low_y: Int, high_y: Int): Metal {
-        ore = RegistryHelper.registerBlock(ore_name + "_ore", Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE).hardness(3.0f).breakByTool(FabricToolTags.PICKAXES, miningLevel).requiresTool()), Industrialism.MATERIALS_TAB)
+        ore = RegistryHelper.registerBlock(
+                ore_name + "_ore",
+                Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE)
+                        .hardness(3.0f)
+                        .breakByTool(FabricToolTags.PICKAXES, miningLevel)
+                        .requiresTool()),
+                FabricItemSettings().group(Industrialism.MATERIALS_TAB)
+        )
         RegistryHelper.registerOreGen(ore_name + "ore", 0, ore!!, size, veins, low_y, 0, high_y)
         return this
     }

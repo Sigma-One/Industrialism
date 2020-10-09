@@ -28,6 +28,10 @@
     "block.industrialism.coke_block" : "Block of Coke",
     "block.industrialism.coke_oven_multiblock" : "Coke Oven",
 
+    "item.industrialism.raw_fire_brick" : "Unfired Fire Brick",
+    "item.industrialism.fire_brick"     : "Fire Brick",
+    "block.industrialism.fire_bricks"   : "Fire Bricks",
+
     "item.industrialism.wrench" : "Wrench",
     "item.industrialism.screwdriver" : "Screwdriver",
     "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",

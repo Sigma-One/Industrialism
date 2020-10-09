@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "industrialism:block/multiblock/coke_oven",
+      "model": "industrialism:block/multiblock/coke_oven_off",
       "y" : 0
     }
   }

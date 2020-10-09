@@ -3,7 +3,7 @@
 	"texture_size": [96, 96],
 	"textures": {
 		"0": "industrialism:block/multiblock/coke_oven_off",
-		"particle": "industrialism:block/multiblock/coke_oven_off"
+		"particle": "industrialism:block/fire_bricks"
 	},
 	"elements": [
 		{
