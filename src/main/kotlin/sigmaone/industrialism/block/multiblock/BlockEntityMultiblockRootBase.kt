@@ -7,6 +7,7 @@ import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
 import net.minecraft.util.math.BlockPos
+import sigmaone.industrialism.util.MultiblockHelper
 import kotlin.collections.ArrayList
 
 abstract class BlockEntityMultiblockRootBase(type: BlockEntityType<*>?) : BlockEntity(type) {
@@ -18,10 +19,7 @@ abstract class BlockEntityMultiblockRootBase(type: BlockEntityType<*>?) : BlockE
     }
 
     fun disassemble() {
-        for (child in children) {
-            world!!.setBlockState(child, Blocks.AIR.defaultState)
-        }
-        world!!.setBlockState(pos, Blocks.AIR.defaultState)
+        MultiblockHelper.destroyMultiblock(world!!, pos!!, world!!.getBlockState(pos!!).block as BlockMultiblockRootBase)
     }
 
     override fun fromTag(state: BlockState?, tag: CompoundTag?) {
