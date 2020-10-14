@@ -78,7 +78,7 @@ object MultiblockHelper {
                         Direction.SOUTH -> blockPos.add(rootXOffset + x, rootYOffset + y, rootZOffset - z)
                         Direction.WEST  -> blockPos.add(rootZOffset + z, rootYOffset + y, rootXOffset + x)
                         Direction.EAST  -> blockPos.add(-rootZOffset - z, rootYOffset + y, -rootXOffset - x)
-                        else -> break@multiblockBuildLoop
+                        else            -> break@multiblockBuildLoop
                     }
 
                     if (pos != blockPos) {
@@ -92,5 +92,43 @@ object MultiblockHelper {
             }
             y += 1
         }
+    }
+
+    fun destroyMultiblock(world: World, blockPos: BlockPos, multiblock: BlockMultiblockRootBase) {
+        var x: Int
+        var y = 0
+        var z: Int
+        val rootXOffset = -multiblock.rootPos[0]
+        val rootYOffset = -multiblock.rootPos[1]
+        val rootZOffset = -multiblock.rootPos[2]
+
+        val side: Direction = world.getBlockState(blockPos).get(Properties.HORIZONTAL_FACING)
+
+        multiblockBreakLoop@
+        for ((i, _) in multiblock.layout.withIndex()) {
+            x = 0
+
+            for ((j, _) in multiblock.layout[i].withIndex()) {
+                z = 0
+
+                for (block in multiblock.layout[i][j]) {
+                    val pos = when (side) {
+                        Direction.NORTH -> blockPos.add(-rootXOffset - x, rootYOffset + y, -rootZOffset + z)
+                        Direction.SOUTH -> blockPos.add(rootXOffset + x, rootYOffset + y, rootZOffset - z)
+                        Direction.WEST  -> blockPos.add(rootZOffset + z, rootYOffset + y, rootXOffset + x)
+                        Direction.EAST  -> blockPos.add(-rootZOffset - z, rootYOffset + y, -rootXOffset - x)
+                        else            -> break@multiblockBreakLoop
+                    }
+
+                    if (pos != blockPos) {
+                        world.setBlockState(pos, block.defaultState)
+                    }
+                    z += 1
+                }
+                x += 1
+            }
+            y += 1
+        }
+        world.setBlockState(blockPos, multiblock.layout[multiblock.rootPos[1]][multiblock.rootPos[0]][multiblock.rootPos[2]].defaultState)
     }
 }

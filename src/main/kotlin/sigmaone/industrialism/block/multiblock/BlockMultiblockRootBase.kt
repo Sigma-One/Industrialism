@@ -11,6 +11,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.World
 import net.minecraft.world.WorldAccess
+import sigmaone.industrialism.util.MultiblockHelper
 
 abstract class BlockMultiblockRootBase(settings: Settings?) : HorizontalFacingBlock(settings) {
     abstract val layout: Array<Array<Array<Block>>>
