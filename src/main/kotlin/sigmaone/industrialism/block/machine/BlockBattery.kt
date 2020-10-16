@@ -3,9 +3,9 @@ package sigmaone.industrialism.block.machine
 import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.world.BlockView
-import sigmaone.industrialism.block.BlockConfigurableSidedEnergyContainerBase
+import sigmaone.industrialism.block.BlockConfigurableConnectableEnergyContainerBase
 
-class BlockBattery(settings: Settings?) : BlockConfigurableSidedEnergyContainerBase(settings), BlockEntityProvider {
+class BlockBattery(settings: Settings?) : BlockConfigurableConnectableEnergyContainerBase(settings), BlockEntityProvider {
     override fun createBlockEntity(world: BlockView): BlockEntity? {
         return BlockEntityBattery()
     }
