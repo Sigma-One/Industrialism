@@ -17,26 +17,22 @@ import kotlin.math.min
 
 
 class BlockEntityWireNode :
-        BlockEntityConnectableEnergyContainer(Industrialism.CONNECTOR_T0, 32.toDouble(), EnergyTier.LOW, sideConfig),
+        BlockEntityConnectableEnergyContainer(Industrialism.CONNECTOR_T0, 32.toDouble(), EnergyTier.LOW),
         IWireNode,
         BlockEntityClientSerializable,
         IConfigurable {
-    val maxConnections = 16
+    private val maxConnections = 16
     override var connections: HashSet<BlockPos> = HashSet()
     var IOstate: InputConfig = InputConfig.NONE
 
-    companion object {
-        private val sideConfig = HashMap<Direction, InputConfig>()
-
-        init {
-            sideConfig[Direction.NORTH] = InputConfig.NONE
-            sideConfig[Direction.SOUTH] = InputConfig.NONE
-            sideConfig[Direction.EAST] = InputConfig.NONE
-            sideConfig[Direction.WEST] = InputConfig.NONE
-            sideConfig[Direction.UP] = InputConfig.NONE
-            sideConfig[Direction.DOWN] = InputConfig.NONE
-        }
-    }
+    override var sideConfig: HashMap<Direction, InputConfig> = hashMapOf(
+            Direction.NORTH to InputConfig.NONE,
+            Direction.SOUTH to InputConfig.NONE,
+            Direction.EAST  to InputConfig.NONE,
+            Direction.WEST  to InputConfig.NONE,
+            Direction.UP    to InputConfig.NONE,
+            Direction.DOWN  to InputConfig.NONE
+    )
 
     override fun refresh() {
         super.refresh()

@@ -8,7 +8,7 @@ import team.reborn.energy.EnergySide
 import team.reborn.energy.EnergyStorage
 import team.reborn.energy.EnergyTier
 
-abstract class BlockEntityEnergyContainer(
+open class BlockEntityEnergyContainer(
         blockEntity: BlockEntityType<*>?,
         val maxEnergy: Double,
         val energyTier: EnergyTier,

@@ -17,14 +17,16 @@ import kotlin.collections.HashMap
 abstract class BlockEntityConnectableEnergyContainer(
         blockEntity: BlockEntityType<*>?,
         maxEnergy: Double,
-        energyTier: EnergyTier,
-        var sideConfig: HashMap<Direction, InputConfig>
+        energyTier: EnergyTier//,
+        //var sideConfig: HashMap<Direction, InputConfig>
 ) :
         BlockEntityEnergyContainer(blockEntity, maxEnergy, energyTier),
         BlockEntityClientSerializable,
         Tickable
 {
     var neighbourHandlers: HashMap<Direction, EnergyHandler> = HashMap()
+    abstract var sideConfig: HashMap<Direction, InputConfig>
+
     override fun refresh() {
         super.refresh()
         if (getWorld() != null && !getWorld()!!.isClient) {
@@ -48,11 +50,11 @@ abstract class BlockEntityConnectableEnergyContainer(
     }
 
 
-    fun getNeighbour(dir: Direction?): BlockEntity? {
+    private fun getNeighbour(dir: Direction?): BlockEntity? {
         return getWorld()!!.getBlockEntity(getPos().offset(dir))
     }
 
-    fun updateNeighbourHandlers() {
+    private fun updateNeighbourHandlers() {
         for (side in Direction.values()) {
             val neighbour = getNeighbour(side)
             if (neighbour != null) {
