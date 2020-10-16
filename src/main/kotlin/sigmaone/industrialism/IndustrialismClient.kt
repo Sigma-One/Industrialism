@@ -22,7 +22,7 @@ import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_DUMMY
 import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_T0
 import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.TATER
-import sigmaone.industrialism.block.BlockEntitySidedEnergyContainerRenderer
+import sigmaone.industrialism.block.BlockEntityConnectableConfigurableEnergyContainerRenderer
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblockRenderer
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGui
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
@@ -52,7 +52,7 @@ class IndustrialismClient : ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(TATER, RenderLayer.getCutout())
         BlockRenderLayerMap.INSTANCE.putBlock(MULTIBLOCK_CHILD_BLOCK, RenderLayer.getCutout())
         BlockRenderLayerMap.INSTANCE.putBlock(COKE_OVEN_MULTIBLOCK_BLOCK, RenderLayer.getCutout())
-        BlockEntityRendererRegistry.INSTANCE.register(BATTERY) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntitySidedEnergyContainerRenderer(dispatcher) }
+        BlockEntityRendererRegistry.INSTANCE.register(BATTERY) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityConnectableConfigurableEnergyContainerRenderer(dispatcher) }
         BlockEntityRendererRegistry.INSTANCE.register(CONNECTOR_T0) { dispatcher: BlockEntityRenderDispatcher? -> WireRenderer(dispatcher) }
         BlockEntityRendererRegistry.INSTANCE.register(COKE_OVEN_MULTIBLOCK) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityCokeOvenMultiblockRenderer(dispatcher) }
         //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T1, WireRenderer::new);

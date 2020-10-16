@@ -4,54 +4,49 @@ import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.nbt.CompoundTag
-import sigmaone.industrialism.energy.IEnergyContainer
-import sigmaone.industrialism.energy.IEnergyHandler
+import team.reborn.energy.EnergySide
+import team.reborn.energy.EnergyStorage
+import team.reborn.energy.EnergyTier
 
-abstract class BlockEntityEnergyContainer(blockEntity: BlockEntityType<*>?,
-                                          override var maxEnergy: Float) : BlockEntity(blockEntity), IEnergyContainer, IEnergyHandler {
-
-    override var storedEnergy = 0f
+abstract class BlockEntityEnergyContainer(
+        blockEntity: BlockEntityType<*>?,
+        val maxEnergy: Double,
+        val energyTier: EnergyTier,
+        var storedEnergy: Double = 0f.toDouble()
+) :
+        BlockEntity(blockEntity),
+        EnergyStorage
+{
 
     protected open fun refresh() {
         markDirty()
     }
 
-    override fun takeEnergy(amount: Float): Float {
-        var amount = amount
-        if (storedEnergy - amount < 0) {
-            amount = storedEnergy
-        }
-        storedEnergy -= amount
-        refresh()
-        return amount
+    override fun getMaxStoredPower(): Double {
+        return maxEnergy
     }
 
-    override fun putEnergy(amount: Float): Float {
-        var amount = amount
-        var leftover = 0f
-        if (storedEnergy + amount > maxEnergy) {
-            amount -= storedEnergy + amount - maxEnergy
-            leftover = storedEnergy + amount - maxEnergy
-        }
-        storedEnergy += amount
-        refresh()
-        return leftover
+    override fun getStored(side: EnergySide?): Double {
+        return storedEnergy
     }
 
-    override val availableEnergyCapacity: Float
-        get() = maxEnergy - storedEnergy
+    override fun getTier(): EnergyTier {
+        return energyTier
+    }
+
+    override fun setStored(amount: Double) {
+        storedEnergy = amount
+    }
 
     override fun toTag(tag: CompoundTag): CompoundTag {
         super.toTag(tag)
-        tag.putFloat("max_energy", maxEnergy)
-        tag.putFloat("energy", storedEnergy)
+        tag.putDouble("energy", storedEnergy)
         return tag
     }
 
     override fun fromTag(state: BlockState, tag: CompoundTag) {
         super.fromTag(state, tag)
-        maxEnergy = tag.getFloat("max_energy")
-        storedEnergy = tag.getFloat("energy")
+        storedEnergy = tag.getDouble("energy")
         refresh()
     }
 }

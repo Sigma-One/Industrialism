@@ -7,13 +7,20 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
-import sigmaone.industrialism.block.BlockEntitySidedEnergyContainer
+import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
 import sigmaone.industrialism.block.IConfigurable
+import team.reborn.energy.Energy
+import team.reborn.energy.EnergyTier
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
+import kotlin.math.min
 
-class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNECTOR_T0, 10f, sideConfig), IWireNode, BlockEntityClientSerializable, IConfigurable {
+
+class BlockEntityWireNode :
+        BlockEntityConnectableEnergyContainer(Industrialism.CONNECTOR_T0, 32.toDouble(), EnergyTier.LOW, sideConfig),
+        IWireNode,
+        BlockEntityClientSerializable,
+        IConfigurable {
     val maxConnections = 16
     override var connections: HashSet<BlockPos> = HashSet()
     var IOstate: InputConfig = InputConfig.NONE
@@ -24,10 +31,10 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
         init {
             sideConfig[Direction.NORTH] = InputConfig.NONE
             sideConfig[Direction.SOUTH] = InputConfig.NONE
-            sideConfig[Direction.EAST ] = InputConfig.NONE
-            sideConfig[Direction.WEST ] = InputConfig.NONE
-            sideConfig[Direction.UP   ] = InputConfig.NONE
-            sideConfig[Direction.DOWN ] = InputConfig.NONE
+            sideConfig[Direction.EAST] = InputConfig.NONE
+            sideConfig[Direction.WEST] = InputConfig.NONE
+            sideConfig[Direction.UP] = InputConfig.NONE
+            sideConfig[Direction.DOWN] = InputConfig.NONE
         }
     }
 
@@ -44,14 +51,14 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
             InputConfig.INPUT -> InputConfig.OUTPUT
             InputConfig.OUTPUT -> InputConfig.NONE
         }
-    }// Add connected nodes to stack and self to visited nodes// Add any found sources to source set// Loop through connections
+    }
 
-    // Loop until stack is empty
-    private val connectedSources: HashSet<BlockEntityWireNode>
+    private val connectedSinks: HashSet<BlockEntityWireNode>
         get() {
             val visited = HashSet<BlockPos?>()
-            val sources = HashSet<BlockEntityWireNode>()
+            val sinks = HashSet<BlockEntityWireNode>()
             val nodeStack = Stack<BlockEntityWireNode>()
+            // Add connected nodes to stack and self to visited nodes
             nodeStack.push(this)
             visited.add(getPos())
 
@@ -61,11 +68,11 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
                 // Loop through connections
                 for (connectedPos in currentNode.connections) {
                     if (!visited.contains(connectedPos)) {
-                        // Add any found sources to source set
+                        // Add any found sinks to sink set
                         val blockEntity = getWorld()!!.getBlockEntity(connectedPos) as BlockEntityWireNode?
                         if (blockEntity != null) {
                             if (blockEntity.IOstate == InputConfig.OUTPUT) {
-                                sources.add(blockEntity)
+                                sinks.add(blockEntity)
                             }
                             // Add connected nodes to stack and self to visited nodes
                             nodeStack.push(blockEntity)
@@ -74,7 +81,7 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
                     }
                 }
             }
-            return sources
+            return sinks
         }
 
     override fun addConnection(pos: BlockPos): Boolean {
@@ -111,16 +118,16 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
             }
             connections.removeAll(removalBuffer)
         }
-        if (IOstate == InputConfig.INPUT) {
-            val acceptors = ArrayList<BlockPos>()
-            for (node in connectedSources) {
-                acceptors.add(node.getPos())
-            }
-            val packet = maxTransfer / acceptors.size
-            for (node in acceptors) {
-                sendEnergy(node, packet)
+        if (IOstate == InputConfig.INPUT && connectedSinks.isNotEmpty()) {
+            val amount = tier.maxOutput / connectedSinks.size
+            for (node in connectedSinks) {
+                val target = Energy.of(node)
+                val source = Energy.of(this)
+                val maxMove = min(target.maxInput, min(source.maxOutput, amount.toDouble()))
+                Energy.of(node).insert(source.extract(maxMove))
             }
         }
+        refresh()
     }
 
     override fun fromClientTag(tag: CompoundTag) {
@@ -162,8 +169,7 @@ class BlockEntityWireNode : BlockEntitySidedEnergyContainer(Industrialism.CONNEC
     }
 
     override fun toTag(tag: CompoundTag): CompoundTag {
-        var tag = tag
-        tag = super.toTag(tag)
+        super.toTag(tag)
         tag.putInt("connection_amount", connections.size)
         tag.putInt("io_mode", IOstate.ordinal)
         if (connections.size > 0) {

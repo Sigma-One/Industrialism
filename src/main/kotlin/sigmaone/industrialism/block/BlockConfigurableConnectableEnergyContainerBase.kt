@@ -13,7 +13,7 @@ import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.machine.BlockEntityBattery
 import sigmaone.industrialism.item.ItemScrewdriver
 
-open class BlockConfigurableSidedEnergyContainerBase(settings: Settings?) : Block(settings) {
+open class BlockConfigurableConnectableEnergyContainerBase(settings: Settings?) : Block(settings) {
     override fun onUse(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockHitResult): ActionResult {
         val blockEntity = world.getBlockEntity(pos) ?: return ActionResult.PASS
         if (!world.isClient) {

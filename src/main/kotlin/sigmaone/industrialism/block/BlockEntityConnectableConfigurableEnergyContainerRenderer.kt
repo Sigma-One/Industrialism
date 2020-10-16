@@ -10,9 +10,10 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
+import team.reborn.energy.EnergySide
 import java.util.*
 
-class BlockEntitySidedEnergyContainerRenderer<T : BlockEntitySidedEnergyContainer?>(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<T>(dispatcher) {
+class BlockEntityConnectableConfigurableEnergyContainerRenderer<T : BlockEntityConnectableEnergyContainer?>(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<T>(dispatcher) {
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
         matrices.push()
         var state: BlockState?

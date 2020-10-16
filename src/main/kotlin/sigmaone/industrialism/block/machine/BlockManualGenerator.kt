@@ -13,6 +13,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
+import team.reborn.energy.Energy
 
 class BlockManualGenerator(settings: Settings?) : Block(settings), BlockEntityProvider {
     override fun createBlockEntity(world: BlockView): BlockEntity? {
@@ -23,7 +24,7 @@ class BlockManualGenerator(settings: Settings?) : Block(settings), BlockEntityPr
         if (!world.isClient) {
             val blockEntity = world.getBlockEntity(pos)
             if (blockEntity is BlockEntityManualGenerator) {
-                blockEntity.putEnergy(10f)
+                Energy.of(blockEntity).insert(450.toDouble())
                 player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".energyamount.get", blockEntity.storedEnergy, blockEntity.maxEnergy), true)
             }
         }
