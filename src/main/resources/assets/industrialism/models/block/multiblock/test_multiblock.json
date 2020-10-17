@@ -1,6 +1,0 @@
-{
-  "parent": "block/cube_all",
-  "textures": {
-    "all": "industrialism:block/multiblock/32x_test"
-  }
-}

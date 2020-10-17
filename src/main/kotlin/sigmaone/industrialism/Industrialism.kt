@@ -1,5 +1,6 @@
 package sigmaone.industrialism
 
+import dev.onyxstudios.foml.obj.OBJLoader
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricMaterialBuilder
@@ -167,6 +168,8 @@ class Industrialism : ModInitializer {
     }
 
     init {
+        OBJLoader.INSTANCE.registerDomain(MOD_ID)
+
         MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
 
         FuelRegistry.INSTANCE.add(COKE as ItemConvertible, 3200)

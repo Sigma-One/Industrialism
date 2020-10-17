@@ -12,9 +12,13 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven {
+    maven /* LibGui */ {
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
+    }
+    maven /* FOML */ {
+        name = "OnyxStudios"
+        url = "https://maven.abusedmaster.xyz"
     }
 }
 
@@ -31,11 +35,15 @@ dependencies {
     // You may need to force-disable transitiveness on them.
 
     // TeamReborn's Energy API (https://github.com/TechReborn/Energy)
-    modApi 'teamreborn:energy:0.1.0'
-    include 'teamreborn:energy:0.1.0'
+    modApi "teamreborn:energy:${project.energy_version}"
+    include "teamreborn:energy:${project.energy_version}"
 
-    // CottonMC LibGui
-    modImplementation "io.github.cottonmc:LibGui:3.0.0+1.16.3"
+    // LibGui
+    modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
+
+    // FOML
+    modCompile "dev.onyxstudios:FOML:${project.foml_version}"
+    include "dev.onyxstudios:FOML:${project.foml_version}"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
