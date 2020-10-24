@@ -146,15 +146,15 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 }
 
 
-                vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(0, 0, 0, 150).next()
+                vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(0, 0, 0, 0).next()
                 vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(255, 100, 10, 255).next()
 
                 for ((i, v) in heights.withIndex()) {
                     if (i == 0) { continue }
-                    vertices.vertex(matrices.peek().model, vertexA[0] + i*dx, v - (conn.key.y + entity.pos.y)/2, vertexA[2] + i*dz).color(255, 100, 10, 255).next()
+                    vertices.vertex(matrices.peek().model, vertexA[0] + i*dx, v - entity.pos.y, vertexA[2] + i*dz).color(255, 100, 10, 255).next()
                 }
                 vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(255, 100, 10, 255).next()
-                vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(0, 0, 0, 150).next()
+                vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(0, 0, 0, 0).next()
 
 
                 //vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(100, 50, 10, 255)

@@ -8,22 +8,22 @@ object CatenaryHelper {
 
     private val EPSILON = 0.001
 
-    private fun solveTranslation(A: FloatArray, B: FloatArray, coef: Float): FloatArray {
-        var x: FloatArray = floatArrayOf(1f, 1f)
-        var fx: FloatArray = floatArrayOf(
+    private fun solveTranslation(A: DoubleArray, B: DoubleArray, coef: Double): DoubleArray {
+        var x: DoubleArray = doubleArrayOf(1.0, 1.0)
+        var fx: DoubleArray = doubleArrayOf(
                 coef * cosh((A[0]-x[1])/coef) + x[0] - A[1],
                 coef * cosh((B[0]-x[1])/coef) + x[0] - B[1]
         )
         var nfx = abs(fx[0]) + abs(fx[1])
 
         while (nfx > EPSILON) {
-            val mb: Float = -1 * sinh((A[0] - x[1])/coef)
-            val md: Float = -1 * sinh((B[0] - x[1])/coef)
-            val det: Float = 1 / (md - mb)
+            val mb = -1 * sinh((A[0] - x[1])/coef)
+            val md = -1 * sinh((B[0] - x[1])/coef)
+            val det = 1 / (md - mb)
 
-            x = floatArrayOf(x[0] - det * (md * fx[0] - mb * fx[1]),
+            x = doubleArrayOf(x[0] - det * (md * fx[0] - mb * fx[1]),
                     x[1] - det * (fx[1] - fx[0]))
-            fx = floatArrayOf(
+            fx = doubleArrayOf(
                     coef * cosh((A[0]-x[1])/coef) + x[0] - A[1],
                     coef * cosh((B[0]-x[1])/coef) + x[0] - B[1]
             )
@@ -33,13 +33,36 @@ object CatenaryHelper {
         return x
     }
 
-    private fun solveShape(hDiff: Float, vDiff: Float, length: Float, guess: Float): Float {
-        var x: Float = guess
-        var fx: Float = sqrt(
+    private fun solveShape(hDiff: Double, vDiff: Double, length: Double, guess: Double): Double {
+        var x: Double = guess
+        var fx: Double = sqrt(
                 length*length - vDiff*vDiff
         ) - 2*x * sinh(hDiff/(2*x))
+
+        var lowerBound = 0.0
+        var upperBound = Double.POSITIVE_INFINITY
+        println("hD : " + hDiff)
+        println("vD : " + vDiff)
+        println("len: " + length)
         while (abs(fx) > EPSILON) {
-            x = x - (fx / (hDiff/x * cosh(hDiff/(2*x)) - 2*sinh(hDiff/(2*x))))
+            println("x  : " + x)
+            println("fx : " + fx)
+            if (fx == Double.NEGATIVE_INFINITY) {
+                lowerBound = abs(x)
+                if (upperBound == Double.POSITIVE_INFINITY) {
+                    x *= 2
+                }
+                else {
+                    x = (upperBound + lowerBound) / 2
+                }
+            }
+            else if (fx > 0) {
+                upperBound = abs(x)
+                x = (upperBound + lowerBound) / 2
+            }
+            else {
+                x -= (fx / (hDiff / x * cosh(hDiff / (2 * x)) - 2 * sinh(hDiff / (2 * x))))
+            }
             fx = sqrt(
                     length*length - vDiff*vDiff
             ) - 2*x * sinh(hDiff/(2*x))
@@ -49,44 +72,32 @@ object CatenaryHelper {
     }
 
     fun solveCatenary(a: BlockPos, b: BlockPos, wireLengthMultiplier: Float): FloatArray {
-        val ax = a.x.toFloat()
-        val ay = a.y.toFloat()
-        val az = a.z.toFloat()
-        val bx = b.x.toFloat()
-        val by = b.y.toFloat()
-        val bz = b.z.toFloat()
+        val ax = a.x.toDouble()
+        val ay = a.y.toDouble()
+        val az = a.z.toDouble()
+        val bx = b.x.toDouble()
+        val by = b.y.toDouble()
+        val bz = b.z.toDouble()
         val hDiff = sqrt(
                 (bx - ax).pow(2) + (bz-az).pow(2)
         )
-        val wireLength = hDiff + wireLengthMultiplier
         val vDiff = by - ay
+        val diff = sqrt(vDiff.pow(2) + hDiff.pow(2))
+        val wireLength = diff * wireLengthMultiplier
 
-        val A = floatArrayOf(0f, ay)
-        val B = floatArrayOf(hDiff, by)
+        val A = doubleArrayOf(0.0, ay)
+        val B = doubleArrayOf(hDiff, by)
 
-        var shapeGuess = 1f
-        var shapeIterations = 0
-        var shapeCoef: Float = solveShape(hDiff, vDiff, wireLength, shapeGuess)
-        while (!shapeCoef.isFinite() && shapeIterations < 7) {
-            shapeIterations++
-            if (shapeCoef.isNaN()) {
-                shapeGuess = shapeGuess * 2
-            }
-            else {
-                shapeGuess = shapeGuess / 2
-            }
-            shapeCoef = solveShape(hDiff, vDiff, wireLength, shapeGuess)
-        }
-        if (shapeCoef.isInfinite()) {
-            shapeCoef = shapeGuess
-        }
+        val shapeGuess = 3.0
+        val shapeCoef: Double = solveShape(hDiff, vDiff, wireLength, shapeGuess)
+
         // TODO: check if not valid; if not valid, safe procedure plz
 
         val yxTrans = solveTranslation(A, B, shapeCoef)
         val xTrans = yxTrans[1]
         val yTrans = yxTrans[0]
 
-        return floatArrayOf(xTrans, yTrans, shapeCoef)
+        return floatArrayOf(xTrans.toFloat(), yTrans.toFloat(), shapeCoef.toFloat())
     }
 
     fun calculateHeights(xShift: Float, yShift: Float, hDiff: Float, coef: Float, segments: Int): FloatArray {
