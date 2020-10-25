@@ -1,14 +1,11 @@
 package sigmaone.industrialism.block.wiring
 
-import com.google.common.collect.ImmutableList
 import net.minecraft.client.render.*
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.state.property.Properties.FACING
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
-import org.lwjgl.opengl.GL11
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
 import kotlin.math.*
@@ -39,50 +36,8 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     else -> throw IllegalStateException("Illegal Facing")
                 }*/
 
-                /*val vertices = vertexConsumers.getBuffer(RenderLayer.getLeash())
-
-                val hDiff = sqrt(
-                        ((conn.key.x.toFloat() - entity.pos.x.toFloat()).pow(2)) + ((conn.key.z.toFloat() - entity.pos.z.toFloat()).pow(2))
-                )
-
-                val heights = CatenaryHelper.calculateHeights(conn.value.xShift, conn.value.yShift, hDiff, conn.value.coefficient, 10)
-
-                val m: Float = if ((conn.key.z - entity.pos.z) != 0) {
-                    ((conn.key.x - entity.pos.x) / (conn.key.z - entity.pos.z)).toFloat()
-                }.<VertexFormatElement>
-                else {
-                    0f
-                }
-                val ht = hDiff / heights.size
-                val dz = ht / (sqrt(m.pow(2) + 1))
-                val dx = m * dz
-
-                val vertexPositions: ArrayList<FloatArray> = ArrayList()
-
-                for ((i, y) in heights.withIndex()) {
-                    vertexPositions.add(floatArrayOf(i * dx, y, i * dz))
-                }
-
-                //for ((i, vertex) in vertexPositions.withIndex()) {
-                /*vertices.quad(matrices.peek(), BakedQuad(intArrayOf(
-                        0, 0, 0,
-                ), -1, Direction.UP, null, true), 1f, 0.5f, 0f, light, overlay)
-                vertices.quad(matrices.peek(), BakedQuad(intArrayOf(
-                        16, 0, 0,
-                ), -1, Direction.UP, null, true), 1f, 0.5f, 0f, light, overlay)
-                vertices.quad(matrices.peek(), BakedQuad(intArrayOf(
-                        16, 0, 16,
-                ), -1, Direction.UP, null, true), 1f, 0.5f, 0f, light, overlay)
-                vertices.quad(matrices.peek(), BakedQuad(intArrayOf(
-                        0, 0, 16,
-                ), -1, Direction.UP, null, true), 1f, 0.5f, 0f, light, overlay)
-                vertices.next()*/
-                //}
-                vertices.vertex(matrices.peek().model, 0.1f, 0.1f, 0.1f).color(100, 50, 10, 255).next()
-                vertices.vertex(matrices.peek().model, 0.5f, 0.5f, 0.5f).color(100, 50, 10, 255).next()*/
-
                 val vertices = vertexConsumers.getBuffer(WiringRenderLayer.getWiring())
-                val vertexBBase = floatArrayOf(
+                val vertexB = floatArrayOf(
                         conn.key.x - entity.pos.x.toFloat(),
                         conn.key.y - entity.pos.y.toFloat(),
                         conn.key.z - entity.pos.z.toFloat()
@@ -107,10 +62,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     else -> throw IllegalStateException("Illegal Facing")
                 }
 
-                val vertexA = floatArrayOf(0f, 0f, 0f)
-                val vertexB = vertexBBase
-                //val vertexA = floatArrayOf(vertexAOffsets[0], vertexAOffsets[1], vertexAOffsets[2])
-                //val vertexB = floatArrayOf(vertexBBase[0] + vertexBOffsets[0], vertexBBase[1] + vertexBOffsets[1], vertexBBase[2] + vertexBOffsets[2])
+                val vertexA = floatArrayOf(0f, entity.pos.y.toFloat(), 0f)
 
                 val hDiff = sqrt(
                         ((vertexB[0] - vertexA[0]).pow(2)) + ((vertexB[2] - vertexA[2]).pow(2))
@@ -119,7 +71,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 val heights = CatenaryHelper.calculateHeights(conn.value.xShift, conn.value.yShift, hDiff, conn.value.coefficient, 10)
 
                 val m: Float = if ((vertexB[2] - vertexA[2]) != 0f) {
-                    ((vertexB[0] - vertexA[0]) / (vertexB[2] - vertexA[2])).toFloat()
+                    ((vertexB[0] - vertexA[0]) / (vertexB[2] - vertexA[2]))
                 }
                 else {
                     0f
@@ -128,15 +80,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 var dz = ht / (sqrt(m.pow(2) + 1))
                 var dx = m * dz
 
-                val angle = atan2(vertexB[0] - vertexA[0], vertexB[2] - vertexA[2]) * (180/PI)
-                val fdd: FloatArray = FloatArray(2)
-
-                /*fdd = when(angle) {
-                    in -180f..-90f -> floatArrayOf(-dx, -dz)
-                    in -90f..0f -> floatArrayOf(dx, dz)
-                    in 0f..90f -> floatArrayOf(dx, dz)
-                    else -> floatArrayOf(-dx, -dz)
-                }*/
+                val angle = atan2(vertexB[0] - vertexA[0], vertexB[2] - vertexA[2]) * (180 / PI)
 
                 when {
                        angle >= 91.0
@@ -145,20 +89,34 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     angle in -91.0..-89.0 -> { dx = -dz; dz = 0f }
                 }
 
-
-                vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(0, 0, 0, 0).next()
-                vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(255, 100, 10, 255).next()
+                val colour = conn.value.wireColour
 
                 for ((i, v) in heights.withIndex()) {
-                    if (i == 0) { continue }
-                    vertices.vertex(matrices.peek().model, vertexA[0] + i*dx, v - entity.pos.y, vertexA[2] + i*dz).color(255, 100, 10, 255).next()
+                    var vb = if (i == heights.lastIndex) {
+                        vertexB[1]
+                    }
+                    else {
+                        heights[i + 1] - entity.pos.y
+                    }
+                    val va = v - entity.pos.y
+                    vertices.vertex(matrices.peek().model, vertexA[0] + i*dx, va - conn.value.wireThickness, vertexA[2] + i*dz)
+                            .color(colour[0], colour[1], colour[2], 255)
+                            .light(light)
+                            .next()
+                    vertices.vertex(matrices.peek().model, vertexA[0] + i*dx, va, vertexA[2] + i*dz)
+                            .color(colour[0], colour[1], colour[2], 255)
+                            .light(light)
+                            .next()
+                    vertices.vertex(matrices.peek().model, vertexA[0] + (i+1)*dx, vb, vertexA[2] + (i+1)*dz)
+                            .color(colour[0], colour[1], colour[2], 255)
+                            .light(light)
+                            .next()
+                    vertices.vertex(matrices.peek().model, vertexA[0] + (i+1)*dx, vb - conn.value.wireThickness, vertexA[2] + (i+1)*dz)
+                            .color(colour[0], colour[1], colour[2], 255)
+                            .light(light)
+                            .next()
                 }
-                vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(255, 100, 10, 255).next()
-                vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(0, 0, 0, 0).next()
 
-
-                //vertices.vertex(matrices.peek().model, vertexA[0], vertexA[1], vertexA[2]).color(100, 50, 10, 255)
-                //vertices.vertex(matrices.peek().model, vertexB[0], vertexB[1], vertexB[2]).color(100, 50, 10, 255).next()
                 matrices.pop()
             }
         }

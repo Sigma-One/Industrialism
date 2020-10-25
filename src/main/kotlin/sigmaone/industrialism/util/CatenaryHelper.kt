@@ -41,12 +41,7 @@ object CatenaryHelper {
 
         var lowerBound = 0.0
         var upperBound = Double.POSITIVE_INFINITY
-        println("hD : " + hDiff)
-        println("vD : " + vDiff)
-        println("len: " + length)
         while (abs(fx) > EPSILON) {
-            println("x  : " + x)
-            println("fx : " + fx)
             if (fx == Double.NEGATIVE_INFINITY) {
                 lowerBound = abs(x)
                 if (upperBound == Double.POSITIVE_INFINITY) {
