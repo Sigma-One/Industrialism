@@ -1,13 +1,10 @@
 package sigmaone.industrialism.block.wiring
 
-import net.fabricmc.loader.util.sat4j.core.Vec
 import net.minecraft.client.render.*
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.util.math.Vector3f
-import net.minecraft.state.property.Properties.FACING
-import net.minecraft.util.math.Direction
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
 import kotlin.math.*
@@ -18,26 +15,6 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
         for (conn in entity.connections) {
             matrices.push()
             if (entity.world!!.getBlockEntity(conn.key) != null && entity.world!!.getBlockEntity(conn.key) is BlockEntityWireNode) {
-
-                /*val vertexAOffsets: FloatArray = when (entity.world!!.getBlockState(entity.pos).get(Properties.FACING)) {
-                    Direction.UP    -> floatArrayOf(0.5f, 1f / 16f * 4f, 0.5f)
-                    Direction.DOWN  -> floatArrayOf(0.5f, 1f / 16f * 12f, 0.5f)
-                    Direction.NORTH -> floatArrayOf(0.5f, 0.5f, 1f / 16f * 12f)
-                    Direction.SOUTH -> floatArrayOf(0.5f, 0.5f, 1f / 16f * 4f)
-                    Direction.EAST  -> floatArrayOf(1f / 16f * 4f, 0.5f, 0.5f)
-                    Direction.WEST  -> floatArrayOf(1f / 16f * 12f, 0.5f, 0.5f)
-                    else -> throw IllegalStateException("Illegal Facing")
-                }
-                val vertexBOffsets: FloatArray = when (entity.world!!.getBlockState(conn).get(Properties.FACING)) {
-                    Direction.UP    -> floatArrayOf(0.5f, 1f / 16f * 4f, 0.5f)
-                    Direction.DOWN  -> floatArrayOf(0.5f, 1f / 16f * 12f, 0.5f)
-                    Direction.NORTH -> floatArrayOf(0.5f, 0.5f, 1f / 16f * 12f)
-                    Direction.SOUTH -> floatArrayOf(0.5f, 0.5f, 1f / 16f * 4f)
-                    Direction.EAST  -> floatArrayOf(1f / 16f * 4f, 0.5f, 0.5f)
-                    Direction.WEST  -> floatArrayOf(1f / 16f * 12f, 0.5f, 0.5f)
-                    else -> throw IllegalStateException("Illegal Facing")
-                }*/
-
                 val vertices = vertexConsumers.getBuffer(WiringRenderLayer.getWiring())
                 val vertexB = floatArrayOf(
                         conn.key.x - entity.pos.x.toFloat(),
@@ -65,7 +42,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 val ht = hDiff / heights.size
                 var dz = ht / (sqrt(m.pow(2) + 1))
                 var dx = m * dz
-
+                
                 val angle = atan2(vertexB[0] - vertexA[0], vertexB[2] - vertexA[2]) * (180 / PI)
 
                 when {
@@ -91,19 +68,19 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     val az = vertexA[2] + i*dz
                     val bx = vertexA[0] + (i+1)*dx
                     val bz = vertexA[2] + (i+1)*dz
-                    vertices.vertex(matrices.peek().model, ax, aya, az)
+                    vertices.vertex(matrices.peek().model, ax+0.5f, aya+0.5f, az+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, ax, ayb, az)
+                    vertices.vertex(matrices.peek().model, ax+0.5f, ayb+0.5f, az+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, bx, bya, bz)
+                    vertices.vertex(matrices.peek().model, bx+0.5f, bya+0.5f, bz+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, bx, byb, bz)
+                    vertices.vertex(matrices.peek().model, bx+0.5f, byb+0.5f, bz+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
@@ -150,19 +127,19 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                             bz - (conn.value.wireThickness/2) * vn.z
                     )
 
-                    vertices.vertex(matrices.peek().model, aa.x, aa.y, aa.z)
+                    vertices.vertex(matrices.peek().model, aa.x+0.5f, aa.y+0.5f, aa.z+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, ab.x, ab.y, ab.z)
+                    vertices.vertex(matrices.peek().model, ab.x+0.5f, ab.y+0.5f, ab.z+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, ba.x, ba.y, ba.z)
+                    vertices.vertex(matrices.peek().model, ba.x+0.5f, ba.y+0.5f, ba.z+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, bb.x, bb.y, bb.z)
+                    vertices.vertex(matrices.peek().model, bb.x+0.5f, bb.y+0.5f, bb.z+0.5f)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()

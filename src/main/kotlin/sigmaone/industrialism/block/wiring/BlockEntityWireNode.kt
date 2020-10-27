@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
-import net.minecraft.tag.TagManager
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
@@ -16,7 +15,6 @@ import sigmaone.industrialism.util.CatenaryHelper
 import team.reborn.energy.Energy
 import team.reborn.energy.EnergyTier
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 import kotlin.math.min
@@ -88,8 +86,8 @@ class BlockEntityWireNode :
 
     override fun addConnection(pos: BlockPos): Boolean {
         if (connections.size < maxConnections) {
-            val catenaryInfo = CatenaryHelper.solveCatenary(this.pos, pos, 1.05f)
-            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(255, 100, 10)))
+            val catenaryInfo = CatenaryHelper.solveCatenary(this.pos, pos, 1.025f)
+            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(100, 50, 15)))
             refresh()
             return true
         }

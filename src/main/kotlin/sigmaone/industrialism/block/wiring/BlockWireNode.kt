@@ -30,12 +30,12 @@ open class BlockWireNode(settings: Settings) : FacingBlock(settings.nonOpaque())
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape {
         return when (state.get(FACING)) {
-            Direction.UP    -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 4f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.DOWN  -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 12f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 16f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.NORTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 12f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1.0)
-            Direction.SOUTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 4f.toDouble())
-            Direction.EAST  -> VoxelShapes.cuboid(0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 4f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.WEST  -> VoxelShapes.cuboid(1.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 12f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
+            Direction.UP    -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble())
+            Direction.DOWN  -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 16f.toDouble(), 1f / 16f * 10f.toDouble())
+            Direction.NORTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1.0)
+            Direction.SOUTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 8f.toDouble())
+            Direction.EAST  -> VoxelShapes.cuboid(0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
+            Direction.WEST  -> VoxelShapes.cuboid(1.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
             else -> throw IllegalStateException("Illegal side: " + state.get(FACING))
         }
     }
