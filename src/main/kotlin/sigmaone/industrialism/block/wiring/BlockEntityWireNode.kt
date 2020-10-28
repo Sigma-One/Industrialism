@@ -87,7 +87,7 @@ class BlockEntityWireNode :
     override fun addConnection(pos: BlockPos): Boolean {
         if (connections.size < maxConnections) {
             val catenaryInfo = CatenaryHelper.solveCatenary(this.pos, pos, 1.025f)
-            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(100, 50, 15)))
+            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(125, 75, 20)))
             refresh()
             return true
         }

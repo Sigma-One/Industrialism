@@ -86,8 +86,6 @@ object CatenaryHelper {
         val shapeGuess = 3.0
         val shapeCoef: Double = solveShape(hDiff, vDiff, wireLength, shapeGuess)
 
-        // TODO: check if not valid; if not valid, safe procedure plz
-
         val yxTrans = solveTranslation(A, B, shapeCoef)
         val xTrans = yxTrans[1]
         val yTrans = yxTrans[0]
