@@ -9,7 +9,7 @@ import net.minecraft.recipe.RecipeSerializer
 import net.minecraft.util.Identifier
 import sigmaone.industrialism.Industrialism
 
-class CokingRecipe(
+class BlastSmeltingRecipe(
         id: Identifier?,
         group: String?,
         input: Ingredient?,
@@ -17,7 +17,7 @@ class CokingRecipe(
         experience: Float,
         cookTime: Int
 ) : AbstractCookingRecipe(
-        Industrialism.COKING_RECIPE_TYPE,
+        Industrialism.BLASTING_RECIPE_TYPE,
         id,
         group,
         input,
@@ -27,10 +27,10 @@ class CokingRecipe(
 ) {
     @Environment(EnvType.CLIENT)
     override fun getRecipeKindIcon(): ItemStack {
-        return ItemStack(Industrialism.COKE)
+        return ItemStack(Industrialism.STEEL.ingot)
     }
 
     override fun getSerializer(): RecipeSerializer<*> {
-        return Industrialism.COKING_RECIPE_SERIALIZER
+        return Industrialism.BLASTING_RECIPE_SERIALIZER
     }
 }

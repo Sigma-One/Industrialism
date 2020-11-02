@@ -30,6 +30,8 @@ import sigmaone.industrialism.block.machine.BlockManualGenerator
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockBlastFurnaceMultiblock
+import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblock
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockCokeOvenMultiblock
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblock
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
@@ -101,6 +103,11 @@ class Industrialism : ModInitializer {
                 .addStick()
         val GOLD: Metal = Metal("gold")
                 .addStick()
+        val STEEL: Metal = Metal("steel")
+                .addIngot()
+                .addNugget()
+                .addStick()
+                .addBlock(2, 5.5f)
 
         // Random materials
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
@@ -156,6 +163,22 @@ class Industrialism : ModInitializer {
                 { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)}
         )
 
+        val BLAST_FURNACE_MULTIBLOCK_BLOCK: BlockMultiblockRootBase = Registry.register(
+                Registry.BLOCK,
+                Identifier(MOD_ID, "blast_furnace_multiblock"),
+                BlockBlastFurnaceMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)
+                )
+        )
+        val BLAST_FURNACE_MULTIBLOCK: BlockEntityType<BlockEntityBlastFurnaceMultiblock> = Registry.register(
+                Registry.BLOCK_ENTITY_TYPE,
+                "$MOD_ID:blast_furnace_multiblock",
+                BlockEntityType.Builder.create({ BlockEntityBlastFurnaceMultiblock() }, BLAST_FURNACE_MULTIBLOCK_BLOCK).build(null)
+        )
+        /*val BLAST_FURNACE_SCREEN_HANDLER_TYPE: ScreenHandlerType<CokeOvenGuiDescription> = ScreenHandlerRegistry.registerSimple(
+                Identifier(MOD_ID, "blast_furnace_multiblock"),
+                { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY)}
+        )*/
+
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
 
@@ -165,12 +188,16 @@ class Industrialism : ModInitializer {
         // Recipes
         val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "coking"), object: RecipeType<CokingRecipe> {})
         val COKING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "coking"), CookingRecipeSerializer(::CokingRecipe, 500))
+
+        val BLASTING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "blasting"), object: RecipeType<CokingRecipe> {})
+        val BLASTING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "blasting"), CookingRecipeSerializer(::CokingRecipe, 500))
     }
 
     init {
         OBJLoader.INSTANCE.registerDomain(MOD_ID)
 
         MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
+        MULTIBLOCKS.add(BLAST_FURNACE_MULTIBLOCK_BLOCK)
 
         FuelRegistry.INSTANCE.add(COKE as ItemConvertible, 3200)
         FuelRegistry.INSTANCE.add(COKE_BLOCK as ItemConvertible, 32000)
