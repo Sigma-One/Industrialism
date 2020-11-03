@@ -25,6 +25,8 @@ import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_T0
 import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.TATER
 import sigmaone.industrialism.block.BlockEntityConnectableConfigurableEnergyContainerRenderer
+import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGui
+import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGuiDescription
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblockRenderer
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblockRenderer
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGui
@@ -73,6 +75,10 @@ class IndustrialismClient : ClientModInitializer {
         ScreenRegistry.register(
                 Industrialism.COKE_OVEN_SCREEN_HANDLER_TYPE,
                 { gui: CokeOvenGuiDescription, inventory: PlayerInventory, title: Text -> CokeOvenGui(gui, inventory.player, title) }
+        )
+        ScreenRegistry.register(
+                Industrialism.BLAST_FURNACE_SCREEN_HANDLER_TYPE,
+                { gui: BlastFurnaceGuiDescription, inventory: PlayerInventory, title: Text -> BlastFurnaceGui(gui, inventory.player, title) }
         )
     }
 }

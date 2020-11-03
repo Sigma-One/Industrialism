@@ -45,7 +45,11 @@ class BlockCokeOvenMultiblock(settings: Settings?) : BlockMultiblockRootBase(set
         return if (blockEntity is NamedScreenHandlerFactory) blockEntity else null
     }
 
+    override fun appendProperties(stateManager: StateManager.Builder<Block, BlockState>) {
+        stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.LIT)
+    }
+
     init {
-        defaultState = stateManager.defaultState.with(Properties.HORIZONTAL_FACING, Direction.NORTH)
+        defaultState = stateManager.defaultState.with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(Properties.LIT, false)
     }
 }

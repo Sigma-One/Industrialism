@@ -2,10 +2,13 @@ package sigmaone.industrialism.block.multiblock.machine.cokeoven
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
+import net.fabricmc.fabric.api.registry.FuelRegistry
 import net.minecraft.block.BlockState
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventories
+import net.minecraft.inventory.SidedInventory
+import net.minecraft.item.ItemConvertible
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.recipe.Recipe
@@ -18,13 +21,15 @@ import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.Tickable
 import net.minecraft.util.collection.DefaultedList
+import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
+import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MULTIBLOCK), IInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(2, ItemStack.EMPTY)
     var progress = 0
@@ -72,6 +77,24 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
         super<BlockEntityMultiblockRootBase>.markDirty()
     }
 
+    override fun getAvailableSlots(side: Direction?): IntArray {
+        return when (side) {
+            world!!.getBlockState(pos).get(Properties.HORIZONTAL_FACING).opposite -> intArrayOf(1)
+            else -> intArrayOf()
+        }
+    }
+
+    override fun canInsert(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
+        return false
+    }
+
+    override fun canExtract(slot: Int, stack: ItemStack?, dir: Direction?): Boolean {
+        return when (dir) {
+            world!!.getBlockState(pos).get(Properties.HORIZONTAL_FACING).opposite -> true
+            else -> false
+        }
+    }
+
     override fun getDisplayName(): Text {
         return TranslatableText(cachedState.block.translationKey)
     }
@@ -115,32 +138,44 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
     }
 
     override fun tick() {
-        var recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
+        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
         val currentTime = world!!.time
+        // Check:
+        // * Is recipe a thing
+        // * Can recipe be crafted
+        // * No crafting in progress
+        if (!world!!.isClient && startedProcessing == 0L) {
+            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
+        }
         if (recipe != null && canProcessRecipe(recipe) && startedProcessing == 0L) {
+            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, true))
             startedProcessing = world!!.time
             refresh()
         }
-        else if (recipe != null && startedProcessing != 0L) {
+        // Check:
+        // * Is recipe a thing
+        // * Can recipe be crafted
+        // * No crafting in progress
+        else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
+            // If processing is done, do craft
             if (startedProcessing + (recipe as CokingRecipe).cookTime < currentTime) {
                 startedProcessing = 0
                 progress = 0
-                if (canProcessRecipe(recipe)) {
-                    items[0].decrement(1)
-                    if (items[1].item == recipe.output.item) {
-                        items[1].increment(1)
-                    }
-                    else {
-                        items[1] = ItemStack(recipe.output.item)
-                    }
+                items[0].decrement(1)
+                if (items[1].isEmpty) {
+                    items[1] = ItemStack(recipe.output.item as ItemConvertible, recipe.output.count)
                 }
-                recipe = null
+                else {
+                    items[1].increment(1)
+                }
+                world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
             }
+            // Otherwise, increment progress
             else {
                 progress = (((currentTime - startedProcessing).toFloat() / recipe.cookTime) * 100).toInt()
             }
         }
-        if (recipe == null) {
+        if (recipe == null || !canProcessRecipe(recipe)) {
             progress = 0
             startedProcessing = 0
             refresh()

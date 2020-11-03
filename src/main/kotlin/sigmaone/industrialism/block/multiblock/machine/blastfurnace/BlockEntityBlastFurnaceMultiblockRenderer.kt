@@ -20,7 +20,7 @@ class BlockEntityBlastFurnaceMultiblockRenderer<T : BlockEntityBlastFurnaceMulti
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
         val blockState = entity!!.world!!.getBlockState(entity.pos)
 
-        val model: BakedModel = if (entity.isProcessing) {
+        val model: BakedModel = if (entity.isBurning) {
             MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.blastFurnaceModelIDs[1])
         }
         else {

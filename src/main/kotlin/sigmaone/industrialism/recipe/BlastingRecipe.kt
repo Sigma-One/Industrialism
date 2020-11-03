@@ -9,7 +9,7 @@ import net.minecraft.recipe.RecipeSerializer
 import net.minecraft.util.Identifier
 import sigmaone.industrialism.Industrialism
 
-class BlastSmeltingRecipe(
+class BlastingRecipe(
         id: Identifier?,
         group: String?,
         input: Ingredient?,
