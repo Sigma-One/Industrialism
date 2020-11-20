@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_14",
   "mixins": [
     "MixinMultiblockExplosionFix",
-    "MixinWiringExplosionFix"
+    "MixinWiringExplosionFix",
+    "MixinNoEntityRaycast"
   ],
   "client": [],
   "injectors": {

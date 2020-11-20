@@ -46,8 +46,8 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 val angle = atan2(vertexB[0] - vertexA[0], vertexB[2] - vertexA[2]) * (180 / PI)
 
                 when {
-                       angle >= 91.0
-                    || angle <= -91.0     -> { dz = -dz; dx = -dx }
+                    angle >= 91.0
+                 || angle <= -91.0        -> { dz = -dz; dx = -dx }
                     angle in 89.0..91.0   -> { dx = dz; dz = 0f }
                     angle in -91.0..-89.0 -> { dx = -dz; dz = 0f }
                 }

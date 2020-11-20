@@ -6,6 +6,8 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.RaycastContext
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
 import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
@@ -17,7 +19,7 @@ import team.reborn.energy.EnergyTier
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
-import kotlin.math.min
+import kotlin.math.*
 
 
 class BlockEntityWireNode :
@@ -109,6 +111,29 @@ class BlockEntityWireNode :
         refresh()
     }
 
+    private fun testConnectionCollisions(targetPos: BlockPos): Boolean {
+        val conn = connections[targetPos]
+        if (conn == null) {
+            return false
+        }
+        val vertexA = Vec3d(
+                pos.x.toDouble(),
+                pos.y.toDouble(),
+                pos.z.toDouble()
+        )
+        val vertexB = Vec3d(
+                (targetPos.x).toDouble(),
+                (targetPos.y).toDouble(),
+                (targetPos.z).toDouble()
+        )
+        val result = CatenaryHelper.raytraceCatenary(world!!, vertexA, vertexB, conn.xShift, conn.yShift, conn.coefficient, 10)
+
+        if (result == null) {
+            return false
+        }
+        return true
+    }
+
     override fun tick() {
         super.tick()
         // Remove nonexistent connections, just in case
@@ -117,6 +142,11 @@ class BlockEntityWireNode :
             for (pos in connections.keys) {
                 if (getWorld() != null && getWorld()!!.getBlockEntity(pos) == null) {
                     removalBuffer.add(pos)
+                }
+                else {
+                    if (testConnectionCollisions(pos)) {
+                        removalBuffer.add(pos)
+                    }
                 }
             }
             for (pos in removalBuffer) {
