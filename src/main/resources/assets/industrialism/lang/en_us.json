@@ -11,7 +11,7 @@
     "item.industrialism.copper_hoe"     : "Copper Hoe",
     
     "block.industrialism.galena_ore"  : "Galena Ore",
-    "block.industrialism.lead_block"  : "Block of lead",
+    "block.industrialism.lead_block"  : "Block of Lead",
     "item.industrialism.lead_ingot"   : "Lead Ingot",
     "item.industrialism.lead_stick"   : "Lead Rod",
     "item.industrialism.lead_nugget"  : "Lead Nugget",
@@ -21,6 +21,16 @@
     "item.industrialism.lead_sword"   : "Lead Sword",
     "item.industrialism.lead_hoe"     : "Lead Hoe",
 
+    "block.industrialism.steel_block"  : "Block of Steel",
+    "item.industrialism.steel_ingot"   : "Steel Ingot",
+    "item.industrialism.steel_stick"   : "Steel Rod",
+    "item.industrialism.steel_nugget"  : "Steel Nugget",
+    "item.industrialism.steel_pickaxe" : "Steel Pickaxe",
+    "item.industrialism.steel_axe"     : "Steel Axe",
+    "item.industrialism.steel_shovel"  : "Steel Shovel",
+    "item.industrialism.steel_sword"   : "Steel Sword",
+    "item.industrialism.steel_hoe"     : "Steel Hoe",
+
     "item.industrialism.iron_stick" : "Iron Rod",
     "item.industrialism.gold_stick" : "Golden Rod",
 
@@ -28,9 +38,12 @@
     "block.industrialism.coke_block" : "Block of Coke",
     "block.industrialism.coke_oven_multiblock" : "Coke Oven",
 
-    "item.industrialism.raw_fire_brick" : "Unfired Fire Brick",
-    "item.industrialism.fire_brick"     : "Fire Brick",
-    "block.industrialism.fire_bricks"   : "Fire Bricks",
+    "block.industrialism.blast_furnace_multiblock" : "Basic Blast Furnace",
+
+    "item.industrialism.raw_fire_brick"      : "Unfired Fire Brick",
+    "item.industrialism.fire_brick"          : "Fire Brick",
+    "block.industrialism.fire_bricks"        : "Fire Bricks",
+    "block.industrialism.iron_fire_bricks"   : "Plated Fire Bricks",
 
     "item.industrialism.wrench" : "Wrench",
     "item.industrialism.screwdriver" : "Screwdriver",

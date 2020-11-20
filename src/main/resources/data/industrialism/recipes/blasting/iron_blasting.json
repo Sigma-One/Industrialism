@@ -1,0 +1,8 @@
+{
+  "type": "industrialism:blasting",
+  "ingredient": {
+    "item": "minecraft:iron_ingot"
+  },
+  "result": "industrialism:steel_ingot",
+  "cookingtime": 1800
+}
