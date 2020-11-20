@@ -4,7 +4,9 @@
   "package": "sigmaone.industrialism.mixin",
   "compatibilityLevel": "JAVA_14",
   "mixins": [
-    "MixinMultiblockExplosionFix"
+    "MixinMultiblockExplosionFix",
+    "MixinWiringExplosionFix",
+    "MixinNoEntityRaycast"
   ],
   "client": [],
   "injectors": {

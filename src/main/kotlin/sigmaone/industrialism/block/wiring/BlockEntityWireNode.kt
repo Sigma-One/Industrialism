@@ -3,17 +3,23 @@ package sigmaone.industrialism.block.wiring
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtHelper
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.RaycastContext
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
 import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
 import sigmaone.industrialism.block.IConfigurable
+import sigmaone.industrialism.energy.WireConnection
+import sigmaone.industrialism.util.CatenaryHelper
 import team.reborn.energy.Energy
 import team.reborn.energy.EnergyTier
 import java.util.*
+import kotlin.collections.HashMap
 import kotlin.collections.HashSet
-import kotlin.math.min
+import kotlin.math.*
 
 
 class BlockEntityWireNode :
@@ -22,7 +28,7 @@ class BlockEntityWireNode :
         BlockEntityClientSerializable,
         IConfigurable {
     private val maxConnections = 16
-    override var connections: HashSet<BlockPos> = HashSet()
+    override var connections: HashMap<BlockPos, WireConnection> = HashMap()
     var IOstate: InputConfig = InputConfig.NONE
 
     override var sideConfig: HashMap<Direction, InputConfig> = hashMapOf(
@@ -62,17 +68,17 @@ class BlockEntityWireNode :
             while (!nodeStack.isEmpty()) {
                 val currentNode = nodeStack.pop()
                 // Loop through connections
-                for (connectedPos in currentNode.connections) {
-                    if (!visited.contains(connectedPos)) {
+                for (connection in currentNode.connections.keys) {
+                    if (!visited.contains(connection)) {
                         // Add any found sinks to sink set
-                        val blockEntity = getWorld()!!.getBlockEntity(connectedPos) as BlockEntityWireNode?
+                        val blockEntity = getWorld()!!.getBlockEntity(connection) as BlockEntityWireNode?
                         if (blockEntity != null) {
                             if (blockEntity.IOstate == InputConfig.OUTPUT) {
                                 sinks.add(blockEntity)
                             }
                             // Add connected nodes to stack and self to visited nodes
                             nodeStack.push(blockEntity)
-                            visited.add(connectedPos)
+                            visited.add(connection)
                         }
                     }
                 }
@@ -82,7 +88,8 @@ class BlockEntityWireNode :
 
     override fun addConnection(pos: BlockPos): Boolean {
         if (connections.size < maxConnections) {
-            connections.add(pos)
+            val catenaryInfo = CatenaryHelper.solveCatenary(this.pos, pos, 1.025f)
+            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(125, 75, 20)))
             refresh()
             return true
         }
@@ -91,15 +98,40 @@ class BlockEntityWireNode :
 
     fun removeAllConnections() {
         while (connections.isNotEmpty()) {
-            removeConnection(connections.elementAt(0))
+            removeConnection(connections.keys.elementAt(0))
         }
     }
 
     override fun removeConnection(pos: BlockPos) {
-        val blockEntity = getWorld()!!.getBlockEntity(pos) as BlockEntityWireNode
-        blockEntity.connections.remove(getPos())
+        val blockEntity = getWorld()!!.getBlockEntity(pos)
+        if (blockEntity != null) {
+            (blockEntity as BlockEntityWireNode).connections.remove(getPos())
+        }
         connections.remove(pos)
         refresh()
+    }
+
+    private fun testConnectionCollisions(targetPos: BlockPos): Boolean {
+        val conn = connections[targetPos]
+        if (conn == null) {
+            return false
+        }
+        val vertexA = Vec3d(
+                pos.x.toDouble(),
+                pos.y.toDouble(),
+                pos.z.toDouble()
+        )
+        val vertexB = Vec3d(
+                (targetPos.x).toDouble(),
+                (targetPos.y).toDouble(),
+                (targetPos.z).toDouble()
+        )
+        val result = CatenaryHelper.raytraceCatenary(world!!, vertexA, vertexB, conn.xShift, conn.yShift, conn.coefficient, 10)
+
+        if (result == null) {
+            return false
+        }
+        return true
     }
 
     override fun tick() {
@@ -107,12 +139,19 @@ class BlockEntityWireNode :
         // Remove nonexistent connections, just in case
         if (connections.size > 0) {
             val removalBuffer = HashSet<BlockPos?>()
-            for (pos in connections) {
+            for (pos in connections.keys) {
                 if (getWorld() != null && getWorld()!!.getBlockEntity(pos) == null) {
                     removalBuffer.add(pos)
                 }
+                else {
+                    if (testConnectionCollisions(pos)) {
+                        removalBuffer.add(pos)
+                    }
+                }
             }
-            connections.removeAll(removalBuffer)
+            for (pos in removalBuffer) {
+                removeConnection(pos!!)
+            }
         }
         if (IOstate == InputConfig.INPUT && connectedSinks.isNotEmpty()) {
             val amount = tier.maxOutput / connectedSinks.size
@@ -130,8 +169,10 @@ class BlockEntityWireNode :
         val connectionAmount = tag.getInt("connection_amount")
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
-                val pos = tag.getIntArray(i.toString())
-                addConnection(BlockPos(pos[0], pos[1], pos[2]))
+                val pos = NbtHelper.toBlockPos(tag.getCompound(i.toString()))
+                if (!connections.keys.contains(pos)) {
+                    addConnection(pos)
+                }
             }
         }
     }
@@ -139,12 +180,8 @@ class BlockEntityWireNode :
     override fun toClientTag(tag: CompoundTag): CompoundTag {
         tag.putInt("connection_amount", connections.size)
         if (connections.size > 0) {
-            for (i in connections.indices) {
-                tag.putIntArray(i.toString(), intArrayOf(
-                        connections.elementAt(i).x,
-                        connections.elementAt(i).y,
-                        connections.elementAt(i).z)
-                )
+            for ((i, pos) in connections.keys.withIndex()) {
+                tag.put(i.toString(), NbtHelper.fromBlockPos(pos))
             }
         }
         return tag
@@ -156,9 +193,9 @@ class BlockEntityWireNode :
         IOstate = InputConfig.values()[tag.getInt("io_mode")]
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
-                val pos = tag.getIntArray(i.toString())
-                if (!connections.contains(BlockPos(pos[0], pos[1], pos[2]))) {
-                    addConnection(BlockPos(pos[0], pos[1], pos[2]))
+                val pos = NbtHelper.toBlockPos(tag.getCompound(i.toString()))
+                if (!connections.keys.contains(pos)) {
+                    addConnection(pos)
                 }
             }
         }
@@ -169,12 +206,8 @@ class BlockEntityWireNode :
         tag.putInt("connection_amount", connections.size)
         tag.putInt("io_mode", IOstate.ordinal)
         if (connections.size > 0) {
-            for (i in connections.indices) {
-                tag.putIntArray(i.toString(), intArrayOf(
-                        connections.elementAt(i).x,
-                        connections.elementAt(i).y,
-                        connections.elementAt(i).z)
-                )
+            for ((i, pos) in connections.keys.withIndex()) {
+                tag.put(i.toString(), NbtHelper.fromBlockPos(pos))
             }
         }
         return tag

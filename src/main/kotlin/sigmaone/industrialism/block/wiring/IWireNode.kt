@@ -1,11 +1,14 @@
 package sigmaone.industrialism.block.wiring
 
 import net.minecraft.util.math.BlockPos
+import sigmaone.industrialism.energy.WireConnection
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 
 interface IWireNode {
-    /*
+    /**
      * Add a new connection
      *
      * @param pos Position of other end of connection
@@ -14,17 +17,15 @@ interface IWireNode {
      */
     fun addConnection(pos: BlockPos): Boolean
 
-    /*
+    /**
      * Remove a connection
      *
-     * @param pos    Position of other end of connection
+     * @param pos Position of other end of connection
      */
     fun removeConnection(pos: BlockPos)
 
-    /*
-     * Get a list of connections
-     *
-     * @return An ArrayList of BlockPoses representing locations of connected nodes
+    /**
+     * An ArrayList of connections
      */
-    val connections: HashSet<BlockPos>
+    val connections: HashMap<BlockPos, WireConnection>
 }
