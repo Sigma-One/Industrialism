@@ -20,6 +20,10 @@ repositories {
         name = "OnyxStudios"
         url = "https://maven.abusedmaster.xyz"
     }
+    maven /* Kotlin */ {
+        name = "Fabric"
+        url = "http://maven.fabricmc.net"
+    }
 }
 
 dependencies {
@@ -45,7 +49,10 @@ dependencies {
     modCompile "dev.onyxstudios:FOML:${project.foml_version}"
     include "dev.onyxstudios:FOML:${project.foml_version}"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    // Fabric Kotlin module
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.kotlin_version}"
+
+    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {

@@ -107,12 +107,19 @@ class Industrialism : ModInitializer {
                 .addNugget()
                 .addStick()
                 .addBlock(2, 5.5f)
-                .addToolMaterial(2, 500, 3, 7.0f, 4)
+                .addToolMaterial(2, 500, 3, 7.0f, 6)
                 .addAxe(6f, 0.9f)
                 .addPickaxe(1, 1.2f)
                 .addShovel(1.5f, 1.0f)
                 .addSword(3, 1.6f)
                 .addHoe(-2, 3.0f)
+                .addArmour(
+                        intArrayOf(247, 285, 304, 209), // Durabilities (Boots, Legs, Chest, Helmet)
+                        intArrayOf(2, 5, 7, 2),         // Protection values
+                        1.0f,
+                        0.1f,
+                        7
+                )
 
         // Random materials
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))

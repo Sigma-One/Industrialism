@@ -4,6 +4,8 @@ import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.tool.attribute.v1.FabricToolTags
 import net.minecraft.block.Block
+import net.minecraft.entity.EquipmentSlot
+import net.minecraft.item.ArmorItem
 import net.minecraft.item.Item
 import net.minecraft.item.ToolItem
 import net.minecraft.recipe.Ingredient
@@ -28,6 +30,13 @@ class Metal(  // Misc
     // Blocks
     var block: Block? = null
     var ore: Block? = null
+
+    // Armour
+    var armourMaterial: MetalArmourMaterial? = null
+    var helmet: Item? = null
+    var chestplace: Item? = null
+    var leggings: Item? = null
+    var boots: Item? = null
 
     // Tools
     var toolMaterial: MetalToolMaterial? = null
@@ -63,16 +72,16 @@ class Metal(  // Misc
         return this
     }
 
-    fun addOre(ore_name: String, miningLevel: Int, veins: Int, size: Int, low_y: Int, high_y: Int): Metal {
+    fun addOre(oreName: String, miningLevel: Int, veins: Int, size: Int, lowY: Int, highY: Int): Metal {
         ore = RegistryHelper.registerBlock(
-                ore_name + "_ore",
+                oreName + "_ore",
                 Block(FabricBlockSettings.of(Industrialism.MATERIAL_STONE)
                         .hardness(3.0f)
                         .breakByTool(FabricToolTags.PICKAXES, miningLevel)
                         .requiresTool()),
                 FabricItemSettings().group(Industrialism.MATERIALS_TAB)
         )
-        RegistryHelper.registerOreGen(ore_name + "ore", 0, ore!!, size, veins, low_y, 0, high_y)
+        RegistryHelper.registerOreGen(oreName + "ore", 0, ore!!, size, veins, lowY, 0, highY)
         return this
     }
 
@@ -103,6 +112,15 @@ class Metal(  // Misc
 
     fun addHoe(attackDamage: Int, attackSpeed: Float): Metal {
         hoe = RegistryHelper.registerItem(name + "_hoe", ToolHoe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        return this
+    }
+
+    fun addArmour(durability: IntArray, protection: IntArray, toughness: Float, knockbackResistance: Float, enchantability: Int): Metal {
+        armourMaterial = MetalArmourMaterial(name, durability, protection, toughness, knockbackResistance, enchantability) { Ingredient.ofItems(ingot) }
+        helmet = RegistryHelper.registerItem(name+"_helmet", ArmorItem(armourMaterial, EquipmentSlot.HEAD, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        chestplace = RegistryHelper.registerItem(name+"_chestplate", ArmorItem(armourMaterial, EquipmentSlot.CHEST, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        leggings = RegistryHelper.registerItem(name+"_leggings", ArmorItem(armourMaterial, EquipmentSlot.LEGS, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        boots = RegistryHelper.registerItem(name+"_boots", ArmorItem(armourMaterial, EquipmentSlot.FEET, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 }

@@ -14,10 +14,16 @@
   "accessWidener" : "industrialism.accesswidener",
   "entrypoints": {
     "client": [
-      "sigmaone.industrialism.IndustrialismClient"
+      {
+        "adapter": "kotlin",
+        "value": "sigmaone.industrialism.IndustrialismClient"
+      }
     ],
     "main": [
-      "sigmaone.industrialism.Industrialism"
+      {
+        "adapter": "kotlin",
+        "value": "sigmaone.industrialism.Industrialism"
+      }
     ]
   },
   "mixins": [
@@ -26,6 +32,7 @@
   "depends": {
     "fabricloader": ">=0.9.0+build.204",
     "fabric": "*",
+    "fabric-language-kotlin": ">=1.4.0",
     "minecraft": "1.16.3"
   },
   "custom": {

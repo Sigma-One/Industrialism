@@ -5,6 +5,7 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.RaycastContext
 import net.minecraft.world.World
+import sigmaone.industrialism.block.wiring.BlockEntityWireNode
 import kotlin.math.*
 
 object CatenaryHelper {
@@ -70,13 +71,13 @@ object CatenaryHelper {
         return abs(x)
     }
 
-    fun solveCatenary(a: BlockPos, b: BlockPos, wireLengthMultiplier: Float): FloatArray {
-        val ax = a.x.toDouble()
-        val ay = a.y.toDouble()
-        val az = a.z.toDouble()
-        val bx = b.x.toDouble()
-        val by = b.y.toDouble()
-        val bz = b.z.toDouble()
+    fun solveCatenary(a: Vec3d, b: Vec3d, wireLengthMultiplier: Float): FloatArray {
+        val ax = a.x
+        val ay = a.y
+        val az = a.z
+        val bx = b.x
+        val by = b.y
+        val bz = b.z
         val hDiff = sqrt(
                 (bx - ax).pow(2) + (bz-az).pow(2)
         )
@@ -110,7 +111,7 @@ object CatenaryHelper {
         // Calculate horizontal difference
         val hDiff = sqrt(((vertexB.x - vertexA.x).pow(2)) + ((vertexB.z - vertexA.z).pow(2)))
         // Calculate heights of each point in catenary
-        val heights = CatenaryHelper.calculateHeights(xShift, yShift, hDiff.toFloat(), coef, 10)
+        val heights = calculateHeights(xShift, yShift, hDiff.toFloat(), coef, 10)
 
         // Calculate horizontal slope of connection
         val m = if ((vertexB.z - vertexA.z) != 0.0) {
@@ -136,14 +137,14 @@ object CatenaryHelper {
 
         for (i in 0 until segments-1) {
             val rayResult = world.raycast(RaycastContext(
-                    Vec3d(vertexA.x + dx*i, heights[i] + 0.5, vertexA.z + dz*i),
-                    Vec3d(vertexA.x + dx*(i+1), heights[i+1] + 0.5, vertexA.z + dz*(i+1)),
+                    Vec3d(vertexA.x + dx*i, heights[i].toDouble(), vertexA.z + dz * i),
+                    Vec3d(vertexA.x + dx*(i+1), heights[i + 1].toDouble(), vertexA.z + dz * (i + 1)),
                     RaycastContext.ShapeType.OUTLINE,
                     RaycastContext.FluidHandling.NONE,
                     null
                 )
             )
-            if (rayResult.isInsideBlock) {
+            if (rayResult.isInsideBlock && !(world.getBlockEntity(rayResult.blockPos) is BlockEntityWireNode)) {
                 return rayResult
             }
         }

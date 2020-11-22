@@ -4,10 +4,10 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
+import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.RaycastContext
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
 import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
@@ -28,6 +28,7 @@ class BlockEntityWireNode :
         BlockEntityClientSerializable,
         IConfigurable {
     private val maxConnections = 16
+    var orientation: Direction? = null
     override var connections: HashMap<BlockPos, WireConnection> = HashMap()
     var IOstate: InputConfig = InputConfig.NONE
 
@@ -86,10 +87,50 @@ class BlockEntityWireNode :
             return sinks
         }
 
-    override fun addConnection(pos: BlockPos): Boolean {
+    override fun addConnection(targetPos: BlockPos, targetFacing: Direction?): Boolean {
         if (connections.size < maxConnections) {
-            val catenaryInfo = CatenaryHelper.solveCatenary(this.pos, pos, 1.025f)
-            connections.put(pos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(125, 75, 20)))
+            var targetFacing = targetFacing
+            if (targetFacing == null) {
+                targetFacing = world!!.getBlockState(targetPos).get(Properties.FACING)
+            }
+            val facing = if (orientation == null) {
+                world!!.getBlockState(pos).get(Properties.FACING)
+            }
+            else {
+                orientation
+            }
+
+            val targetOffsets = when (targetFacing) {
+                Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
+                Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
+                Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
+                Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
+                Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
+                Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                else -> throw IllegalStateException("Illegal orientation")
+            }
+
+            val offsets = when (facing) {
+                Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
+                Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
+                Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
+                Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
+                Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
+                Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                else -> throw IllegalStateException("Illegal orientation")
+            }
+            val vertexA = Vec3d(
+                    pos.x + offsets.x,
+                    pos.y + offsets.y,
+                    pos.z + offsets.z
+            )
+            val vertexB = Vec3d(
+                    targetPos.x + targetOffsets.x,
+                    targetPos.y + targetOffsets.y,
+                    targetPos.z + targetOffsets.z
+            )
+            val catenaryInfo = CatenaryHelper.solveCatenary(vertexA, vertexB, 1.025f)
+            connections.put(targetPos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(125, 75, 20)))
             refresh()
             return true
         }
@@ -102,12 +143,12 @@ class BlockEntityWireNode :
         }
     }
 
-    override fun removeConnection(pos: BlockPos) {
-        val blockEntity = getWorld()!!.getBlockEntity(pos)
+    override fun removeConnection(targetPos: BlockPos) {
+        val blockEntity = getWorld()!!.getBlockEntity(targetPos)
         if (blockEntity != null) {
             (blockEntity as BlockEntityWireNode).connections.remove(getPos())
         }
-        connections.remove(pos)
+        connections.remove(targetPos)
         refresh()
     }
 
@@ -116,15 +157,36 @@ class BlockEntityWireNode :
         if (conn == null) {
             return false
         }
+
+        val targetOffsets = when ((world!!.getBlockEntity(targetPos) as BlockEntityWireNode).orientation) {
+            Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
+            Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
+            Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
+            Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
+            Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
+            Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+            else -> throw IllegalStateException("Illegal orientation")
+        }
+
+        val offsets = when (orientation) {
+            Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
+            Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
+            Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
+            Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
+            Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
+            Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+            else -> throw IllegalStateException("Illegal orientation")
+        }
+
         val vertexA = Vec3d(
-                pos.x.toDouble(),
-                pos.y.toDouble(),
-                pos.z.toDouble()
+                pos.x + offsets.x,
+                pos.y - offsets.y,
+                pos.z + offsets.z
         )
         val vertexB = Vec3d(
-                (targetPos.x).toDouble(),
-                (targetPos.y).toDouble(),
-                (targetPos.z).toDouble()
+                targetPos.x + targetOffsets.x,
+                targetPos.y + targetOffsets.y,
+                targetPos.z + targetOffsets.z
         )
         val result = CatenaryHelper.raytraceCatenary(world!!, vertexA, vertexB, conn.xShift, conn.yShift, conn.coefficient, 10)
 
@@ -167,11 +229,14 @@ class BlockEntityWireNode :
 
     override fun fromClientTag(tag: CompoundTag) {
         val connectionAmount = tag.getInt("connection_amount")
+        orientation = Direction.byName(tag.getString("orientation"))!!
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
-                val pos = NbtHelper.toBlockPos(tag.getCompound(i.toString()))
+                val connTag = tag.getCompound(i.toString())
+                val pos = NbtHelper.toBlockPos(connTag.getCompound(i.toString()))
+                val targetOrientation = Direction.byName(connTag.getString("orientation"))
                 if (!connections.keys.contains(pos)) {
-                    addConnection(pos)
+                    addConnection(pos, targetOrientation)
                 }
             }
         }
@@ -181,21 +246,28 @@ class BlockEntityWireNode :
         tag.putInt("connection_amount", connections.size)
         if (connections.size > 0) {
             for ((i, pos) in connections.keys.withIndex()) {
-                tag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                val connTag = CompoundTag()
+                connTag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                connTag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
+                tag.put(i.toString(), connTag)
             }
         }
+        tag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
         return tag
     }
 
     override fun fromTag(state: BlockState, tag: CompoundTag) {
         super.fromTag(state, tag)
         val connectionAmount = tag.getInt("connection_amount")
+        orientation = Direction.byName(tag.getString("orientation"))!!
         IOstate = InputConfig.values()[tag.getInt("io_mode")]
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
-                val pos = NbtHelper.toBlockPos(tag.getCompound(i.toString()))
+                val connTag = tag.getCompound(i.toString())
+                val pos = NbtHelper.toBlockPos(connTag.getCompound(i.toString()))
+                val targetOrientation = Direction.byName(connTag.getString("orientation"))
                 if (!connections.keys.contains(pos)) {
-                    addConnection(pos)
+                    addConnection(pos, targetOrientation)
                 }
             }
         }
@@ -207,9 +279,13 @@ class BlockEntityWireNode :
         tag.putInt("io_mode", IOstate.ordinal)
         if (connections.size > 0) {
             for ((i, pos) in connections.keys.withIndex()) {
-                tag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                val connTag = CompoundTag()
+                connTag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                connTag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
+                tag.put(i.toString(), connTag)
             }
         }
+        tag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
         return tag
     }
 }
