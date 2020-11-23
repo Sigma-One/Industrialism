@@ -17,8 +17,7 @@ import kotlin.collections.HashMap
 abstract class BlockEntityConnectableEnergyContainer(
         blockEntity: BlockEntityType<*>?,
         maxEnergy: Double,
-        energyTier: EnergyTier//,
-        //var sideConfig: HashMap<Direction, InputConfig>
+        energyTier: EnergyTier
 ) :
         BlockEntityEnergyContainer(blockEntity, maxEnergy, energyTier),
         BlockEntityClientSerializable,
