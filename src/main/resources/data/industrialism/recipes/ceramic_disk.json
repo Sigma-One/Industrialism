@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " C ",
+    "C C",
+    " C "
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:terracotta"
+    }
+  },
+  "result": {
+    "item": "industrialism:ceramic_disk",
+    "count": 16
+  }
+}

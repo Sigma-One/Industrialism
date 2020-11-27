@@ -125,8 +125,11 @@ class Industrialism : ModInitializer {
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
         val COKE_BLOCK = registerBlock("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)), FabricItemSettings().group(MATERIALS_TAB))
 
+        // Intermediates
+        val CERAMIC_DISK: Item = registerItem("ceramic_disk", Item(FabricItemSettings().group(MATERIALS_TAB)))
         val RAW_FIRE_BRICK = registerItem("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
         val FIRE_BRICK = registerItem("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
+
         val FIRE_BRICKS = registerBlock("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.BRICKS)), FabricItemSettings().group(MATERIALS_TAB).fireproof())
 
         // Single block machines

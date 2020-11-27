@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "industrialism:copper_ingot"
+      "tag": "c:copper_ingots"
     }
   },
   "result": {
     "item": "industrialism:copper_stick",
-    "count": 2
+    "count": 4
   }
 }

@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "minecraft:gold_ingot"
+      "tag": "c:gold_ingots"
     }
   },
   "result": {
     "item": "industrialism:gold_stick",
-    "count": 2
+    "count": 4
   }
 }

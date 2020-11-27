@@ -1,7 +1,7 @@
 {
   "type": "industrialism:coking",
   "ingredient": {
-    "item": "minecraft:coal"
+    "tag": "c:coal"
   },
   "result": "industrialism:coke",
   "cookingtime": 750

@@ -21,7 +21,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 
-open class BlockWireNode(settings: Settings) : FacingBlock(settings.nonOpaque()) {
+open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(settings.nonOpaque()) {
 
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {
         stateBuilder.add(STATE)
@@ -29,13 +29,17 @@ open class BlockWireNode(settings: Settings) : FacingBlock(settings.nonOpaque())
     }
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape {
+        val f116 = 1.0/16.0
+        val midMin = f116*6
+        val midMax = f116*10
+        val heightD = f116*height
         return when (state.get(FACING)) {
-            Direction.UP    -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.DOWN  -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 16f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.NORTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1.0)
-            Direction.SOUTH -> VoxelShapes.cuboid(1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 0.0, 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 8f.toDouble())
-            Direction.EAST  -> VoxelShapes.cuboid(0.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
-            Direction.WEST  -> VoxelShapes.cuboid(1.0, 1f / 16f * 6f.toDouble(), 1f / 16f * 6f.toDouble(), 1f / 16f * 8f.toDouble(), 1f / 16f * 10f.toDouble(), 1f / 16f * 10f.toDouble())
+            Direction.UP    -> VoxelShapes.cuboid(midMin, 0.0, midMin, midMax, heightD, midMax)
+            Direction.DOWN  -> VoxelShapes.cuboid(midMin, 1.0, midMin, midMax, 1.0-heightD, midMax)
+            Direction.NORTH -> VoxelShapes.cuboid(midMin, midMin, 1.0, midMax, midMax, 1.0-heightD)
+            Direction.SOUTH -> VoxelShapes.cuboid(midMin, midMin, 0.0, midMax, midMax, heightD)
+            Direction.EAST  -> VoxelShapes.cuboid(0.0, midMin, midMin, heightD, midMax, midMax)
+            Direction.WEST  -> VoxelShapes.cuboid(1.0, midMin, midMin, 1.0-heightD, midMax, midMax)
             else -> throw IllegalStateException("Illegal side: " + state.get(FACING))
         }
     }

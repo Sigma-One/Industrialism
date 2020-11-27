@@ -4,7 +4,7 @@ import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.world.BlockView
 
-class BlockWireConnectorT1(settings: Settings?) : BlockWireNode(settings!!), BlockEntityProvider {
+class BlockWireConnectorT1(settings: Settings?) : BlockWireNode(settings!!, 5), BlockEntityProvider {
     override fun createBlockEntity(world: BlockView): BlockEntity? {
         return BlockEntityWireNode()
     }

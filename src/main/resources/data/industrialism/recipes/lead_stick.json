@@ -7,11 +7,11 @@
   ],
   "key": {
     "#": {
-      "item": "industrialism:lead_ingot"
+      "tag": "c:lead_ingots"
     }
   },
   "result": {
     "item": "industrialism:lead_stick",
-    "count": 2
+    "count": 4
   }
 }

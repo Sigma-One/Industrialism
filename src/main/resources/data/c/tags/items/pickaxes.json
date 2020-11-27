@@ -1,0 +1,8 @@
+{
+    "replace": false,
+    "values": [
+        "industrialism:lead_pickaxe",
+        "industrialism:copper_pickaxe",
+        "industrialism:steel_pickaxe"
+    ]
+}

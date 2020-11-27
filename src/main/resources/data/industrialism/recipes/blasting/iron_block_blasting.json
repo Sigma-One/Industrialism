@@ -1,7 +1,7 @@
 {
   "type": "industrialism:blasting",
   "ingredient": {
-    "item": "minecraft:iron_block"
+    "tag": "c:iron_blocks"
   },
   "result": "industrialism:steel_block",
   "cookingtime": 16200

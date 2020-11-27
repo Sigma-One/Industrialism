@@ -7,10 +7,10 @@
     ],
     "key": {
         "#": {
-            "item": "industrialism:copper_ingot"
+            "tag": "c:copper_ingots"
         },
         "S": {
-            "item": "minecraft:stick"
+            "tag": "c:wood_sticks"
         }
     },
     "result": {

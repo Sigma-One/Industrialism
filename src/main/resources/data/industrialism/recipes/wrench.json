@@ -7,10 +7,10 @@
   ],
   "key": {
     "#": {
-      "item": "industrialism:iron_stick"
+      "tag": "c:iron_sticks"
     },
     "I": {
-      "item": "minecraft:iron_ingot"
+      "tag": "c:iron_ingots"
     }
   },
   "result": {

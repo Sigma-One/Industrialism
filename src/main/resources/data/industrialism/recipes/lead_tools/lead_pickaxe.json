@@ -7,10 +7,10 @@
     ],
     "key": {
         "#": {
-            "item": "industrialism:lead_ingot"
+            "tag": "c:lead_ingots"
         },
         "S": {
-            "item": "minecraft:stick"
+            "tag": "c:wood_sticks"
         }
     },
     "result": {

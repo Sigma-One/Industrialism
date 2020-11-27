@@ -2,6 +2,7 @@
     "replace": false,
     "values": [
         "industrialism:copper_pickaxe",
-        "industrialism:lead_pickaxe"
+        "industrialism:lead_pickaxe",
+        "industrialism:steel_pickaxe"
     ]
 }
