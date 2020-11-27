@@ -31,6 +31,7 @@ class BlockEntityWireNode :
     var orientation: Direction? = null
     override var connections: HashMap<BlockPos, WireConnection> = HashMap()
     var IOstate: InputConfig = InputConfig.NONE
+    val height = 0.23
 
     override var sideConfig: HashMap<Direction, InputConfig> = hashMapOf(
             Direction.NORTH to InputConfig.NONE,
@@ -101,22 +102,22 @@ class BlockEntityWireNode :
             }
 
             val targetOffsets = when (targetFacing) {
-                Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-                Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-                Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-                Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-                Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-                Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                Direction.DOWN  -> Vec3d(0.50, 1-height+0.15, 0.50)
+                Direction.UP    -> Vec3d(0.50, height, 0.50)
+                Direction.NORTH -> Vec3d(0.50, 0.50, 1-height)
+                Direction.SOUTH -> Vec3d(0.50, 0.50, height)
+                Direction.EAST  -> Vec3d(height, 0.50, 0.50)
+                Direction.WEST  -> Vec3d(1-height, 0.50, 0.50)
                 else -> throw IllegalStateException("Illegal orientation")
             }
 
             val offsets = when (facing) {
-                Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-                Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-                Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-                Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-                Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-                Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                Direction.DOWN  -> Vec3d(0.50, 1-height+0.15, 0.50)
+                Direction.UP    -> Vec3d(0.50, height, 0.50)
+                Direction.NORTH -> Vec3d(0.50, 0.50, 1-height)
+                Direction.SOUTH -> Vec3d(0.50, 0.50, height)
+                Direction.EAST  -> Vec3d(height, 0.50, 0.50)
+                Direction.WEST  -> Vec3d(1-height, 0.50, 0.50)
                 else -> throw IllegalStateException("Illegal orientation")
             }
             val vertexA = Vec3d(
@@ -129,8 +130,8 @@ class BlockEntityWireNode :
                     targetPos.y + targetOffsets.y,
                     targetPos.z + targetOffsets.z
             )
-            val catenaryInfo = CatenaryHelper.solveCatenary(vertexA, vertexB, 1.025f)
-            connections.put(targetPos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.1f, intArrayOf(125, 75, 20)))
+            val catenaryInfo = CatenaryHelper.solveCatenary(vertexA, vertexB, 1.0125f)
+            connections.put(targetPos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.05f, intArrayOf(220, 145, 85)))
             refresh()
             return true
         }
@@ -158,29 +159,41 @@ class BlockEntityWireNode :
             return false
         }
 
-        val targetOffsets = when ((world!!.getBlockEntity(targetPos) as BlockEntityWireNode).orientation) {
-            Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-            Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-            Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-            Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-            Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-            Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+        val targetFacing = if ((world!!.getBlockEntity(targetPos) as BlockEntityWireNode).orientation == null) {
+            world!!.getBlockState(targetPos).get(Properties.FACING)
+        }
+        else {
+            (world!!.getBlockEntity(targetPos) as BlockEntityWireNode).orientation
+        }
+        val facing = if (orientation == null) {
+            world!!.getBlockState(pos).get(Properties.FACING)
+        }
+        else {
+            orientation
+        }
+
+        val targetOffsets = when (targetFacing) {
+            Direction.DOWN  -> Vec3d(0.50, 1-height+0.15, 0.50)
+            Direction.UP    -> Vec3d(0.50, height, 0.50)
+            Direction.NORTH -> Vec3d(0.50, 0.50, 1-height)
+            Direction.SOUTH -> Vec3d(0.50, 0.50, height)
+            Direction.EAST  -> Vec3d(height, 0.50, 0.50)
+            Direction.WEST  -> Vec3d(1-height, 0.50, 0.50)
             else -> throw IllegalStateException("Illegal orientation")
         }
 
-        val offsets = when (orientation) {
-            Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-            Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-            Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-            Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-            Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-            Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+        val offsets = when (facing) {
+            Direction.DOWN  -> Vec3d(0.50, 1-height+0.15, 0.50)
+            Direction.UP    -> Vec3d(0.50, height, 0.50)
+            Direction.NORTH -> Vec3d(0.50, 0.50, 1-height)
+            Direction.SOUTH -> Vec3d(0.50, 0.50, height)
+            Direction.EAST  -> Vec3d(height, 0.50, 0.50)
+            Direction.WEST  -> Vec3d(1-height, 0.50, 0.50)
             else -> throw IllegalStateException("Illegal orientation")
         }
-
         val vertexA = Vec3d(
                 pos.x + offsets.x,
-                pos.y - offsets.y,
+                pos.y + offsets.y,
                 pos.z + offsets.z
         )
         val vertexB = Vec3d(

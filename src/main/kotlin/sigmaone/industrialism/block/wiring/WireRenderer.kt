@@ -22,24 +22,25 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
 
                 val facing = entity.world!!.getBlockState(entity.pos).get(Properties.FACING)
                 val targetFacing = entity.world!!.getBlockState(conn.key).get(Properties.FACING)
+                val targetEntity = entity.world!!.getBlockEntity(conn.key) as BlockEntityWireNode
 
                 val targetOffsets = when (targetFacing) {
-                    Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-                    Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-                    Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-                    Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-                    Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-                    Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-targetEntity.height+0.15, 0.50)
+                    Direction.UP    -> Vec3d(0.50, targetEntity.height, 0.50)
+                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-targetEntity.height)
+                    Direction.SOUTH -> Vec3d(0.50, 0.50, targetEntity.height)
+                    Direction.EAST  -> Vec3d(targetEntity.height, 0.50, 0.50)
+                    Direction.WEST  -> Vec3d(1-targetEntity.height, 0.50, 0.50)
                     else            -> throw IllegalStateException("Illegal orientation")
                 }
 
                 val offsets = when (facing) {
-                    Direction.DOWN  -> Vec3d(0.50, 0.75, 0.50)
-                    Direction.UP    -> Vec3d(0.50, 0.25, 0.50)
-                    Direction.NORTH -> Vec3d(0.50, 0.50, 0.75)
-                    Direction.SOUTH -> Vec3d(0.50, 0.50, 0.25)
-                    Direction.EAST  -> Vec3d(0.25, 0.50, 0.50)
-                    Direction.WEST  -> Vec3d(0.75, 0.50, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-entity.height+0.15, 0.50)
+                    Direction.UP    -> Vec3d(0.50, entity.height, 0.50)
+                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-entity.height)
+                    Direction.SOUTH -> Vec3d(0.50, 0.50, entity.height)
+                    Direction.EAST  -> Vec3d(entity.height, 0.50, 0.50)
+                    Direction.WEST  -> Vec3d(1-entity.height, 0.50, 0.50)
                     else            -> throw IllegalStateException("Illegal orientation")
                 }
 
@@ -69,7 +70,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 val ht = hDiff / heights.size
                 var dz = ht / (sqrt(m.pow(2) + 1))
                 var dx = m * dz
-                
+
                 val angle = atan2(vertexB.x - vertexA.x, vertexB.z - vertexA.z) * (180 / PI)
 
                 when {
@@ -79,7 +80,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     angle in -91.0..-89.0 -> { dx = -dz; dz = 0f }
                 }
 
-                val colour = conn.value.wireColour
+                var colour = conn.value.wireColour
 
                 for ((i, v) in heights.withIndex()) {
                     val bya = if (i == heights.lastIndex) {

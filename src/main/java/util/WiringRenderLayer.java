@@ -27,7 +27,6 @@ public class WiringRenderLayer extends RenderLayer {
     private static final Identifier TEXTURE = new Identifier(Industrialism.MOD_ID, "textures/wire.png");
 
     private static final RenderLayer WIRING = RenderLayer.of("wiring", vertexFormat, GL11.GL_QUADS, 256, RenderLayer.MultiPhaseParameters.builder()
-            .lineWidth(new LineWidth(OptionalDouble.of(8)))
             .transparency(RenderPhase.NO_TRANSPARENCY)
             .lightmap(ENABLE_LIGHTMAP)
             .diffuseLighting(ENABLE_DIFFUSE_LIGHTING)
