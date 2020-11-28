@@ -11,9 +11,7 @@ import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry
 import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.item.*
-import net.minecraft.recipe.CookingRecipeSerializer
-import net.minecraft.recipe.RecipeSerializer
-import net.minecraft.recipe.RecipeType
+import net.minecraft.recipe.*
 import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.state.property.Properties
@@ -39,9 +37,12 @@ import sigmaone.industrialism.block.wiring.BlockWireConnectorT0
 import sigmaone.industrialism.item.ItemScrewdriver
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.ItemWrench
+import sigmaone.industrialism.item.tool.ToolSword
 import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.recipe.CokingRecipe
+import sigmaone.industrialism.recipe.ShapelessHammeringRecipe
+import sigmaone.industrialism.recipe.ShapelessHammeringRecipeSerializer
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
 
@@ -78,6 +79,7 @@ class Industrialism : ModInitializer {
                 .addIngot()
                 .addNugget()
                 .addStick()
+                .addPlate()
                 .addBlock(1, 4.5f)
                 .addOre("malachite", 1, 14, 8, 40, 64)
                 .addToolMaterial(3, 192, 2, 5.0f, 16)
@@ -90,6 +92,7 @@ class Industrialism : ModInitializer {
                 .addIngot()
                 .addNugget()
                 .addStick()
+                .addPlate()
                 .addBlock(1, 4.0f)
                 .addOre("galena", 1, 8, 6, 10, 40)
                 .addToolMaterial(2, 135, 1, 3.0f, 7)
@@ -100,12 +103,15 @@ class Industrialism : ModInitializer {
                 .addHoe(-2, 2.9f)
         val IRON: Metal = Metal("iron")
                 .addStick()
+                .addPlate()
         val GOLD: Metal = Metal("gold")
                 .addStick()
+                .addPlate()
         val STEEL: Metal = Metal("steel")
                 .addIngot()
                 .addNugget()
                 .addStick()
+                .addPlate()
                 .addBlock(2, 5.5f)
                 .addToolMaterial(2, 500, 3, 7.0f, 6)
                 .addAxe(6f, 0.9f)
@@ -145,7 +151,8 @@ class Industrialism : ModInitializer {
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
-        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().group(DEBUG_TAB)))
+        val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
+        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB)))
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
@@ -190,9 +197,8 @@ class Industrialism : ModInitializer {
                 BlockEntityType.Builder.create({ BlockEntityBlastFurnaceMultiblock() }, BLAST_FURNACE_MULTIBLOCK_BLOCK).build(null)
         )
         val BLAST_FURNACE_SCREEN_HANDLER_TYPE: ScreenHandlerType<BlastFurnaceGuiDescription> = ScreenHandlerRegistry.registerSimple(
-                Identifier(MOD_ID, "blast_furnace_multiblock"),
-                { syncId, inventory -> BlastFurnaceGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
-        )
+                Identifier(MOD_ID, "blast_furnace_multiblock")
+        ) { syncId, inventory -> BlastFurnaceGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
 
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
@@ -206,6 +212,9 @@ class Industrialism : ModInitializer {
 
         val BLASTING_RECIPE_TYPE: RecipeType<BlastingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "blasting"), object: RecipeType<BlastingRecipe> {})
         val BLASTING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "blasting"), CookingRecipeSerializer(::BlastingRecipe, 500))
+
+        val SHAPELESS_HAMMERING_RECIPE_TYPE: RecipeType<ShapelessHammeringRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "crafting_shapeless_hammering"), object: RecipeType<ShapelessHammeringRecipe> {})
+        val SHAPELESS_HAMMERING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "crafting_shapeless_hammering"), ShapelessHammeringRecipeSerializer())
     }
 
     init {

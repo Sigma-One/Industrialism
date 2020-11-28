@@ -3,6 +3,7 @@
     "block.industrialism.copper_block"  : "Block of Copper",
     "item.industrialism.copper_ingot"   : "Copper Ingot",
     "item.industrialism.copper_stick"   : "Copper Rod",
+    "item.industrialism.copper_plate"   : "Copper Plate",
     "item.industrialism.copper_nugget"  : "Copper Nugget",
     "item.industrialism.copper_pickaxe" : "Copper Pickaxe",
     "item.industrialism.copper_axe"     : "Copper Axe",
@@ -14,6 +15,7 @@
     "block.industrialism.lead_block"  : "Block of Lead",
     "item.industrialism.lead_ingot"   : "Lead Ingot",
     "item.industrialism.lead_stick"   : "Lead Rod",
+    "item.industrialism.lead_plate"   : "Lead Plate",
     "item.industrialism.lead_nugget"  : "Lead Nugget",
     "item.industrialism.lead_pickaxe" : "Lead Pickaxe",
     "item.industrialism.lead_axe"     : "Lead Axe",
@@ -24,6 +26,7 @@
     "block.industrialism.steel_block"     : "Block of Steel",
     "item.industrialism.steel_ingot"      : "Steel Ingot",
     "item.industrialism.steel_stick"      : "Steel Rod",
+    "item.industrialism.steel_plate"      : "Steel Plate",
     "item.industrialism.steel_nugget"     : "Steel Nugget",
     "item.industrialism.steel_pickaxe"    : "Steel Pickaxe",
     "item.industrialism.steel_axe"        : "Steel Axe",
@@ -36,7 +39,10 @@
     "item.industrialism.steel_boots"      : "Steel Boots",
 
     "item.industrialism.iron_stick" : "Iron Rod",
+    "item.industrialism.iron_plate" : "Iron Plate",
+
     "item.industrialism.gold_stick" : "Golden Rod",
+    "item.industrialism.gold_plate" : "Golden Plate",
 
     "item.industrialism.coke"        : "Coke",
     "block.industrialism.coke_block" : "Block of Coke",
@@ -53,17 +59,20 @@
     "item.industrialism.screwdriver" : "Screwdriver",
     "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",
     "item.industrialism.screwdriver.popup.config_opposite" : "Configuring opposite side",
+    "item.industrialism.forge_hammer" : "Forge Hammer",
 
     "item.industrialism.debug_linker" : "Infinite Wire Generator (Creative)",
     "item.industrialism.wire.popup.failed" : "Linking failed",
     "item.industrialism.wire.popup.failed.self" : "Cannot link connector to itself",
     "item.industrialism.wire.popup.source" : "Linking %s...",
     "item.industrialism.wire.popup.linked" : "Linked %s to %s",
-    
+
+    "item.industrialism.ceramic_disk" : "Ceramic Disk",
+
     "itemGroup.industrialism.materials" : "Industrialism: Materials",
     "itemGroup.industrialism.tools"     : "Industrialism: Tools",
     "itemGroup.industrialism.machines"  : "Industrialism: Machines",
-    "itemGroup.industrialism.debug"  : "Industrialism: Creative Mode",
+    "itemGroup.industrialism.debug"     : "Industrialism: Creative Mode",
 
     "block.industrialism.tater" : "Tiny Engineer Potato",
 

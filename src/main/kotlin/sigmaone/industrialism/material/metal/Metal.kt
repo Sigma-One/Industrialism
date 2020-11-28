@@ -21,10 +21,10 @@ class Metal(  // Misc
 
     /*
     public Item dust;
-    public Item plate;
     public Item wire;
     public Item gear;
      */
+    var plate: Item? = null
     var stick: Item? = null
 
     // Blocks
@@ -57,6 +57,11 @@ class Metal(  // Misc
 
     fun addStick(): Metal {
         stick = RegistryHelper.registerItem(name + "_stick", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        return this
+    }
+
+    fun addPlate(): Metal {
+        plate = RegistryHelper.registerItem(name + "_plate", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         return this
     }
 
