@@ -102,5 +102,11 @@
     "popup.industrialism.wire.linked" : "Linked %s to %s",
 
     "popup.industrialism.item.screwdriver.normal"   : "Configuring focused side",
-    "popup.industrialism.item.screwdriver.opposite" : "Configuring opposite side"
+    "popup.industrialism.item.screwdriver.opposite" : "Configuring opposite side",
+
+    "advancement.industrialism.root.title"       : "Industrialism",
+    "advancement.industrialism.root.description" : "The industrial revolution",
+
+    "advancement.industrialism.steel_ingot.title"       : "Rosenthal",
+    "advancement.industrialism.steel_ingot.description" : "Acquire a Steel Ingot"
 }

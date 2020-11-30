@@ -1,0 +1,48 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancement.industrialism.steel_ingot.title"
+    },
+    "description": {
+      "translate": "advancement.industrialism.steel_ingot.description"
+    },
+    "icon": {
+      "item": "industrialism:steel_ingot"
+    }
+  },
+  "parent" : "industrialism:root",
+  "criteria": {
+    "acquire_steel": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "industrialism:steel_ingot",
+            "count": {
+              "min": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "industrialism:steel_packing/pack_ingot_block",
+      "industrialism:steel_packing/pack_nugget_ingot",
+      "industrialism:steel_packing/unpack_block_ingot",
+      "industrialism:steel_packing/unpack_ingot_nugget",
+      "industrialism:steel_plate",
+      "industrialism:steel_stick",
+      "industrialism:steel_tools/steel_axe",
+      "industrialism:steel_tools/steel_pickaxe",
+      "industrialism:steel_tools/steel_shovel",
+      "industrialism:steel_tools/steel_hoe",
+      "industrialism:steel_tools/steel_sword",
+      "industrialism:steel_tools/steel_helmet",
+      "industrialism:steel_tools/steel_chestplate",
+      "industrialism:steel_tools/steel_leggings",
+      "industrialism:steel_tools/steel_boots"
+    ]
+  }
+}
