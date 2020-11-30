@@ -19,11 +19,11 @@ class ItemScrewdriver(material: ToolMaterial?, attackDamage: Int, attackSpeed: F
         if (!world.isClient) {
             if (opposite) {
                 opposite = false
-                user!!.sendMessage(TranslatableText("item." + Industrialism.MOD_ID + ".screwdriver.popup.config_normal"), true)
+                user!!.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".item.screwdriver.normal"), true)
                 user.getStackInHand(hand).orCreateTag.putInt("CustomModelData", 0)
             } else {
                 opposite = true
-                user!!.sendMessage(TranslatableText("item." + Industrialism.MOD_ID + ".screwdriver.popup.config_opposite"), true)
+                user!!.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".item.screwdriver.opposite"), true)
                 user.getStackInHand(hand).orCreateTag.putInt("CustomModelData", 1)
             }
         }

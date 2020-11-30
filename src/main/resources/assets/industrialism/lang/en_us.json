@@ -48,8 +48,8 @@
 
     "item.industrialism.coke"        : "Coke",
     "block.industrialism.coke_block" : "Block of Coke",
-    "block.industrialism.coke_oven_multiblock" : "Coke Oven",
 
+    "block.industrialism.coke_oven_multiblock"     : "Coke Oven",
     "block.industrialism.blast_furnace_multiblock" : "Basic Blast Furnace",
 
     "item.industrialism.raw_fire_brick"      : "Unfired Fire Brick",
@@ -57,10 +57,8 @@
     "block.industrialism.fire_bricks"        : "Fire Bricks",
     "block.industrialism.iron_fire_bricks"   : "Plated Fire Bricks",
 
-    "item.industrialism.wrench" : "Wrench",
-    "item.industrialism.screwdriver" : "Screwdriver",
-    "item.industrialism.screwdriver.popup.config_normal" : "Configuring focused side",
-    "item.industrialism.screwdriver.popup.config_opposite" : "Configuring opposite side",
+    "item.industrialism.wrench"       : "Wrench",
+    "item.industrialism.screwdriver"  : "Screwdriver",
     "item.industrialism.forge_hammer" : "Forge Hammer",
 
     "item.industrialism.debug_linker" : "Infinite Wire Generator (Creative)",
@@ -74,7 +72,7 @@
 
     "block.industrialism.tater" : "Tiny Engineer Potato",
 
-    "block.industrialism.basic_battery" : "Basic Battery",
+    "block.industrialism.basic_battery"    : "Basic Battery",
     "block.industrialism.manual_generator" : "Hand Crank Generator",
 
     "block.industrialism.connector_t0" : "Cable Connector (Tier 0)",
@@ -99,6 +97,10 @@
     "popup.industrialism.wire.failed.self"    : "Cannot link connector to itself",
     "popup.industrialism.wire.failed.toofar"  : "Link distance too long",
     "popup.industrialism.wire.failed.type"    : "Wire is not compatible with this connector",
+    "popup.industrialism.wire.failed.exists"  : "Connection already exists",
     "popup.industrialism.wire.source" : "Linking %s...",
-    "popup.industrialism.wire.linked" : "Linked %s to %s"
+    "popup.industrialism.wire.linked" : "Linked %s to %s",
+
+    "popup.industrialism.item.screwdriver.normal"   : "Configuring focused side",
+    "popup.industrialism.item.screwdriver.opposite" : "Configuring opposite side"
 }

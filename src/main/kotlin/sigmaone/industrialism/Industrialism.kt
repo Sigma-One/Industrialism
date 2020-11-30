@@ -81,7 +81,7 @@ class Industrialism : ModInitializer {
                 .addNugget()
                 .addStick()
                 .addPlate()
-                .addWire(10)
+                .addWire(10, 0.05f, intArrayOf(220, 145, 85))
                 .addBlock(1, 4.5f)
                 .addOre("malachite", 1, 14, 8, 40, 64)
                 .addToolMaterial(3, 192, 2, 5.0f, 16)
@@ -147,7 +147,7 @@ class Industrialism : ModInitializer {
         val MANUAL_GENERATOR: BlockEntityType<BlockEntityManualGenerator> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:manual_generator", BlockEntityType.Builder.create({ BlockEntityManualGenerator() }, MANUAL_GENERATOR_BLOCK).build(null))
 
         // Debug stuff
-        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, true))
+        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
 
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))

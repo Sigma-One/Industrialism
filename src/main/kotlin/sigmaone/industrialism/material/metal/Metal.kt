@@ -67,9 +67,9 @@ class Metal(  // Misc
         return this
     }
 
-    fun addWire(maxLength: Int): Metal {
+    fun addWire(maxLength: Int, thickness: Float, colour: IntArray): Metal {
         wire = RegistryHelper.registerItem(name + "_wire", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
-        wireSpool = RegistryHelper.registerItem(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength))
+        wireSpool = RegistryHelper.registerItem(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength, thickness, colour))
         return this
     }
 

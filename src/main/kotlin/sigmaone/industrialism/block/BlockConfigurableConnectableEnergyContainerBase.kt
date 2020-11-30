@@ -26,7 +26,7 @@ open class BlockConfigurableConnectableEnergyContainerBase(settings: Settings?) 
                         sideTranslated = TranslatableText("variable." + Industrialism.MOD_ID + ".side." + hit.side
                                 .toString().toLowerCase()).string
                         modeTranslated = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + blockEntity
-                                .sideConfig
+                                .sideConfig[hit.side]
                                 .toString().toLowerCase()).string
                     }
                     else {
@@ -35,7 +35,7 @@ open class BlockConfigurableConnectableEnergyContainerBase(settings: Settings?) 
                                 .opposite
                                 .toString().toLowerCase()).string
                         modeTranslated = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + blockEntity
-                                .sideConfig
+                                .sideConfig[hit.side.opposite]
                                 .toString().toLowerCase()).string
                     }
                     player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.sided", sideTranslated, modeTranslated), true)

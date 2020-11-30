@@ -1,9 +1,11 @@
 package sigmaone.industrialism.block.wiring
 
 import net.minecraft.block.BlockState
+import net.minecraft.item.Item
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.energy.WireConnection
+import sigmaone.industrialism.item.ItemWireSpool
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -17,7 +19,7 @@ interface IWireNode {
      *
      * @return Whether the connection was successful or not
      */
-    fun addConnection(targetPos: BlockPos, targetFacing: Direction? = null): Boolean
+    fun addConnection(targetPos: BlockPos, targetFacing: Direction? = null, wireType: ItemWireSpool): Boolean
 
     /**
      * Remove a connection

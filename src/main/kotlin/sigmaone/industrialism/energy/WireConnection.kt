@@ -1,11 +1,10 @@
 package sigmaone.industrialism.energy
 
-import net.minecraft.util.math.BlockPos
+import sigmaone.industrialism.item.ItemWireSpool
 
 data class WireConnection(
         val coefficient: Float,
         val xShift: Float,
         val yShift: Float,
-        val wireThickness: Float,
-        val wireColour: IntArray
+        val wireType: ItemWireSpool
 )

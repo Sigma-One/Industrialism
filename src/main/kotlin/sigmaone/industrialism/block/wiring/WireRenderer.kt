@@ -59,7 +59,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                         ((vertexB.x - vertexA.x).pow(2)) + ((vertexB.z - vertexA.z).pow(2))
                 )
 
-                val colour = conn.value.wireColour
+                val colour = conn.value.wireType.colour
 
                 if (hDiff != 0f) {
 
@@ -116,7 +116,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                         val vShift = Vector3f(bx, by, bz)
                         vShift.subtract(Vector3f(ax, ay, az))
                         vShift.normalize()
-                        vShift.cross(Vector3f(-(((conn.value.wireThickness/2)/100)*pdz), 0f, -(((conn.value.wireThickness/2)/100)*pdx)))
+                        vShift.cross(Vector3f(-(((conn.value.wireType.thickness/2)/100)*pdz), 0f, -(((conn.value.wireType.thickness/2)/100)*pdx)))
 
                         val aa = Vector3f(
                                 ax + vShift.x,
@@ -165,8 +165,8 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                             heights[i + 1] - vertexA.y + offsets.y.toFloat()
                         }
                         val ayb = v - vertexA.y + (offsets.y).toFloat()
-                        val aya = ayb - conn.value.wireThickness / 2
-                        val byb = bya - conn.value.wireThickness / 2
+                        val aya = ayb - conn.value.wireType.thickness / 2
+                        val byb = bya - conn.value.wireType.thickness / 2
                         val ax = vertexA.x + i * dx
                         val az = vertexA.z + i * dz
                         val bx = vertexA.x + (i + 1) * dx
@@ -178,24 +178,24 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                         vn.normalize()
 
                         val aa = Vector3f(
-                                ax + (conn.value.wireThickness / 2) * vn.x,
-                                aya + (conn.value.wireThickness / 2) * vn.y,
-                                az + (conn.value.wireThickness / 2) * vn.z
+                                ax  + (conn.value.wireType.thickness / 2) * vn.x,
+                                aya + (conn.value.wireType.thickness / 2) * vn.y,
+                                az  + (conn.value.wireType.thickness / 2) * vn.z
                         )
                         val ab = Vector3f(
-                                ax - (conn.value.wireThickness / 2) * vn.x,
-                                aya - (conn.value.wireThickness / 2) * vn.y,
-                                az - (conn.value.wireThickness / 2) * vn.z
+                                ax  - (conn.value.wireType.thickness / 2) * vn.x,
+                                aya - (conn.value.wireType.thickness / 2) * vn.y,
+                                az  - (conn.value.wireType.thickness / 2) * vn.z
                         )
                         val ba = Vector3f(
-                                bx + (conn.value.wireThickness / 2) * vn.x,
-                                byb + (conn.value.wireThickness / 2) * vn.y,
-                                bz + (conn.value.wireThickness / 2) * vn.z
+                                bx  + (conn.value.wireType.thickness / 2) * vn.x,
+                                byb + (conn.value.wireType.thickness / 2) * vn.y,
+                                bz  + (conn.value.wireType.thickness / 2) * vn.z
                         )
                         val bb = Vector3f(
-                                bx - (conn.value.wireThickness / 2) * vn.x,
-                                byb - (conn.value.wireThickness / 2) * vn.y,
-                                bz - (conn.value.wireThickness / 2) * vn.z
+                                bx  - (conn.value.wireType.thickness / 2) * vn.x,
+                                byb - (conn.value.wireType.thickness / 2) * vn.y,
+                                bz  - (conn.value.wireType.thickness / 2) * vn.z
                         )
 
                         vertices.vertex(matrices.peek().model, aa.x, aa.y, aa.z)
@@ -220,36 +220,36 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     val ay = 0f + offsets.y.toFloat()
                     val by = vertexB.y
 
-                    vertices.vertex(matrices.peek().model, vertexA.x - conn.value.wireThickness/2, ay, vertexA.z)
+                    vertices.vertex(matrices.peek().model, vertexA.x - conn.value.wireType.thickness/2, ay, vertexA.z)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexA.x + conn.value.wireThickness/2, ay, vertexA.z)
+                    vertices.vertex(matrices.peek().model, vertexA.x + conn.value.wireType.thickness/2, ay, vertexA.z)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexB.x + conn.value.wireThickness/2, by, vertexB.z)
+                    vertices.vertex(matrices.peek().model, vertexB.x + conn.value.wireType.thickness/2, by, vertexB.z)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexB.x - conn.value.wireThickness/2, by, vertexB.z)
+                    vertices.vertex(matrices.peek().model, vertexB.x - conn.value.wireType.thickness/2, by, vertexB.z)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
 
-                    vertices.vertex(matrices.peek().model, vertexA.x, ay, vertexA.z - conn.value.wireThickness/2)
+                    vertices.vertex(matrices.peek().model, vertexA.x, ay, vertexA.z - conn.value.wireType.thickness/2)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexA.x, ay, vertexA.z + conn.value.wireThickness/2)
+                    vertices.vertex(matrices.peek().model, vertexA.x, ay, vertexA.z + conn.value.wireType.thickness/2)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexB.x, by, vertexB.z + conn.value.wireThickness/2)
+                    vertices.vertex(matrices.peek().model, vertexB.x, by, vertexB.z + conn.value.wireType.thickness/2)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()
-                    vertices.vertex(matrices.peek().model, vertexB.x, by, vertexB.z - conn.value.wireThickness/2)
+                    vertices.vertex(matrices.peek().model, vertexB.x, by, vertexB.z - conn.value.wireType.thickness/2)
                             .color(colour[0], colour[1], colour[2], 255)
                             .light(light)
                             .next()

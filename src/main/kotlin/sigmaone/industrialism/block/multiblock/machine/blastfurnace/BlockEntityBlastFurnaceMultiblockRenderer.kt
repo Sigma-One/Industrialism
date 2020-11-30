@@ -30,7 +30,7 @@ class BlockEntityBlastFurnaceMultiblockRenderer<T : BlockEntityBlastFurnaceMulti
         matrices.push()
 
         when (blockState.get(Properties.HORIZONTAL_FACING)) {
-            Direction.NORTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(0f));   matrices.translate(0.0, 0.0, 1.0) }
+            Direction.NORTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(0f));   matrices.translate( 0.0, 0.0, 1.0) }
             Direction.SOUTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180f)); matrices.translate(-1.0, 0.0, 0.0) }
             Direction.EAST  -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(270f)) }
             Direction.WEST  -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90f));  matrices.translate(-1.0, 0.0, 1.0) }

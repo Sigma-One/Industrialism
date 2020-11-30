@@ -24,28 +24,44 @@ import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
 class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRootBase(settings), BlockEntityProvider {
     override val layout: Array<Array<Array<Block>>>
         get() = arrayOf(
-                        arrayOf(
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
-                        ),
-                        arrayOf(
-                                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK),
-                                arrayOf(Blocks.IRON_BARS, Blocks.AIR, Blocks.NETHER_BRICKS),
-                                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK)
-                        ),
-                        arrayOf(
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
-                        )
+            arrayOf(
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
+            ),
+            arrayOf(
+                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK),
+                arrayOf(Blocks.IRON_BARS, Blocks.AIR, Blocks.NETHER_BRICKS),
+                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK)
+            ),
+            arrayOf(
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
+            )
         )
 
     override val rootPos: IntArray
         get() = intArrayOf(1, 1, 0)
 
     override val shape: Array<Array<Array<VoxelShape>>>
-        get() = arrayOf(arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())), arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())), arrayOf(arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()), arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())))
+        get() = arrayOf(
+            arrayOf(
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())
+            ),
+            arrayOf(
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())
+            ),
+            arrayOf(
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube()),
+                arrayOf(VoxelShapes.fullCube(), VoxelShapes.fullCube(), VoxelShapes.fullCube())
+            )
+        )
 
     override fun createBlockEntity(world: BlockView): BlockEntity {
         return BlockEntityBlastFurnaceMultiblock()

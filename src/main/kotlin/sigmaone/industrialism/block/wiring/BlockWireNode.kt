@@ -67,9 +67,14 @@ open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(sett
                     blockEntity.cycleIOState()
                     world.setBlockState(pos, state.with(STATE, blockEntity.IOstate.ordinal))
 
-                    val modeTranslated: String = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + blockEntity
-                            .sideConfig[state.get(FACING).opposite]
-                            .toString().toLowerCase()).string
+                    val mode = when(blockEntity.sideConfig[state.get(FACING).opposite]) {
+                        Industrialism.InputConfig.INPUT  -> "output"
+                        Industrialism.InputConfig.OUTPUT -> "input"
+                        Industrialism.InputConfig.NONE   -> "none"
+                        else                             -> throw IllegalStateException("Illegal Side")
+                    }
+
+                    val modeTranslated: String = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + mode).string
 
                     player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.unsided", modeTranslated), true)
                     return ActionResult.SUCCESS

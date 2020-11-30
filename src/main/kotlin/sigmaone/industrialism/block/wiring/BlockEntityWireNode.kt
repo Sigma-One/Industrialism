@@ -6,9 +6,12 @@ import net.minecraft.item.Item
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
 import net.minecraft.state.property.Properties
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import net.minecraft.util.registry.Registry
+import net.minecraft.util.registry.RegistryKey
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.InputConfig
 import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
@@ -16,6 +19,7 @@ import sigmaone.industrialism.block.IConfigurable
 import sigmaone.industrialism.energy.WireConnection
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.util.CatenaryHelper
+import sigmaone.industrialism.util.RegistryHelper
 import team.reborn.energy.Energy
 import team.reborn.energy.EnergyTier
 import java.util.*
@@ -56,9 +60,9 @@ class BlockEntityWireNode(
 
     fun cycleIOState() {
         IOstate = when (IOstate) {
-            InputConfig.NONE -> InputConfig.INPUT
-            InputConfig.INPUT -> InputConfig.OUTPUT
-            InputConfig.OUTPUT -> InputConfig.NONE
+            InputConfig.NONE   -> { sideConfig[world!!.getBlockState(pos).get(Properties.FACING).opposite] = InputConfig.INPUT;  InputConfig.INPUT  }
+            InputConfig.INPUT  -> { sideConfig[world!!.getBlockState(pos).get(Properties.FACING).opposite] = InputConfig.OUTPUT; InputConfig.OUTPUT }
+            InputConfig.OUTPUT -> { sideConfig[world!!.getBlockState(pos).get(Properties.FACING).opposite] = InputConfig.NONE;   InputConfig.NONE   }
         }
     }
 
@@ -93,7 +97,7 @@ class BlockEntityWireNode(
             return sinks
         }
 
-    override fun addConnection(targetPos: BlockPos, targetFacing: Direction?): Boolean {
+    override fun addConnection(targetPos: BlockPos, targetFacing: Direction?, wireType: ItemWireSpool): Boolean {
         if (connections.size < maxConnections) {
             var targetFacing = targetFacing
             if (targetFacing == null) {
@@ -136,7 +140,7 @@ class BlockEntityWireNode(
                     targetPos.z + targetOffsets.z
             )
             val catenaryInfo = CatenaryHelper.solveCatenary(vertexA, vertexB, 1.0125f)
-            connections.put(targetPos, WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], 0.05f, intArrayOf(220, 145, 85)))
+            connections[targetPos] = WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], wireType)
             refresh()
             return true
         }
@@ -251,10 +255,11 @@ class BlockEntityWireNode(
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
                 val connTag = tag.getCompound(i.toString())
-                val pos = NbtHelper.toBlockPos(connTag.getCompound(i.toString()))
+                val wireType = Registry.ITEM.get(Identifier.tryParse(connTag.getString("wiretype"))) as ItemWireSpool
+                val pos = NbtHelper.toBlockPos(connTag.getCompound("position"))
                 val targetOrientation = Direction.byName(connTag.getString("orientation"))
                 if (!connections.keys.contains(pos)) {
-                    addConnection(pos, targetOrientation)
+                    addConnection(pos, targetOrientation, wireType)
                 }
             }
         }
@@ -265,7 +270,8 @@ class BlockEntityWireNode(
         if (connections.size > 0) {
             for ((i, pos) in connections.keys.withIndex()) {
                 val connTag = CompoundTag()
-                connTag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                connTag.putString("wiretype", Registry.ITEM.getId(connections[pos]!!.wireType!!).toString())
+                connTag.put("position", NbtHelper.fromBlockPos(pos))
                 connTag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
                 tag.put(i.toString(), connTag)
             }
@@ -282,10 +288,11 @@ class BlockEntityWireNode(
         if (connectionAmount > 0) {
             for (i in 0 until connectionAmount) {
                 val connTag = tag.getCompound(i.toString())
-                val pos = NbtHelper.toBlockPos(connTag.getCompound(i.toString()))
+                val wireType = Registry.ITEM.get(Identifier.tryParse(connTag.getString("wiretype"))) as ItemWireSpool
+                val pos = NbtHelper.toBlockPos(connTag.getCompound("position"))
                 val targetOrientation = Direction.byName(connTag.getString("orientation"))
                 if (!connections.keys.contains(pos)) {
-                    addConnection(pos, targetOrientation)
+                    addConnection(pos, targetOrientation, wireType)
                 }
             }
         }
@@ -298,7 +305,8 @@ class BlockEntityWireNode(
         if (connections.size > 0) {
             for ((i, pos) in connections.keys.withIndex()) {
                 val connTag = CompoundTag()
-                connTag.put(i.toString(), NbtHelper.fromBlockPos(pos))
+                connTag.putString("wiretype", Registry.ITEM.getId(connections[pos]!!.wireType!!).toString())
+                connTag.put("position", NbtHelper.fromBlockPos(pos))
                 connTag.putString("orientation", world!!.getBlockState(pos).get(Properties.FACING).toString())
                 tag.put(i.toString(), connTag)
             }
