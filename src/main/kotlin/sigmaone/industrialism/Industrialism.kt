@@ -41,10 +41,11 @@ import sigmaone.industrialism.item.tool.ToolSword
 import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.recipe.CokingRecipe
-import sigmaone.industrialism.recipe.ShapelessHammeringRecipe
-import sigmaone.industrialism.recipe.ShapelessHammeringRecipeSerializer
+import sigmaone.industrialism.recipe.ShapelessToolDamagingRecipe
+import sigmaone.industrialism.recipe.ShapelessToolDamagingRecipeSerializer
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
+import team.reborn.energy.EnergyTier
 
 class Industrialism : ModInitializer {
     enum class InputConfig {
@@ -80,6 +81,7 @@ class Industrialism : ModInitializer {
                 .addNugget()
                 .addStick()
                 .addPlate()
+                .addWire(10)
                 .addBlock(1, 4.5f)
                 .addOre("malachite", 1, 14, 8, 40, 64)
                 .addToolMaterial(3, 192, 2, 5.0f, 16)
@@ -144,15 +146,17 @@ class Industrialism : ModInitializer {
         val MANUAL_GENERATOR_BLOCK: Block = registerBlock("manual_generator", BlockManualGenerator(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
         val MANUAL_GENERATOR: BlockEntityType<BlockEntityManualGenerator> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:manual_generator", BlockEntityType.Builder.create({ BlockEntityManualGenerator() }, MANUAL_GENERATOR_BLOCK).build(null))
 
+        // Debug stuff
+        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, true))
+
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val CONNECTOR_T0: BlockEntityType<BlockEntityWireNode> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireNode() }, CONNECTOR_T0_BLOCK).build(null))
+        val CONNECTOR_T0: BlockEntityType<BlockEntityWireNode> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireNode(EnergyTier.LOW, 0.23, 16, arrayOf(COPPER.wireSpool, DEBUG_LINKER)) }, CONNECTOR_T0_BLOCK).build(null))
 
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
-        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB)))
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
@@ -213,8 +217,8 @@ class Industrialism : ModInitializer {
         val BLASTING_RECIPE_TYPE: RecipeType<BlastingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "blasting"), object: RecipeType<BlastingRecipe> {})
         val BLASTING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "blasting"), CookingRecipeSerializer(::BlastingRecipe, 500))
 
-        val SHAPELESS_HAMMERING_RECIPE_TYPE: RecipeType<ShapelessHammeringRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "crafting_shapeless_hammering"), object: RecipeType<ShapelessHammeringRecipe> {})
-        val SHAPELESS_HAMMERING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "crafting_shapeless_hammering"), ShapelessHammeringRecipeSerializer())
+        val SHAPELESS_TOOL_DAMAGING_RECIPE_TYPE: RecipeType<ShapelessToolDamagingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "crafting_shapeless_tooldamage"), object: RecipeType<ShapelessToolDamagingRecipe> {})
+        val SHAPELESS_TOOL_DAMAGING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "crafting_shapeless_tooldamage"), ShapelessToolDamagingRecipeSerializer())
     }
 
     init {

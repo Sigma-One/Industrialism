@@ -38,7 +38,7 @@ open class BlockConfigurableConnectableEnergyContainerBase(settings: Settings?) 
                                 .sideConfig
                                 .toString().toLowerCase()).string
                     }
-                    player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set", sideTranslated, modeTranslated), true)
+                    player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.sided", sideTranslated, modeTranslated), true)
                 }
                 else {
                     player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".energyamount.get", blockEntity.storedEnergy, blockEntity.maxEnergy), true)

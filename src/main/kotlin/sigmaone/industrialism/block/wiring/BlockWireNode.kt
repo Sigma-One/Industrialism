@@ -71,7 +71,7 @@ open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(sett
                             .sideConfig[state.get(FACING).opposite]
                             .toString().toLowerCase()).string
 
-                    player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set_noside", modeTranslated), true)
+                    player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.unsided", modeTranslated), true)
                     return ActionResult.SUCCESS
                 }
             }

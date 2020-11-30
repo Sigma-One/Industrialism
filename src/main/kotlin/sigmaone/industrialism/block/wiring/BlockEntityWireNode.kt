@@ -2,6 +2,7 @@ package sigmaone.industrialism.block.wiring
 
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
+import net.minecraft.item.Item
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
 import net.minecraft.state.property.Properties
@@ -13,6 +14,7 @@ import sigmaone.industrialism.Industrialism.InputConfig
 import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
 import sigmaone.industrialism.block.IConfigurable
 import sigmaone.industrialism.energy.WireConnection
+import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.util.CatenaryHelper
 import team.reborn.energy.Energy
 import team.reborn.energy.EnergyTier
@@ -22,16 +24,19 @@ import kotlin.collections.HashSet
 import kotlin.math.*
 
 
-class BlockEntityWireNode :
-        BlockEntityConnectableEnergyContainer(Industrialism.CONNECTOR_T0, 32.toDouble(), EnergyTier.LOW),
+class BlockEntityWireNode(
+            energyTier: EnergyTier,
+            val height: Double,
+            val maxConnections: Int,
+            val wireTypes: Array<Item?>
+        ) :
+        BlockEntityConnectableEnergyContainer(Industrialism.CONNECTOR_T0, energyTier.maxInput.toDouble(), energyTier),
         IWireNode,
         BlockEntityClientSerializable,
         IConfigurable {
-    private val maxConnections = 16
     var orientation: Direction? = null
     override var connections: HashMap<BlockPos, WireConnection> = HashMap()
     var IOstate: InputConfig = InputConfig.NONE
-    val height = 0.23
 
     override var sideConfig: HashMap<Direction, InputConfig> = hashMapOf(
             Direction.NORTH to InputConfig.NONE,

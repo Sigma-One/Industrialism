@@ -10,6 +10,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.ToolItem
 import net.minecraft.recipe.Ingredient
 import sigmaone.industrialism.Industrialism
+import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.tool.*
 import sigmaone.industrialism.util.RegistryHelper
 
@@ -21,11 +22,12 @@ class Metal(  // Misc
 
     /*
     public Item dust;
-    public Item wire;
     public Item gear;
      */
     var plate: Item? = null
     var stick: Item? = null
+    var wire: Item? = null
+    var wireSpool: Item? = null
 
     // Blocks
     var block: Block? = null
@@ -62,6 +64,12 @@ class Metal(  // Misc
 
     fun addPlate(): Metal {
         plate = RegistryHelper.registerItem(name + "_plate", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        return this
+    }
+
+    fun addWire(maxLength: Int): Metal {
+        wire = RegistryHelper.registerItem(name + "_wire", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        wireSpool = RegistryHelper.registerItem(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength))
         return this
     }
 

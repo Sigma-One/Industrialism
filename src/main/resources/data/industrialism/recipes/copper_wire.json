@@ -2,14 +2,14 @@
     "type": "industrialism:crafting_shapeless_tooldamage",
     "ingredients": [
         {
-            "tag": "c:lead_ingots"
+            "tag": "c:copper_plates"
         },
         {
-            "item": "industrialism:forge_hammer"
+            "item": "minecraft:shears"
         }
     ],
     "result": {
-        "item": "industrialism:lead_plate",
-        "count": 1
+        "item": "industrialism:copper_wire",
+        "count": 4
     }
 }

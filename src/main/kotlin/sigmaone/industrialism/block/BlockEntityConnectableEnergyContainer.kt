@@ -14,7 +14,7 @@ import team.reborn.energy.EnergySide
 import team.reborn.energy.EnergyTier
 import kotlin.collections.HashMap
 
-abstract class BlockEntityConnectableEnergyContainer(
+abstract class BlockEntityConnectableEnergyContainer (
         blockEntity: BlockEntityType<*>?,
         maxEnergy: Double,
         energyTier: EnergyTier

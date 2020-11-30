@@ -1,15 +1,17 @@
 {
-    "block.industrialism.malachite_ore" : "Malachite Ore",
-    "block.industrialism.copper_block"  : "Block of Copper",
-    "item.industrialism.copper_ingot"   : "Copper Ingot",
-    "item.industrialism.copper_stick"   : "Copper Rod",
-    "item.industrialism.copper_plate"   : "Copper Plate",
-    "item.industrialism.copper_nugget"  : "Copper Nugget",
-    "item.industrialism.copper_pickaxe" : "Copper Pickaxe",
-    "item.industrialism.copper_axe"     : "Copper Axe",
-    "item.industrialism.copper_shovel"  : "Copper Shovel",
-    "item.industrialism.copper_sword"   : "Copper Sword",
-    "item.industrialism.copper_hoe"     : "Copper Hoe",
+    "block.industrialism.malachite_ore"    : "Malachite Ore",
+    "block.industrialism.copper_block"     : "Block of Copper",
+    "item.industrialism.copper_ingot"      : "Copper Ingot",
+    "item.industrialism.copper_stick"      : "Copper Rod",
+    "item.industrialism.copper_plate"      : "Copper Plate",
+    "item.industrialism.copper_wire"       : "Copper Wire",
+    "item.industrialism.copper_wire_spool" : "Spool of Copper Wire",
+    "item.industrialism.copper_nugget"     : "Copper Nugget",
+    "item.industrialism.copper_pickaxe"    : "Copper Pickaxe",
+    "item.industrialism.copper_axe"        : "Copper Axe",
+    "item.industrialism.copper_shovel"     : "Copper Shovel",
+    "item.industrialism.copper_sword"      : "Copper Sword",
+    "item.industrialism.copper_hoe"        : "Copper Hoe",
     
     "block.industrialism.galena_ore"  : "Galena Ore",
     "block.industrialism.lead_block"  : "Block of Lead",
@@ -62,10 +64,6 @@
     "item.industrialism.forge_hammer" : "Forge Hammer",
 
     "item.industrialism.debug_linker" : "Infinite Wire Generator (Creative)",
-    "item.industrialism.wire.popup.failed" : "Linking failed",
-    "item.industrialism.wire.popup.failed.self" : "Cannot link connector to itself",
-    "item.industrialism.wire.popup.source" : "Linking %s...",
-    "item.industrialism.wire.popup.linked" : "Linked %s to %s",
 
     "item.industrialism.ceramic_disk" : "Ceramic Disk",
 
@@ -88,11 +86,19 @@
     "variable.industrialism.side.east"  : "east",
     "variable.industrialism.side.west"  : "west",
     
-    "variable.industrialism.ioconfig.none" : "none",
-    "variable.industrialism.ioconfig.input" : "input",
+    "variable.industrialism.ioconfig.none"   : "none",
+    "variable.industrialism.ioconfig.input"  : "input",
     "variable.industrialism.ioconfig.output" : "output",
     
-    "popup.industrialism.ioconfig.set" : "Set side %s mode to %s",
-    "popup.industrialism.ioconfig.set_noside" : "Set mode to %s",
-    "popup.industrialism.energyamount.get" : "%f / %f FFU"
+    "popup.industrialism.ioconfig.set.sided"   : "Set side %s mode to %s",
+    "popup.industrialism.ioconfig.set.unsided" : "Set mode to %s",
+
+    "popup.industrialism.energyamount.get" : "%f / %f FFU",
+
+    "popup.industrialism.wire.failed.generic" : "Linking failed",
+    "popup.industrialism.wire.failed.self"    : "Cannot link connector to itself",
+    "popup.industrialism.wire.failed.toofar"  : "Link distance too long",
+    "popup.industrialism.wire.failed.type"    : "Wire is not compatible with this connector",
+    "popup.industrialism.wire.source" : "Linking %s...",
+    "popup.industrialism.wire.linked" : "Linked %s to %s"
 }

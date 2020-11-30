@@ -1,5 +1,5 @@
 {
-    "type": "industrialism:crafting_shapeless_hammering",
+    "type": "industrialism:crafting_shapeless_tooldamage",
     "ingredients": [
         {
             "tag": "c:copper_ingots"
