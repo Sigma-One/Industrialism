@@ -20,6 +20,7 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
+import sigmaone.industrialism.component.wiring.IComponentWireNode
 
 open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(settings.nonOpaque()) {
 
@@ -53,17 +54,19 @@ open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(sett
     }
 
     override fun onBreak(world: World, pos: BlockPos, state: BlockState, player: PlayerEntity) {
-        val blockEntity = world.getBlockEntity(pos) as BlockEntityWireNode?
-        blockEntity!!.removeAllConnections()
+        val blockEntity = world.getBlockEntity(pos)
+        if (blockEntity is IComponentWireNode) {
+            blockEntity.componentWireNode.removeAllConnections()
+        }
         super.onBreak(world, pos, state, player)
     }
 
     override fun onUse(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockHitResult): ActionResult {
         val blockEntity = world.getBlockEntity(pos)
         if (!world.isClient) {
-            if (blockEntity is BlockEntityWireNode) {
+            if (blockEntity is BlockEntityWireConnectorT0) {
                 if (player.getStackInHand(hand).item === Industrialism.SCREWDRIVER) {
-                    blockEntity.cycleSideConfig(state.get(FACING).opposite)
+                    /*blockEntity.cycleSideConfig(state.get(FACING).opposite)
                     blockEntity.cycleIOState()
                     world.setBlockState(pos, state.with(STATE, blockEntity.IOstate.ordinal))
 
@@ -77,7 +80,7 @@ open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(sett
                     val modeTranslated: String = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + mode).string
 
                     player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.unsided", modeTranslated), true)
-                    return ActionResult.SUCCESS
+                    return ActionResult.SUCCESS*/
                 }
             }
         }

@@ -84,12 +84,12 @@
     "variable.industrialism.side.east"  : "east",
     "variable.industrialism.side.west"  : "west",
     
-    "variable.industrialism.ioconfig.none"   : "none",
-    "variable.industrialism.ioconfig.input"  : "input",
-    "variable.industrialism.ioconfig.output" : "output",
+    "variable.industrialism.io.none"   : "none",
+    "variable.industrialism.io.input"  : "input",
+    "variable.industrialism.io.output" : "output",
     
-    "popup.industrialism.ioconfig.set.sided"   : "Set side %s mode to %s",
-    "popup.industrialism.ioconfig.set.unsided" : "Set mode to %s",
+    "popup.industrialism.io.set.sided"   : "Set side %s mode to %s",
+    "popup.industrialism.io.set.unsided" : "Set mode to %s",
 
     "popup.industrialism.energyamount.get" : "%f / %f FFU",
 

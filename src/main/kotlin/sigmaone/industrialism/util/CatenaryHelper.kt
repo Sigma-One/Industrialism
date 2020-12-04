@@ -1,11 +1,10 @@
 package sigmaone.industrialism.util
 
 import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.RaycastContext
 import net.minecraft.world.World
-import sigmaone.industrialism.block.wiring.BlockEntityWireNode
+import sigmaone.industrialism.block.wiring.BlockEntityWireConnectorT0
 import kotlin.math.*
 
 object CatenaryHelper {
@@ -144,7 +143,7 @@ object CatenaryHelper {
                     null
                 )
             )
-            if (rayResult.isInsideBlock && !(world.getBlockEntity(rayResult.blockPos) is BlockEntityWireNode)) {
+            if (rayResult.isInsideBlock && !(world.getBlockEntity(rayResult.blockPos) is BlockEntityWireConnectorT0)) {
                 return rayResult
             }
         }

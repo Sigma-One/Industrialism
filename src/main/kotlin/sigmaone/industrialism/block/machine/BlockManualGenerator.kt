@@ -24,8 +24,12 @@ class BlockManualGenerator(settings: Settings?) : Block(settings), BlockEntityPr
         if (!world.isClient) {
             val blockEntity = world.getBlockEntity(pos)
             if (blockEntity is BlockEntityManualGenerator) {
-                Energy.of(blockEntity).insert(450.toDouble())
-                player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".energyamount.get", blockEntity.storedEnergy, blockEntity.maxEnergy), true)
+                Energy.of(blockEntity.componentEnergyContainer).insert(32.toDouble())
+                player.sendMessage(TranslatableText(
+                    "popup." + Industrialism.MOD_ID + ".energyamount.get",
+                    blockEntity.componentEnergyContainer.storedEnergy,
+                    blockEntity.componentEnergyContainer.maxEnergy
+                ), true)
             }
         }
         return ActionResult.SUCCESS

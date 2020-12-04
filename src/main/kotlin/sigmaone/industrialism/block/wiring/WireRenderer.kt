@@ -8,39 +8,40 @@ import net.minecraft.client.util.math.Vector3f
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import sigmaone.industrialism.component.wiring.IComponentWireNode
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
 import kotlin.math.*
 
 
-class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<BlockEntityWireNode>(dispatcher) {
-    override fun render(entity: BlockEntityWireNode, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
-        for (conn in entity.connections) {
+class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<BlockEntityWireConnectorT0>(dispatcher) {
+    override fun render(entity: BlockEntityWireConnectorT0, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
+        for (conn in entity.componentWireNode.connections) {
             matrices.push()
-            if (entity.world!!.getBlockEntity(conn.key) != null && entity.world!!.getBlockEntity(conn.key) is BlockEntityWireNode) {
+            if (entity.world!!.getBlockEntity(conn.key) != null && entity.world!!.getBlockEntity(conn.key) is BlockEntityWireConnectorT0) {
                 val vertices = vertexConsumers.getBuffer(WiringRenderLayer.getWiring())
 
                 val facing = entity.world!!.getBlockState(entity.pos).get(Properties.FACING)
                 val targetFacing = entity.world!!.getBlockState(conn.key).get(Properties.FACING)
-                val targetEntity = entity.world!!.getBlockEntity(conn.key) as BlockEntityWireNode
+                val targetEntity = entity.world!!.getBlockEntity(conn.key) as BlockEntityWireConnectorT0
 
                 val targetOffsets = when (targetFacing) {
-                    Direction.DOWN  -> Vec3d(0.50, 1-targetEntity.height+0.15, 0.50)
-                    Direction.UP    -> Vec3d(0.50, targetEntity.height, 0.50)
-                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-targetEntity.height)
-                    Direction.SOUTH -> Vec3d(0.50, 0.50, targetEntity.height)
-                    Direction.EAST  -> Vec3d(targetEntity.height, 0.50, 0.50)
-                    Direction.WEST  -> Vec3d(1-targetEntity.height, 0.50, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-targetEntity.componentWireNode.height+0.15, 0.50)
+                    Direction.UP    -> Vec3d(0.50, targetEntity.componentWireNode.height, 0.50)
+                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-targetEntity.componentWireNode.height)
+                    Direction.SOUTH -> Vec3d(0.50, 0.50, targetEntity.componentWireNode.height)
+                    Direction.EAST  -> Vec3d(targetEntity.componentWireNode.height, 0.50, 0.50)
+                    Direction.WEST  -> Vec3d(1-targetEntity.componentWireNode.height, 0.50, 0.50)
                     else            -> throw IllegalStateException("Illegal orientation")
                 }
 
                 val offsets = when (facing) {
-                    Direction.DOWN  -> Vec3d(0.50, 1-entity.height+0.15, 0.50)
-                    Direction.UP    -> Vec3d(0.50, entity.height, 0.50)
-                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-entity.height)
-                    Direction.SOUTH -> Vec3d(0.50, 0.50, entity.height)
-                    Direction.EAST  -> Vec3d(entity.height, 0.50, 0.50)
-                    Direction.WEST  -> Vec3d(1-entity.height, 0.50, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-entity.componentWireNode.height+0.15, 0.50)
+                    Direction.UP    -> Vec3d(0.50, entity.componentWireNode.height, 0.50)
+                    Direction.NORTH -> Vec3d(0.50, 0.50, 1-entity.componentWireNode.height)
+                    Direction.SOUTH -> Vec3d(0.50, 0.50, entity.componentWireNode.height)
+                    Direction.EAST  -> Vec3d(entity.componentWireNode.height, 0.50, 0.50)
+                    Direction.WEST  -> Vec3d(1-entity.componentWireNode.height, 0.50, 0.50)
                     else            -> throw IllegalStateException("Illegal orientation")
                 }
 
@@ -260,7 +261,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
         }
     }
 
-    override fun rendersOutsideBoundingBox(blockEntity: BlockEntityWireNode): Boolean {
+    override fun rendersOutsideBoundingBox(blockEntity: BlockEntityWireConnectorT0): Boolean {
         return true
     }
 }

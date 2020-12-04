@@ -27,7 +27,7 @@ class Metal(  // Misc
     var plate: Item? = null
     var stick: Item? = null
     var wire: Item? = null
-    var wireSpool: Item? = null
+    var wireSpool: ItemWireSpool? = null
 
     // Blocks
     var block: Block? = null

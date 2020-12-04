@@ -1,21 +1,51 @@
 package sigmaone.industrialism.block.machine
 
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
+import net.minecraft.block.BlockState
+import net.minecraft.block.entity.BlockEntity
+import net.minecraft.nbt.CompoundTag
+import net.minecraft.util.Tickable
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.Industrialism.InputConfig
-import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
 import sigmaone.industrialism.block.IConfigurable
-import team.reborn.energy.EnergySide
+import sigmaone.industrialism.component.energy.ComponentEnergyContainer
+import sigmaone.industrialism.component.energy.IComponentEnergyContainer
+import sigmaone.industrialism.util.IO
 import team.reborn.energy.EnergyTier
-import java.util.*
 
-class BlockEntityBattery : BlockEntityConnectableEnergyContainer(Industrialism.BATTERY, 16000.toDouble(), EnergyTier.LOW), IConfigurable {
-    override var sideConfig: HashMap<Direction, InputConfig> = hashMapOf(
-            Direction.NORTH to InputConfig.NONE,
-            Direction.SOUTH to InputConfig.NONE,
-            Direction.EAST  to InputConfig.NONE,
-            Direction.WEST  to InputConfig.NONE,
-            Direction.UP    to InputConfig.NONE,
-            Direction.DOWN  to InputConfig.NONE
-    )
+class BlockEntityBattery : BlockEntity(Industrialism.BATTERY), IComponentEnergyContainer, IConfigurable, Tickable, BlockEntityClientSerializable {
+    override val componentEnergyContainer = ComponentEnergyContainer(
+        this,
+        EnergyTier.LOW,
+        1600.0,
+        0.0,
+        hashMapOf(
+            Direction.NORTH to IO.NONE,
+            Direction.SOUTH to IO.NONE,
+            Direction.EAST  to IO.NONE,
+            Direction.WEST  to IO.NONE,
+            Direction.UP    to IO.NONE,
+            Direction.DOWN  to IO.NONE
+        )
+        )
+
+    override fun tick() {
+        componentEnergyContainer.tick()
+    }
+
+    override fun toTag(tag: CompoundTag): CompoundTag {
+        return componentEnergyContainer.toTag(tag)
+    }
+
+    override fun fromTag(state: BlockState, tag: CompoundTag) {
+        componentEnergyContainer.fromTag(state, tag)
+    }
+
+    override fun fromClientTag(tag: CompoundTag) {
+        componentEnergyContainer.fromClientTag(tag)
+    }
+
+    override fun toClientTag(tag: CompoundTag): CompoundTag {
+        return componentEnergyContainer.toClientTag(tag)
+    }
 }

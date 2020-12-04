@@ -32,7 +32,7 @@ import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityB
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockCokeOvenMultiblock
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblock
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
-import sigmaone.industrialism.block.wiring.BlockEntityWireNode
+import sigmaone.industrialism.block.wiring.BlockEntityWireConnectorT0
 import sigmaone.industrialism.block.wiring.BlockWireConnectorT0
 import sigmaone.industrialism.item.ItemScrewdriver
 import sigmaone.industrialism.item.ItemWireSpool
@@ -147,11 +147,11 @@ class Industrialism : ModInitializer {
         val MANUAL_GENERATOR: BlockEntityType<BlockEntityManualGenerator> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:manual_generator", BlockEntityType.Builder.create({ BlockEntityManualGenerator() }, MANUAL_GENERATOR_BLOCK).build(null))
 
         // Debug stuff
-        val DEBUG_LINKER: Item = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
+        val DEBUG_LINKER: ItemWireSpool = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
 
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val CONNECTOR_T0: BlockEntityType<BlockEntityWireNode> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireNode(EnergyTier.LOW, 0.23, 16, arrayOf(COPPER.wireSpool, DEBUG_LINKER)) }, CONNECTOR_T0_BLOCK).build(null))
+        val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireConnectorT0(EnergyTier.LOW, 0.23, 16, arrayOf(COPPER.wireSpool!!, DEBUG_LINKER)) }, CONNECTOR_T0_BLOCK).build(null))
 
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
