@@ -1,76 +1,76 @@
 {
     "variants": {
-        "facing=up,state=0": {
+        "facing=up,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay"
             
         },
-        "facing=down,state=0": {
+        "facing=down,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay",
             "x" : 180
         },
-        "facing=north,state=0": {
+        "facing=north,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay",
             "x" : 90
         },
-        "facing=south,state=0": {
+        "facing=south,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay",
             "x" : 90, "y" : 180
         },
-        "facing=east,state=0": {
+        "facing=east,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay",
             "x" : 90, "y" : 90
         },
-        "facing=west,state=0": {
+        "facing=west,io=0": {
             "model": "industrialism:block/wiring/connector_t0_relay",
             "x" : 90, "y" : 270
         },
         
-        "facing=up,state=1": {
+        "facing=up,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input"
             
         },
-        "facing=down,state=1": {
+        "facing=down,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input",
             "x" : 180
         },
-        "facing=north,state=1": {
+        "facing=north,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input",
             "x" : 90
         },
-        "facing=south,state=1": {
+        "facing=south,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input",
             "x" : 90, "y" : 180
         },
-        "facing=east,state=1": {
+        "facing=east,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input",
             "x" : 90, "y" : 90
         },
-        "facing=west,state=1": {
+        "facing=west,io=1": {
             "model": "industrialism:block/wiring/connector_t0_input",
             "x" : 90, "y" : 270
         },
         
-        "facing=up,state=2": {
+        "facing=up,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output"
             
         },
-        "facing=down,state=2": {
+        "facing=down,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output",
             "x" : 180
         },
-        "facing=north,state=2": {
+        "facing=north,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output",
             "x" : 90
         },
-        "facing=south,state=2": {
+        "facing=south,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output",
             "x" : 90, "y" : 180
         },
-        "facing=east,state=2": {
+        "facing=east,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output",
             "x" : 90, "y" : 90
         },
-        "facing=west,state=2": {
+        "facing=west,io=2": {
             "model": "industrialism:block/wiring/connector_t0_output",
             "x" : 90, "y" : 270
         }

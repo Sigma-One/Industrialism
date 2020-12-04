@@ -7,25 +7,19 @@ import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.state.StateManager
-import net.minecraft.state.property.IntProperty
 import net.minecraft.state.property.Properties
-import net.minecraft.text.TranslatableText
-import net.minecraft.util.ActionResult
-import net.minecraft.util.Hand
-import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
-import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.component.wiring.IComponentWireNode
 
-open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(settings.nonOpaque()) {
+abstract class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(settings.nonOpaque()) {
 
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {
-        stateBuilder.add(STATE)
+        stateBuilder.add(sigmaone.industrialism.util.Properties.IO)
         stateBuilder.add(Properties.FACING)
     }
 
@@ -61,37 +55,7 @@ open class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(sett
         super.onBreak(world, pos, state, player)
     }
 
-    override fun onUse(state: BlockState, world: World, pos: BlockPos, player: PlayerEntity, hand: Hand, hit: BlockHitResult): ActionResult {
-        val blockEntity = world.getBlockEntity(pos)
-        if (!world.isClient) {
-            if (blockEntity is BlockEntityWireConnectorT0) {
-                if (player.getStackInHand(hand).item === Industrialism.SCREWDRIVER) {
-                    /*blockEntity.cycleSideConfig(state.get(FACING).opposite)
-                    blockEntity.cycleIOState()
-                    world.setBlockState(pos, state.with(STATE, blockEntity.IOstate.ordinal))
-
-                    val mode = when(blockEntity.sideConfig[state.get(FACING).opposite]) {
-                        Industrialism.InputConfig.INPUT  -> "output"
-                        Industrialism.InputConfig.OUTPUT -> "input"
-                        Industrialism.InputConfig.NONE   -> "none"
-                        else                             -> throw IllegalStateException("Illegal Side")
-                    }
-
-                    val modeTranslated: String = TranslatableText("variable." + Industrialism.MOD_ID + ".ioconfig." + mode).string
-
-                    player.sendMessage(TranslatableText("popup." + Industrialism.MOD_ID + ".ioconfig.set.unsided", modeTranslated), true)
-                    return ActionResult.SUCCESS*/
-                }
-            }
-        }
-        return ActionResult.PASS
-    }
-
-    companion object {
-        val STATE: IntProperty = IntProperty.of("state", 0, 2)
-    }
-
     init {
-        defaultState = getStateManager().defaultState.with(STATE, 0).with(FACING, Direction.DOWN)
+        defaultState = getStateManager().defaultState.with(sigmaone.industrialism.util.Properties.IO, 0).with(FACING, Direction.DOWN)
     }
 }

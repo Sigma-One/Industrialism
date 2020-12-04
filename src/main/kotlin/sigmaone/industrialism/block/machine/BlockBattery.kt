@@ -14,6 +14,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.component.energy.IComponentEnergyContainer
+import kotlin.math.roundToInt
 
 class BlockBattery(settings: Settings?) : Block(settings), BlockEntityProvider {
     override fun createBlockEntity(world: BlockView): BlockEntity {
@@ -26,7 +27,7 @@ class BlockBattery(settings: Settings?) : Block(settings), BlockEntityProvider {
             player!!.sendMessage(
                 TranslatableText(
                     "popup." + Industrialism.MOD_ID + ".energyamount.get",
-                    blockEntity.componentEnergyContainer.storedEnergy,
+                    (blockEntity.componentEnergyContainer.storedEnergy * 10).roundToInt() / 10.0,
                     blockEntity.componentEnergyContainer.maxEnergy
                 ), true
             )

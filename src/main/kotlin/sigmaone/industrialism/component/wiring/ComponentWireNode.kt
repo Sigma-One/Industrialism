@@ -3,7 +3,6 @@ package sigmaone.industrialism.component.wiring
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.nbt.NbtHelper
-import net.minecraft.state.property.Properties
 import net.minecraft.state.property.Properties.FACING
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
@@ -16,14 +15,13 @@ import sigmaone.industrialism.energy.WireConnection
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.util.CatenaryHelper
 import java.util.*
-import kotlin.collections.HashMap
 
 open class ComponentWireNode(
     owner: BlockEntity,
     val height: Double,
     val maxConnections: Int,
     val wireTypes: Array<ItemWireSpool>,
-    val isRelay: Boolean = false,
+    var isRelay: Boolean = false,
 ):
     Component(owner)
 {
@@ -158,7 +156,7 @@ open class ComponentWireNode(
                 val pos = NbtHelper.toBlockPos(connTag.getCompound("position"))
                 var targetOrientation = Direction.byName(connTag.getString("facing"))
                 if (targetOrientation == null) {
-                   targetOrientation = owner.world!!.getBlockState(pos).get(Properties.FACING)
+                   targetOrientation = owner.world!!.getBlockState(pos).get(FACING)
                 }
                 val targetHeight = connTag.getDouble("height")
                 if (!connections.keys.contains(pos)) {
@@ -177,7 +175,7 @@ open class ComponentWireNode(
                 if (target is IComponentWireNode) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())
                     connTag.put("position", NbtHelper.fromBlockPos(connection))
-                    connTag.putString("orientation", target.componentWireNode.facing.toString ())
+                    connTag.putString("facing", target.componentWireNode.facing.toString())
                     connTag.putDouble("height", target.componentWireNode.height)
                     tag.put(i.toString(), connTag)
                 }
@@ -197,7 +195,7 @@ open class ComponentWireNode(
                 val pos = NbtHelper.toBlockPos(connTag.getCompound("position"))
                 var targetOrientation = Direction.byName(connTag.getString("facing"))
                 if (targetOrientation == null) {
-                    targetOrientation = owner.world!!.getBlockState(pos).get(Properties.FACING)
+                    targetOrientation = owner.world!!.getBlockState(pos).get(FACING)
                 }
                 val targetHeight = connTag.getDouble("height")
                 if (!connections.keys.contains(pos)) {
@@ -216,7 +214,7 @@ open class ComponentWireNode(
                 if (target is IComponentWireNode) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())
                     connTag.put("position", NbtHelper.fromBlockPos(connection))
-                    connTag.putString("orientation", target.componentWireNode.facing.toString ())
+                    connTag.putString("facing", target.componentWireNode.facing.toString ())
                     connTag.putDouble("height", target.componentWireNode.height)
                     tag.put(i.toString(), connTag)
                 }

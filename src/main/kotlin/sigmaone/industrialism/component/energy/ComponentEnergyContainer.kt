@@ -56,8 +56,9 @@ class ComponentEnergyContainer(
     }
 
     fun tick() {
+        val amount = this.storedEnergy / pushableNeighbours.size
         for (handler in pushableNeighbours) {
-            Energy.of(this).into(handler).move()
+            Energy.of(this).into(handler).move(amount)
         }
     }
 

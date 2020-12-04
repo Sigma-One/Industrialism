@@ -2,11 +2,7 @@ package util;
 
 import com.google.common.collect.ImmutableList;
 import net.minecraft.client.render.*;
-import net.minecraft.util.Identifier;
 import org.lwjgl.opengl.GL11;
-import sigmaone.industrialism.Industrialism;
-
-import java.util.OptionalDouble;
 
 // Based on code from the Clothesline mod by JamiesWhiteShirt
 // https://github.com/JamiesWhiteShirt/clothesline-fabric

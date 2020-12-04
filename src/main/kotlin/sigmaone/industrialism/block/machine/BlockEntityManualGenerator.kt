@@ -6,14 +6,18 @@ import net.minecraft.nbt.CompoundTag
 import net.minecraft.util.Tickable
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.Industrialism.InputConfig
-import sigmaone.industrialism.block.BlockEntityConnectableEnergyContainer
+import sigmaone.industrialism.block.IBlockEntityRefreshable
 import sigmaone.industrialism.component.energy.ComponentEnergyContainer
 import sigmaone.industrialism.component.energy.IComponentEnergyContainer
 import sigmaone.industrialism.util.IO
 import team.reborn.energy.EnergyTier
 
-class BlockEntityManualGenerator : BlockEntity(Industrialism.MANUAL_GENERATOR), IComponentEnergyContainer, Tickable {
+class BlockEntityManualGenerator :
+    BlockEntity(Industrialism.MANUAL_GENERATOR),
+    IComponentEnergyContainer,
+    Tickable,
+    IBlockEntityRefreshable
+{
     override val componentEnergyContainer = ComponentEnergyContainer(
         this,
         EnergyTier.LOW,
@@ -39,5 +43,9 @@ class BlockEntityManualGenerator : BlockEntity(Industrialism.MANUAL_GENERATOR), 
 
     override fun fromTag(state: BlockState, tag: CompoundTag) {
         componentEnergyContainer.fromTag(state, tag)
+    }
+
+    override fun refresh() {
+        markDirty()
     }
 }
