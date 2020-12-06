@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase;
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase;
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild;
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot;
 
 import java.util.Iterator;
 
@@ -28,12 +28,12 @@ public class MixinMultiblockExplosionFix {
             ordinal=0
     ), locals=LocalCapture.CAPTURE_FAILHARD)
     private void callDisassemble(boolean bl, CallbackInfo ci, boolean bl2, ObjectArrayList objectArrayList, Iterator var4, BlockPos blockPos, BlockState blockState, Block block) {
-        if (this.world.getBlockEntity(blockPos) instanceof BlockEntityMultiblockRootBase) {
-            ((BlockEntityMultiblockRootBase) this.world.getBlockEntity(blockPos)).disassemble();
+        if (this.world.getBlockEntity(blockPos) instanceof BlockEntityMultiblockRoot) {
+            ((BlockEntityMultiblockRoot) this.world.getBlockEntity(blockPos)).disassemble();
         }
-        else if (this.world.getBlockEntity(blockPos) instanceof BlockEntityMultiblockChildBase) {
-            BlockPos parent = ((BlockEntityMultiblockChildBase) this.world.getBlockEntity(blockPos)).getParent();
-            ((BlockEntityMultiblockRootBase) this.world.getBlockEntity(parent)).disassemble();
+        else if (this.world.getBlockEntity(blockPos) instanceof BlockEntityMultiblockChild) {
+            BlockPos parent = ((BlockEntityMultiblockChild) this.world.getBlockEntity(blockPos)).getParent();
+            ((BlockEntityMultiblockRoot) this.world.getBlockEntity(parent)).disassemble();
         }
     }
 }

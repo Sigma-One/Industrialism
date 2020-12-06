@@ -25,11 +25,11 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.Companion.BLAST_FURNACE_MULTIBLOCK
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
 import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRootBase(BLAST_FURNACE_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNACE_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
     var progress = 0
@@ -84,7 +84,7 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRootBase(BLAST_FU
     }
 
     override fun markDirty() {
-        super<BlockEntityMultiblockRootBase>.markDirty()
+        super<BlockEntityMultiblockRoot>.markDirty()
     }
 
     override fun getAvailableSlots(side: Direction?): IntArray {

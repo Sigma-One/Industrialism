@@ -17,10 +17,10 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 
-class BlockMultiblockChildBase(settings: Settings?) : TransparentBlock(settings), BlockEntityProvider {
+class BlockMultiblockChild(settings: Settings?) : TransparentBlock(settings), BlockEntityProvider {
     var shape: VoxelShape = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
     override fun createBlockEntity(world: BlockView): BlockEntity? {
-        return BlockEntityMultiblockChildBase()
+        return BlockEntityMultiblockChild()
     }
 
     override fun getVisualShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape? {
@@ -45,17 +45,17 @@ class BlockMultiblockChildBase(settings: Settings?) : TransparentBlock(settings)
     }
 
     override fun onBreak(world: World?, pos: BlockPos?, state: BlockState?, player: PlayerEntity?) {
-        val parent = world!!.getBlockEntity((world.getBlockEntity(pos!!) as BlockEntityMultiblockChildBase).parent)
+        val parent = world!!.getBlockEntity((world.getBlockEntity(pos!!) as BlockEntityMultiblockChild).parent)
         if (parent != null) {
-            (parent as BlockEntityMultiblockRootBase).disassemble()
+            (parent as BlockEntityMultiblockRoot).disassemble()
         }
         super.onBreak(world, pos, state, player)
     }
 
     override fun onUse(state: BlockState?, world: World?, pos: BlockPos?, player: PlayerEntity?, hand: Hand?, hit: BlockHitResult?): ActionResult {
-        val parent = world!!.getBlockState((world.getBlockEntity(pos!!) as BlockEntityMultiblockChildBase).parent)
+        val parent = world!!.getBlockState((world.getBlockEntity(pos!!) as BlockEntityMultiblockChild).parent)
         return if (parent != null) {
-            parent.block.onUse(parent, world, (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent, player, hand, hit)
+            parent.block.onUse(parent, world, (world.getBlockEntity(pos) as BlockEntityMultiblockChild).parent, player, hand, hit)
             ActionResult.SUCCESS
         }
         else {

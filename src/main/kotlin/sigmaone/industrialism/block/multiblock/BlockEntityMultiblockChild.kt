@@ -7,7 +7,7 @@ import net.minecraft.nbt.NbtHelper
 import net.minecraft.util.math.BlockPos
 import sigmaone.industrialism.Industrialism
 
-class BlockEntityMultiblockChildBase : BlockEntity(Industrialism.MULTIBLOCK_CHILD) {
+class BlockEntityMultiblockChild : BlockEntity(Industrialism.MULTIBLOCK_CHILD) {
     var parent: BlockPos? = null
     set(value) {
         field = value

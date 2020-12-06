@@ -23,11 +23,11 @@ import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRoot(COKE_OVEN_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(2, ItemStack.EMPTY)
     var progress = 0
@@ -72,7 +72,7 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
     }
 
     override fun markDirty() {
-        super<BlockEntityMultiblockRootBase>.markDirty()
+        super<BlockEntityMultiblockRoot>.markDirty()
     }
 
     override fun getAvailableSlots(side: Direction?): IntArray {

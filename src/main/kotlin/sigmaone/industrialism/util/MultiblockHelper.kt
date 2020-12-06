@@ -5,12 +5,12 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
-import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
+import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
 
 object MultiblockHelper {
-    fun testForMultiblock(world: World, blockPos: BlockPos, side: Direction): BlockMultiblockRootBase? {
+    fun testForMultiblock(world: World, blockPos: BlockPos, side: Direction): BlockMultiblockRoot? {
         for (multiblock in Industrialism.MULTIBLOCKS) {
             val rootBlock = multiblock.layout[multiblock.rootPos[0]][multiblock.rootPos[1]][multiblock.rootPos[2]]
             if (world.getBlockState(blockPos).block == rootBlock) {
@@ -55,7 +55,7 @@ object MultiblockHelper {
         return null
     }
 
-    fun buildMultiblock(world: World, blockPos: BlockPos, side: Direction, multiblock: BlockMultiblockRootBase) {
+    fun buildMultiblock(world: World, blockPos: BlockPos, side: Direction, multiblock: BlockMultiblockRoot) {
         var x: Int
         var y = 0
         var z: Int
@@ -83,8 +83,8 @@ object MultiblockHelper {
 
                     if (pos != blockPos) {
                         world.setBlockState(pos, Industrialism.MULTIBLOCK_CHILD_BLOCK.defaultState)
-                        (world.getBlockEntity(pos) as BlockEntityMultiblockChildBase).parent = blockPos
-                        (world.getBlockEntity(blockPos) as BlockEntityMultiblockRootBase).addChild(pos)
+                        (world.getBlockEntity(pos) as BlockEntityMultiblockChild).parent = blockPos
+                        (world.getBlockEntity(blockPos) as BlockEntityMultiblockRoot).addChild(pos)
                     }
                     z += 1
                 }
@@ -94,7 +94,7 @@ object MultiblockHelper {
         }
     }
 
-    fun destroyMultiblock(world: World, blockPos: BlockPos, multiblock: BlockMultiblockRootBase) {
+    fun destroyMultiblock(world: World, blockPos: BlockPos, multiblock: BlockMultiblockRoot) {
         var x: Int
         var y = 0
         var z: Int

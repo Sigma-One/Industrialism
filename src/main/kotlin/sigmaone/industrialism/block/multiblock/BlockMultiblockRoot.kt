@@ -10,10 +10,8 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.World
-import net.minecraft.world.WorldAccess
-import sigmaone.industrialism.util.MultiblockHelper
 
-abstract class BlockMultiblockRootBase(settings: Settings?) : HorizontalFacingBlock(settings) {
+abstract class BlockMultiblockRoot(settings: Settings?) : HorizontalFacingBlock(settings) {
     abstract val layout: Array<Array<Array<Block>>>
     abstract val rootPos: IntArray
     abstract val shape: Array<Array<Array<VoxelShape>>>
@@ -22,7 +20,7 @@ abstract class BlockMultiblockRootBase(settings: Settings?) : HorizontalFacingBl
     }
 
     override fun onBreak(world: World?, pos: BlockPos?, state: BlockState?, player: PlayerEntity?) {
-        (world!!.getBlockEntity(pos) as BlockEntityMultiblockRootBase).disassemble()
+        (world!!.getBlockEntity(pos) as BlockEntityMultiblockRoot).disassemble()
         super.onBreak(world, pos, state, player)
     }
 

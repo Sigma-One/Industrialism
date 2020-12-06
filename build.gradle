@@ -43,7 +43,8 @@ dependencies {
     include "teamreborn:energy:${project.energy_version}"
 
     // LibGui
-    modImplementation "io.github.cottonmc:LibGui:${project.libgui_version}"
+    modCompile "io.github.cottonmc:LibGui:${project.libgui_version}"
+    include "io.github.cottonmc:LibGui:${project.libgui_version}"
 
     // FOML
     modCompile "dev.onyxstudios:FOML:${project.foml_version}"

@@ -19,9 +19,9 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
 
-class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRootBase(settings), BlockEntityProvider {
+class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(settings), BlockEntityProvider {
     override val layout: Array<Array<Array<Block>>>
         get() = arrayOf(
             arrayOf(

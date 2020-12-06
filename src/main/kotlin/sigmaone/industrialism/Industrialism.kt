@@ -28,9 +28,9 @@ import sigmaone.industrialism.block.machine.BlockBattery
 import sigmaone.industrialism.block.machine.BlockEntityBattery
 import sigmaone.industrialism.block.machine.BlockEntityManualGenerator
 import sigmaone.industrialism.block.machine.BlockManualGenerator
-import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChildBase
-import sigmaone.industrialism.block.multiblock.BlockMultiblockChildBase
-import sigmaone.industrialism.block.multiblock.BlockMultiblockRootBase
+import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild
+import sigmaone.industrialism.block.multiblock.BlockMultiblockChild
+import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGuiDescription
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockBlastFurnaceMultiblock
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblock
@@ -162,20 +162,20 @@ class Industrialism : ModInitializer {
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
-                Registry.BLOCK,
-                Identifier(MOD_ID, "multiblock_child"),
-                BlockMultiblockChildBase(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque()
+            Registry.BLOCK,
+            Identifier(MOD_ID, "multiblock_child"),
+            BlockMultiblockChild(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque()
                 )
         )
-        val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChildBase> = Registry.register(
+        val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChild> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:multiblock_child",
-                BlockEntityType.Builder.create({ BlockEntityMultiblockChildBase() }, MULTIBLOCK_CHILD_BLOCK).build(null)
+                BlockEntityType.Builder.create({ BlockEntityMultiblockChild() }, MULTIBLOCK_CHILD_BLOCK).build(null)
         )
 
         // Multiblocks
-        val MULTIBLOCKS: HashSet<BlockMultiblockRootBase> = HashSet()
-        val COKE_OVEN_MULTIBLOCK_BLOCK: BlockMultiblockRootBase = Registry.register(
+        val MULTIBLOCKS: HashSet<BlockMultiblockRoot> = HashSet()
+        val COKE_OVEN_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "coke_oven_multiblock"),
                 BlockCokeOvenMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).luminance { state -> if (state.get(Properties.LIT)) {7} else {0} }
@@ -191,7 +191,7 @@ class Industrialism : ModInitializer {
                 { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
         )
 
-        val BLAST_FURNACE_MULTIBLOCK_BLOCK: BlockMultiblockRootBase = Registry.register(
+        val BLAST_FURNACE_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "blast_furnace_multiblock"),
                 BlockBlastFurnaceMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).luminance { state -> if (state.get(Properties.LIT)) {7} else {0} }
