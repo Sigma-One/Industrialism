@@ -5,6 +5,8 @@
 *.ipr
 *.iws
 
+remappedSrc
+
 # Various utility scripts
 *.py
 *.pyc

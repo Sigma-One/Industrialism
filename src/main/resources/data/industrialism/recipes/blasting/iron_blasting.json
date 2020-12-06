@@ -1,8 +1,11 @@
 {
   "type": "industrialism:blasting",
-  "ingredient": {
-    "tag": "c:iron_ingots"
-  },
-  "result": "industrialism:steel_ingot",
-  "cookingtime": 1800
+  "ingredients": [
+    {
+      "tag": "c:iron_ingots"
+    }
+  ],
+  "output": "industrialism:steel_ingot",
+  "amount": 1,
+  "processingTime": 1800
 }

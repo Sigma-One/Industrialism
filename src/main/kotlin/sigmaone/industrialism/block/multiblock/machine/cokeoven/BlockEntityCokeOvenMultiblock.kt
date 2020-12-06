@@ -2,7 +2,6 @@ package sigmaone.industrialism.block.multiblock.machine.cokeoven
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
-import net.fabricmc.fabric.api.registry.FuelRegistry
 import net.minecraft.block.BlockState
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -25,7 +24,6 @@ import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRootBase
-import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
@@ -158,7 +156,7 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
         // * No crafting in progress
         else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
             // If processing is done, do craft
-            if (startedProcessing + (recipe as CokingRecipe).cookTime < currentTime) {
+            if (startedProcessing + (recipe as CokingRecipe).processingTime < currentTime) {
                 startedProcessing = 0
                 progress = 0
                 items[0].decrement(1)
@@ -172,7 +170,7 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRootBase(COKE_OVEN_MU
             }
             // Otherwise, increment progress
             else {
-                progress = (((currentTime - startedProcessing).toFloat() / recipe.cookTime) * 100).toInt()
+                progress = (((currentTime - startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
             }
         }
         if (recipe == null || !canProcessRecipe(recipe)) {

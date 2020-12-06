@@ -3,28 +3,26 @@ package sigmaone.industrialism.recipe
 import net.fabricmc.api.EnvType
 import net.fabricmc.api.Environment
 import net.minecraft.item.ItemStack
-import net.minecraft.recipe.AbstractCookingRecipe
 import net.minecraft.recipe.Ingredient
 import net.minecraft.recipe.RecipeSerializer
+import net.minecraft.recipe.RecipeType
 import net.minecraft.util.Identifier
 import sigmaone.industrialism.Industrialism
 
 class BlastingRecipe(
-        id: Identifier?,
-        group: String?,
-        input: Ingredient?,
-        output: ItemStack?,
-        experience: Float,
-        cookTime: Int
-) : AbstractCookingRecipe(
+    id: Identifier,
+    inputs: ArrayList<Ingredient>,
+    output: ItemStack,
+    processingTime: Int
+) :
+    ProcessingRecipe(
         Industrialism.BLASTING_RECIPE_TYPE,
         id,
-        group,
-        input,
+        inputs,
         output,
-        experience,
-        cookTime
-) {
+        processingTime
+    )
+{
     @Environment(EnvType.CLIENT)
     override fun getRecipeKindIcon(): ItemStack {
         return ItemStack(Industrialism.STEEL.ingot)
@@ -32,5 +30,9 @@ class BlastingRecipe(
 
     override fun getSerializer(): RecipeSerializer<*> {
         return Industrialism.BLASTING_RECIPE_SERIALIZER
+    }
+
+    override fun getType(): RecipeType<*> {
+        return Industrialism.BLASTING_RECIPE_TYPE
     }
 }

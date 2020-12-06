@@ -14,7 +14,7 @@ import net.minecraft.block.Material
 import net.minecraft.block.MaterialColor
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.item.*
-import net.minecraft.recipe.CookingRecipeSerializer
+import net.minecraft.recipe.Ingredient
 import net.minecraft.recipe.RecipeSerializer
 import net.minecraft.recipe.RecipeType
 import net.minecraft.screen.ScreenHandlerContext
@@ -44,10 +44,7 @@ import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.ItemWrench
 import sigmaone.industrialism.item.tool.ToolSword
 import sigmaone.industrialism.material.metal.Metal
-import sigmaone.industrialism.recipe.BlastingRecipe
-import sigmaone.industrialism.recipe.CokingRecipe
-import sigmaone.industrialism.recipe.ShapelessToolDamagingRecipe
-import sigmaone.industrialism.recipe.ShapelessToolDamagingRecipeSerializer
+import sigmaone.industrialism.recipe.*
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
 import team.reborn.energy.EnergyTier
@@ -216,14 +213,56 @@ class Industrialism : ModInitializer {
         val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), FabricItemSettings().group(TOOLS_TAB))
 
         // Recipes
-        val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "coking"), object: RecipeType<CokingRecipe> {})
-        val COKING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "coking"), CookingRecipeSerializer(::CokingRecipe, 500))
+        val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(
+            Registry.RECIPE_TYPE,
+            Identifier(MOD_ID, "coking"),
+            object: RecipeType<CokingRecipe> {}
+        )
+        val COKING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(
+            Registry.RECIPE_SERIALIZER,
+            Identifier(MOD_ID, "coking"),
+            ProcessingRecipeSerializer(object: ProcessingRecipeSerializer.Factory<CokingRecipe> {
+                override fun createRecipe(
+                    id: Identifier,
+                    inputs: ArrayList<Ingredient>,
+                    output: ItemStack,
+                    processingTime: Int
+                ): CokingRecipe {
+                    return CokingRecipe(id, inputs, output, processingTime)
+                }
+            })
+        )
 
-        val BLASTING_RECIPE_TYPE: RecipeType<BlastingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "blasting"), object: RecipeType<BlastingRecipe> {})
-        val BLASTING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "blasting"), CookingRecipeSerializer(::BlastingRecipe, 500))
+        val BLASTING_RECIPE_TYPE: RecipeType<BlastingRecipe> = Registry.register(
+            Registry.RECIPE_TYPE,
+            Identifier(MOD_ID, "blasting"),
+            object: RecipeType<BlastingRecipe> {}
+        )
+        val BLASTING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(
+            Registry.RECIPE_SERIALIZER,
+            Identifier(MOD_ID, "blasting"),
+            ProcessingRecipeSerializer(object: ProcessingRecipeSerializer.Factory<BlastingRecipe> {
+                override fun createRecipe(
+                    id: Identifier,
+                    inputs: ArrayList<Ingredient>,
+                    output: ItemStack,
+                    processingTime: Int
+                ): BlastingRecipe {
+                    return BlastingRecipe(id, inputs, output, processingTime)
+                }
+            })
+        )
 
-        val SHAPELESS_TOOL_DAMAGING_RECIPE_TYPE: RecipeType<ShapelessToolDamagingRecipe> = Registry.register(Registry.RECIPE_TYPE, Identifier(MOD_ID, "crafting_shapeless_tooldamage"), object: RecipeType<ShapelessToolDamagingRecipe> {})
-        val SHAPELESS_TOOL_DAMAGING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(Registry.RECIPE_SERIALIZER, Identifier(MOD_ID, "crafting_shapeless_tooldamage"), ShapelessToolDamagingRecipeSerializer())
+        val SHAPELESS_TOOL_DAMAGING_RECIPE_TYPE: RecipeType<ShapelessToolDamagingRecipe> = Registry.register(
+            Registry.RECIPE_TYPE,
+            Identifier(MOD_ID, "crafting_shapeless_tooldamage"),
+            object: RecipeType<ShapelessToolDamagingRecipe> {}
+        )
+        val SHAPELESS_TOOL_DAMAGING_RECIPE_SERIALIZER: RecipeSerializer<*> = Registry.register(
+            Registry.RECIPE_SERIALIZER,
+            Identifier(MOD_ID, "crafting_shapeless_tooldamage"),
+            ShapelessToolDamagingRecipeSerializer()
+        )
     }
 
     init {

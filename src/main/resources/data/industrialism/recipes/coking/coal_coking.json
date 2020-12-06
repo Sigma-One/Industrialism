@@ -1,8 +1,11 @@
 {
   "type": "industrialism:coking",
-  "ingredient": {
-    "tag": "c:coal"
-  },
-  "result": "industrialism:coke",
-  "cookingtime": 750
+  "ingredients": [
+    {
+      "tag": "c:coal"
+    }
+  ],
+  "output": "industrialism:coke",
+  "amount": 1,
+  "processingTime": 750
 }

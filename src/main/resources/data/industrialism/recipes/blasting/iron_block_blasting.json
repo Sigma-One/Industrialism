@@ -1,8 +1,11 @@
 {
   "type": "industrialism:blasting",
-  "ingredient": {
-    "tag": "c:iron_blocks"
-  },
-  "result": "industrialism:steel_block",
-  "cookingtime": 16200
+  "ingredients": [
+    {
+      "tag": "c:iron_blocks"
+    }
+  ],
+  "output": "industrialism:steel_block",
+  "amount": 1,
+  "processingTime": 16200
 }

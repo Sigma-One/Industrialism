@@ -180,7 +180,7 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRootBase(BLAST_FU
         // * No crafting in progress
         else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
             // If processing is done, do craft
-            if (startedProcessing + (recipe as BlastingRecipe).cookTime < currentTime) {
+            if (startedProcessing + (recipe as BlastingRecipe).processingTime< currentTime) {
                 startedProcessing = 0
                 progress = 0
                 items[0].decrement(1)
@@ -193,7 +193,7 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRootBase(BLAST_FU
             }
             // Otherwise, increment progress
             else {
-                progress = (((currentTime - startedProcessing).toFloat() / recipe.cookTime) * 100).toInt()
+                progress = (((currentTime - startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
             }
         }
         // Increment burning progress

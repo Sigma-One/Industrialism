@@ -1,8 +1,11 @@
 {
   "type": "industrialism:coking",
-  "ingredient": {
-    "tag": "c:coal_blocks"
-  },
-  "result": "industrialism:coke_block",
-  "cookingtime": 6750
+  "ingredients": [
+    {
+      "tag": "c:coal_blocks"
+    }
+  ],
+  "output": "industrialism:coke_block",
+  "amount": 1,
+  "processingTime": 6750
 }

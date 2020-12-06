@@ -3,3 +3,6 @@ accessWidener v1 named
 # Allow access to GenerationSettings.features and make it mutable
 mutable field net/minecraft/world/biome/GenerationSettings features Ljava/util/List;
 accessible field net/minecraft/world/biome/GenerationSettings features Ljava/util/List;
+
+# Accessible RecipeFactory in CookingRecipeSerializer
+accessible class net/minecraft/recipe/CookingRecipeSerializer
