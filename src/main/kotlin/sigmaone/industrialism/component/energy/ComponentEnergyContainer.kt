@@ -14,7 +14,8 @@ class ComponentEnergyContainer(
     var energyTier: EnergyTier,
     var maxEnergy: Double,
     var storedEnergy: Double,
-    var sideConfig: HashMap<Direction, IO>
+    var sideConfig: HashMap<Direction, IO>,
+    var lockedSides: ArrayList<Direction> = arrayListOf()
 ):
     Component(owner),
     EnergyStorage

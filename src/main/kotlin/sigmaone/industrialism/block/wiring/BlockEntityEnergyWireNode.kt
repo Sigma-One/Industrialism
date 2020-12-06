@@ -37,7 +37,7 @@ abstract class BlockEntityEnergyWireNode(
     override val configSpecial: Boolean
         get() = true
 
-    override val componentEnergyContainer = ComponentEnergyContainer(
+    override var componentEnergyContainer: ComponentEnergyContainer = ComponentEnergyContainer(
         this,
         energyTier,
         energyTier.maxInput.toDouble(),
@@ -80,10 +80,53 @@ abstract class BlockEntityEnergyWireNode(
                 true
             )
         }
+        // Deal with automatically configuring connected face if applicable
+        val neighbour = world!!.getBlockEntity(pos.offset(side))
+        if (neighbour is IComponentEnergyContainer
+        &&  neighbour is IBlockEntityConfigurable
+        &&  !neighbour.configSpecial
+        &&  side.opposite !in neighbour.componentEnergyContainer.lockedSides
+        && (context == null
+        ||  !context.player!!.isSneaking)) {
+            neighbour.componentEnergyContainer.sideConfig[side.opposite] = when (componentEnergyContainer.sideConfig[side]) {
+                IO.INPUT  -> IO.OUTPUT
+                IO.OUTPUT -> IO.INPUT
+                else      -> IO.NONE
+            }
+        }
+        autoConfigOverridden = true
     }
+
+    var autoConfigOverridden = false
+    var tickCounter = 0
 
     override fun tick() {
         super.tick()
+        tickCounter += 1
+        if (tickCounter == 10 && !autoConfigOverridden && !world!!.isClient) {
+            val side = world!!.getBlockState(pos).get(Properties.FACING).opposite
+            val neighbour = world!!.getBlockEntity(pos.offset(side))
+            if (neighbour is IComponentEnergyContainer) {
+                val targetIO = when (neighbour.componentEnergyContainer.sideConfig[side.opposite]) {
+                    IO.INPUT  -> IO.OUTPUT
+                    IO.OUTPUT -> IO.INPUT
+                    else      -> IO.NONE
+                }
+                if (targetIO != componentEnergyContainer.sideConfig[side]) {
+                    componentEnergyContainer.sideConfig[side] = targetIO
+                    componentWireNode.isRelay = componentEnergyContainer.sideConfig[side]!! == IO.NONE
+                    world!!.setBlockState(
+                        pos,
+                        world!!.getBlockState(pos).with(
+                            sigmaone.industrialism.util.Properties.IO,
+                            componentEnergyContainer.sideConfig[side]!!.ordinal
+                        )
+                    )
+                }
+            }
+            tickCounter = 0
+        }
+
         componentEnergyContainer.tick()
         val acceptors = Stack<BlockEntity>()
         for (point in componentWireNode.networkEndpoints) {
@@ -125,11 +168,13 @@ abstract class BlockEntityEnergyWireNode(
 
     override fun fromTag(state: BlockState?, tag: CompoundTag?) {
         componentEnergyContainer.fromTag(state!!, tag!!)
+        autoConfigOverridden = tag.getBoolean("autoconfig_override")
         super.fromTag(state, tag)
     }
 
     override fun toTag(tag: CompoundTag?): CompoundTag {
         val tag = componentEnergyContainer.toTag(tag!!)
+        tag.putBoolean("autoconfig_override", autoConfigOverridden)
         return super.toTag(tag)
     }
 }

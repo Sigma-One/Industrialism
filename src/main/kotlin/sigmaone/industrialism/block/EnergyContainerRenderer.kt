@@ -1,6 +1,5 @@
 package sigmaone.industrialism.block
 
-import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.RenderLayer
@@ -20,7 +19,7 @@ class EnergyContainerRenderer <T: BlockEntity>(dispatcher: BlockEntityRenderDisp
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
         if (entity is IComponentEnergyContainer) {
             matrices.push()
-            for ((i, dir) in Direction.values().withIndex()) {
+            for (dir in Direction.values()) {
 
                 val conf = entity.componentEnergyContainer.sideConfig[dir]
 

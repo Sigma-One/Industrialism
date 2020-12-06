@@ -117,7 +117,7 @@ class Industrialism : ModInitializer {
                 .addStick()
                 .addPlate()
                 .addBlock(2, 5.5f)
-                .addToolMaterial(2, 500, 3, 7.0f, 6)
+                .addToolMaterial(4, 500, 3, 7.0f, 6)
                 .addAxe(6f, 0.9f)
                 .addPickaxe(1, 1.2f)
                 .addShovel(1.5f, 1.0f)
