@@ -1,0 +1,32 @@
+{
+    "name": "Basic Coke Oven",
+    "icon": "industrialism:coke",
+    "category": "industrialism:multiblocks",
+    "sortnum" : 1,
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "The $(l)Coke Oven$() is a specialised oven used to produce $(item)$(l:materials/coke)Coke$(). It is assembled from a hollow 3x3x3 cube of $(item)Fire Bricks$(). It is formed by using a $(item)$(l:multiblocks/introduction)Wrench$() on the central block on any of the four horizontal sides of the structure."
+        },
+        {
+            "type" : "multiblock",
+            "multiblock" : {
+                "mapping" : { "#" : "industrialism:fire_bricks", "0" : "industrialism:fire_bricks" },
+                "pattern" : [
+                    ["###", "###", "###"],
+                    ["#0#", "# #", "###"],
+                    ["###", "###", "###"]
+                ]
+            }
+        },
+        {
+            "type" : "smelting",
+            "recipe" : "industrialism:fire_brick"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:raw_fire_brick",
+            "recipe2" : "industrialism:fire_bricks"
+        }
+    ]
+}

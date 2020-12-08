@@ -1,0 +1,34 @@
+{
+    "name": "Basic Wiring",
+    "icon": "industrialism:copper_wire_spool",
+    "category": "industrialism:fluxworks",
+    "sortnum" : 1,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Flux Fields can easily be transfered over long distances through the use of wires manufactured from metal plates using shears. These wires can be attached to connectors created from insulators and metals."
+        },
+        {
+            "type" : "text",
+            "text" : "Connectors have three modes; $(c)Input$(), $(9)Output$(), and $(7)None$(), which are automatically set to the mode of whatever the connector is placed on. Connector modes can be changed with a screwdriver, which also adjusts the mode of the thing under the connector unless you are sneaking."
+        },
+        {
+            "type" : "text",
+            "text" : "Wires can then be attached to connectors from a spool, and the other end can be attached to another connector in order to create a flux-conducting link between them. In the case that multiple connectors are connected to the same network, the FSA of each output is split evenly across all inputs."
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:ceramic_disc",
+            "recipe2" : "industrialism:connector_t0"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_wire",
+            "recipe2" : "industrialism:copper_wire_spool"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:screwdriver"
+        }
+    ]
+}

@@ -1,0 +1,10 @@
+{
+  "name" : "An Engineer's Journal",
+  "landing_text" : "A collection of knowledge from engineers of the past",
+  "model" : "industrialism:engineers_journal",
+  "book_texture" : "patchouli:textures/gui/book_gray.png",
+  "show_progress" : false,
+  "dont_generate_book" : true,
+  "custom_book_item" : "industrialism:engineers_journal",
+  "version" : 1
+}

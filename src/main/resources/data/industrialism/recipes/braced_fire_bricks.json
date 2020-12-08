@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " O ",
+    " # ",
+    " O "
+  ],
+  "key": {
+    "#": {
+      "item": "industrialism:fire_bricks"
+    },
+    "O" : {
+      "tag" : "c:iron_plates"
+    }
+  },
+  "result": {
+    "item": "industrialism:braced_fire_bricks",
+    "count": 1
+  }
+}

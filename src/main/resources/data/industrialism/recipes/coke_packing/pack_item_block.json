@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "###",
+        "###",
+        "###"
+    ],
+    "key": {
+        "#": {
+            "item": "industrialism:coke"
+        }
+    },
+    "result": {
+        "item": "industrialism:coke_block",
+        "count": 1
+    }
+}

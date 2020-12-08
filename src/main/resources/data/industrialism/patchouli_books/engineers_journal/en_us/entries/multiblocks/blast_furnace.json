@@ -1,0 +1,32 @@
+{
+    "name": "Basic Blast Furnace",
+    "icon": "industrialism:steel_ingot",
+    "category": "industrialism:multiblocks",
+    "sortnum" : 1,
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "A $(item)Blast Furnace$() is a high-temperature furnace used to turn $(l:materials/ore_metals/iron)Iron$() into $(l:materials/steel)Steel$(). It requires to usage of $(l:materials/coke)Coke$() as fuel, and can process either $(l:materials/ore_metals/iron)Iron Ingots$() or $(l:materials/ore_metals/iron)Iron Blocks$()."
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:braced_fire_bricks"
+        },
+        {
+            "type" : "multiblock",
+            "multiblock" : {
+                "mapping" : {
+                    "#" : "industrialism:braced_fire_bricks",
+                    "0" : "industrialism:braced_fire_bricks",
+                    "I" : "minecraft:iron_bars",
+                    "@" : "minecraft:nether_bricks"
+                },
+                "pattern" : [
+                    ["###", "###", "###"],
+                    ["#@#", "@ I", "#@#"],
+                    ["###", "#0#", "###"]
+                ]
+            }
+        }
+    ]
+}

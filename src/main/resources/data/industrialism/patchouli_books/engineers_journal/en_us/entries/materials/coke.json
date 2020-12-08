@@ -1,0 +1,22 @@
+{
+    "name": "Coking",
+    "icon": "industrialism:coke",
+    "category": "industrialism:materials",
+    "sortnum" : 0,
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "The anoxic heating of $(item)Coal$() in a special type of furnace known as a $(item)$(l:multiblocks/coke_oven)Coke Oven$() can be used to produce $(item)Coke$(), a fuel twice as efficient as $(item)Coal$(). $(item)Coal Blocks$() can also be directly processed into $(item)Coke Blocks$()."
+        },
+        {
+            "type" : "industrialism:coking",
+            "recipe" : "industrialism:coking/coal_coking",
+            "recipe2" : "industrialism:coking/coal_block_coking"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:coke_packing/unpack_block_item",
+            "recipe2" : "industrialism:coke_packing/pack_item_block"
+        }
+    ]
+}

@@ -10,6 +10,7 @@ import net.minecraft.recipe.Recipe
 import net.minecraft.recipe.RecipeSerializer
 import net.minecraft.recipe.RecipeType
 import net.minecraft.util.Identifier
+import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.registry.Registry
 import net.minecraft.world.World
 
@@ -51,6 +52,14 @@ abstract class ProcessingRecipe(
 
     override fun getType(): RecipeType<*>? {
         return recipeType
+    }
+
+    override fun getPreviewInputs(): DefaultedList<Ingredient> {
+        val dl = DefaultedList.of<Ingredient>()
+        for (i in inputs) {
+            dl.add(i)
+        }
+        return dl
     }
 }
 

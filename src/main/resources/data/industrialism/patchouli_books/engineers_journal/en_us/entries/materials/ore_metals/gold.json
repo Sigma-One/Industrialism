@@ -1,0 +1,54 @@
+{
+    "name": "Gold",
+    "icon": "minecraft:gold_ingot",
+    "category": "industrialism:ore_metals",
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "$(item)Gold$() is a valuable, yellowish metal. Tools made from it do not tend to last very long due to $(item)Gold$()'s softness, but they exhibit the curious property of conducting magic quite well, making them highly receptive to enchanting. $(item)Gold$() is also valued by the inhabitants of the Nether."
+        },
+        {
+            "type" : "smelting",
+            "recipe" : "minecraft:gold_ingot"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:gold_stick",
+            "recipe2": "industrialism:gold_plate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:golden_sword",
+            "recipe2": "minecraft:golden_axe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:golden_pickaxe",
+            "recipe2": "minecraft:golden_shovel"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:golden_hoe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:golden_helmet",
+            "recipe2": "minecraft:golden_chestplate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:golden_leggings",
+            "recipe2": "minecraft:golden_boots"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:gold_ingot_from_nuggets",
+            "recipe2": "minecraft:gold_block"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:gold_nugget",
+            "recipe2": "minecraft:gold_ingot_from_gold_block"
+        }
+    ]
+}

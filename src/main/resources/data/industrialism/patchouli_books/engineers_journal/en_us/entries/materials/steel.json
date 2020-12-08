@@ -1,0 +1,60 @@
+{
+    "name": "Steelmaking",
+    "icon": "industrialism:steel_ingot",
+    "category": "industrialism:materials",
+    "sortnum" : 0,
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "Using $(l:materials/coke)Coke$() to smelt $(l:materials/ore_metals/iron)Iron$() in a $(l:multiblocks/blast_furnace)Blast Furnace$() forms $(item)Steel$(). $(item)Steel$() is a refined, carbon-containing form of $(l:materials/ore_metals/iron)Iron$() with greater strength and heat resistance, making it a highly versatile material."
+        },
+        {
+            "type" : "text",
+            "text" : "As with $(l:materials/ore_metals/introduction)natural metals$(), $(item)Steel$() can be used to make tools, although $(item)Steel$() can also be used for armour. The process of crafting this equipment is different though, as they are made by upgrading $(l:materials/ore_metals/iron)Iron$() gear in a smithing table."
+        },
+        {
+            "type" : "industrialism:blasting",
+            "recipe" : "industrialism:blasting/iron_blasting",
+            "recipe2" : "industrialism:blasting/iron_block_blasting"
+        },
+        {
+            "type" : "smithing",
+            "recipe" : "industrialism:steel_tools/steel_sword",
+            "recipe2": "industrialism:steel_tools/steel_axe"
+        },
+        {
+            "type" : "smithing",
+            "recipe" : "industrialism:steel_tools/steel_pickaxe",
+            "recipe2": "industrialism:steel_tools/steel_shovel"
+        },
+        {
+            "type" : "smithing",
+            "recipe" : "industrialism:steel_tools/steel_hoe"
+        },
+        {
+            "type" : "smithing",
+            "recipe" : "industrialism:steel_tools/steel_helmet",
+            "recipe2": "industrialism:steel_tools/steel_chestplate"
+        },
+        {
+            "type" : "smithing",
+            "recipe" : "industrialism:steel_tools/steel_leggings",
+            "recipe2": "industrialism:steel_tools/steel_boots"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:steel_stick",
+            "recipe2": "industrialism:steel_plate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:steel_packing/unpack_ingot_nugget",
+            "recipe2" : "industrialism:steel_packing/pack_nugget_ingot"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:steel_packing/unpack_block_ingot",
+            "recipe2" : "industrialism:steel_packing/pack_ingot_block"
+        }
+    ]
+}

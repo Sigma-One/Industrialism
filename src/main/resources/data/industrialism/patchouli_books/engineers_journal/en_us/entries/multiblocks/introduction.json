@@ -1,0 +1,16 @@
+{
+    "name": "Multiblocks",
+    "icon": "industrialism:wrench",
+    "category": "industrialism:multiblocks",
+    "sortnum" : 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Multiblocks are structures assembled from multiple blocks rather than one. Their assembly always follows some layout, and they must be formed using a $(item)Wrench$() on a certain block, the position of which depends on the multiblock."
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:wrench"
+        }
+    ]
+}

@@ -98,8 +98,8 @@ class Metal(  // Misc
         return this
     }
 
-    fun addToolMaterial(baseAttackDamage: Int, durability: Int, miningLevel: Int, miningSpeed: Float, enchantability: Int): Metal {
-        toolMaterial = MetalToolMaterial(miningLevel, durability, miningSpeed, (baseAttackDamage - 1).toFloat(), enchantability) { Ingredient.ofItems(ingot) }
+    fun addToolMaterial(baseAttackDamage: Float, durability: Int, miningLevel: Int, miningSpeed: Float, enchantability: Int): Metal {
+        toolMaterial = MetalToolMaterial(miningLevel, durability, miningSpeed, (baseAttackDamage - 1f), enchantability) { Ingredient.ofItems(ingot) }
         return this
     }
 

@@ -1,0 +1,44 @@
+{
+    "name": "Lead",
+    "icon": "industrialism:lead_ingot",
+    "category": "industrialism:ore_metals",
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "$(item)Lead$() is a soft and heavy, dark blue-ish metal, which is highly poisonous when ingested or inhaled."
+        },
+        {
+            "type" : "smelting",
+            "recipe" : "industrialism:copper_processing/galena_ore_smelting"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_stick",
+            "recipe2": "industrialism:lead_plate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_tools/lead_sword",
+            "recipe2": "industrialism:lead_tools/lead_axe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_tools/lead_pickaxe",
+            "recipe2": "industrialism:lead_tools/lead_shovel"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_tools/lead_hoe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_packing/pack_nugget_ingot",
+            "recipe2": "industrialism:lead_packing/pack_ingot_block"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:lead_packing/unpack_ingot_nugget",
+            "recipe2": "industrialism:lead_packing/unpack_block_ingot"
+        }
+    ]
+}

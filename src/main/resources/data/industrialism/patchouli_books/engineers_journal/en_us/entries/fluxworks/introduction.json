@@ -1,0 +1,16 @@
+{
+    "name": "Flux Fields",
+    "icon": "industrialism:copper_wire",
+    "category": "industrialism:fluxworks",
+    "sortnum" : 0,
+    "pages": [
+        {
+            "type": "text",
+            "text": "Certain metals and other materials exhibit a property of conducting a field of energy known as a Flux Field.$(br)These fields can be measured using two units: $(l)FFA$() and $(l)FSA$()."
+        },
+        {
+            "type" : "text",
+            "text" : "$(l)FFA$() stands for Flux Field Amplitude, and is a measure of the amount of energy in a certain object. $(l)FSA$() on the other hand stands for Flux Shift Amplitude, and is a measure of the change in FFA over a static period of one tick (1/20th of a second)."
+        }
+    ]
+}

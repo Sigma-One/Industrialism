@@ -1,0 +1,7 @@
+{
+    "name" : "Natural Metals",
+    "description" : "Metals found naturally in the world",
+    "sortnum" : 0,
+    "parent" : "industrialism:materials",
+    "icon" : "industrialism:malachite_ore"
+}

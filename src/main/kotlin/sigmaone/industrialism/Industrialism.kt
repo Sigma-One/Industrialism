@@ -39,6 +39,7 @@ import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeO
 import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.BlockEntityWireConnectorT0
 import sigmaone.industrialism.block.wiring.BlockWireConnectorT0
+import sigmaone.industrialism.item.ItemEngineersJournal
 import sigmaone.industrialism.item.ItemScrewdriver
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.ItemWrench
@@ -48,6 +49,7 @@ import sigmaone.industrialism.recipe.*
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
 import team.reborn.energy.EnergyTier
+import vazkii.patchouli.client.book.ClientBookRegistry
 
 class Industrialism : ModInitializer {
     enum class InputConfig {
@@ -86,7 +88,7 @@ class Industrialism : ModInitializer {
                 .addWire(10, 0.05f, intArrayOf(220, 145, 85))
                 .addBlock(1, 4.5f)
                 .addOre("malachite", 1, 14, 8, 40, 64)
-                .addToolMaterial(3, 192, 2, 5.0f, 16)
+                .addToolMaterial(3f, 192, 2, 5.0f, 16)
                 .addAxe(6f, 0.9f)
                 .addPickaxe(1, 1.2f)
                 .addShovel(1.5f, 1.0f)
@@ -99,7 +101,7 @@ class Industrialism : ModInitializer {
                 .addPlate()
                 .addBlock(1, 4.0f)
                 .addOre("galena", 1, 8, 6, 10, 40)
-                .addToolMaterial(2, 135, 1, 3.0f, 7)
+                .addToolMaterial(2f, 135, 1, 3.0f, 7)
                 .addAxe(6f, 0.8f)
                 .addPickaxe(1, 1.1f)
                 .addShovel(1.5f, 0.9f)
@@ -117,7 +119,7 @@ class Industrialism : ModInitializer {
                 .addStick()
                 .addPlate()
                 .addBlock(2, 5.5f)
-                .addToolMaterial(4, 500, 3, 7.0f, 6)
+                .addToolMaterial(3.5f, 500, 3, 7.0f, 6)
                 .addAxe(6f, 0.9f)
                 .addPickaxe(1, 1.2f)
                 .addShovel(1.5f, 1.0f)
@@ -136,11 +138,12 @@ class Industrialism : ModInitializer {
         val COKE_BLOCK = registerBlock("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)), FabricItemSettings().group(MATERIALS_TAB))
 
         // Intermediates
-        val CERAMIC_DISK: Item = registerItem("ceramic_disk", Item(FabricItemSettings().group(MATERIALS_TAB)))
+        val CERAMIC_DISC: Item = registerItem("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
         val RAW_FIRE_BRICK = registerItem("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
         val FIRE_BRICK = registerItem("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
 
         val FIRE_BRICKS = registerBlock("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.BRICKS)), FabricItemSettings().group(MATERIALS_TAB).fireproof())
+        val BRACED_FIRE_BRICKS = registerBlock("braced_fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.BRICKS).strength(2.5F, 6.5F)), FabricItemSettings().group(MATERIALS_TAB).fireproof())
 
         // Single block machines
         val BATTERY_BLOCK: Block = registerBlock("basic_battery", BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
@@ -159,6 +162,7 @@ class Industrialism : ModInitializer {
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
         val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
+        val ENGINEERS_JOURNAL: Item = registerItem("engineers_journal", ItemEngineersJournal(Item.Settings().group(TOOLS_TAB).maxCount(1)))
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
@@ -175,6 +179,7 @@ class Industrialism : ModInitializer {
 
         // Multiblocks
         val MULTIBLOCKS: HashSet<BlockMultiblockRoot> = HashSet()
+        val COKE_OVEN_DUMMY_ITEM: Item = registerItem("coke_oven_dummy", Item(FabricItemSettings()))
         val COKE_OVEN_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "coke_oven_multiblock"),
@@ -191,6 +196,7 @@ class Industrialism : ModInitializer {
                 { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
         )
 
+        val BLAST_FURNACE_DUMMY_ITEM: Item = registerItem("blast_furnace_dummy", Item(FabricItemSettings()))
         val BLAST_FURNACE_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "blast_furnace_multiblock"),
@@ -270,6 +276,9 @@ class Industrialism : ModInitializer {
 
         MULTIBLOCKS.add(COKE_OVEN_MULTIBLOCK_BLOCK)
         MULTIBLOCKS.add(BLAST_FURNACE_MULTIBLOCK_BLOCK)
+
+        ClientBookRegistry.INSTANCE.pageTypes[Identifier(MOD_ID, "coking")] = PatchouliPageCoking::class.java
+        ClientBookRegistry.INSTANCE.pageTypes[Identifier(MOD_ID, "blasting")] = PatchouliPageBlasting::class.java
 
         FuelRegistry.INSTANCE.add(COKE as ItemConvertible, 3200)
         FuelRegistry.INSTANCE.add(COKE_BLOCK as ItemConvertible, 32000)

@@ -1,0 +1,49 @@
+{
+    "name": "Copper",
+    "icon": "industrialism:copper_ingot",
+    "category": "industrialism:ore_metals",
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "$(item)Copper$() is an easily workable, orange-brown metal. It forms a greenish oxide on it's surface when exposed to the elements for extended periods of time. $(item)Copper$() is also a relatively good conductor of $(l:fluxworks/introduction)Flux."
+        },
+        {
+            "type" : "smelting",
+            "recipe" : "industrialism:copper_processing/smelt_malachite_ore"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_stick",
+            "recipe2": "industrialism:copper_plate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_wire",
+            "recipe2": "industrialism:copper_wire_spool"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_tools/copper_sword",
+            "recipe2": "industrialism:copper_tools/copper_axe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_tools/copper_pickaxe",
+            "recipe2": "industrialism:copper_tools/copper_shovel"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_tools/copper_hoe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_packing/pack_nugget_ingot",
+            "recipe2": "industrialism:copper_packing/pack_ingot_block"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:copper_packing/unpack_ingot_nugget",
+            "recipe2": "industrialism:copper_packing/unpack_block_ingot"
+        }
+    ]
+}

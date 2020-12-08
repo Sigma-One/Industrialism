@@ -1,0 +1,54 @@
+{
+    "name": "Iron",
+    "icon": "minecraft:iron_ingot",
+    "category": "industrialism:ore_metals",
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "$(item)Iron$() is a very abundant and versatile metal, suitable for tools, armour, and other equipment. It can also be further refined into $(l:materials/steel)Steel$()"
+        },
+        {
+            "type" : "smelting",
+            "recipe" : "minecraft:iron_ingot"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "industrialism:iron_stick",
+            "recipe2": "industrialism:iron_plate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_sword",
+            "recipe2": "minecraft:iron_axe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_pickaxe",
+            "recipe2": "minecraft:iron_shovel"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_hoe"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_helmet",
+            "recipe2": "minecraft:iron_chestplate"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_leggings",
+            "recipe2": "minecraft:iron_boots"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_ingot_from_nuggets",
+            "recipe2": "minecraft:iron_block"
+        },
+        {
+            "type" : "crafting",
+            "recipe" : "minecraft:iron_nugget",
+            "recipe2": "minecraft:iron_ingot_from_iron_block"
+        }
+    ]
+}

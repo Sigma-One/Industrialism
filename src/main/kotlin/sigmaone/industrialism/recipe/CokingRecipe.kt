@@ -25,7 +25,7 @@ class CokingRecipe(
 {
     @Environment(EnvType.CLIENT)
     override fun getRecipeKindIcon(): ItemStack {
-        return Industrialism.COKE.defaultStack
+        return Industrialism.COKE_OVEN_DUMMY_ITEM.defaultStack
     }
 
     override fun getSerializer(): RecipeSerializer<*> {

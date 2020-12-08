@@ -25,19 +25,19 @@ class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(set
     override val layout: Array<Array<Array<Block>>>
         get() = arrayOf(
             arrayOf(
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
             ),
             arrayOf(
-                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK),
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Blocks.NETHER_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
                 arrayOf(Blocks.IRON_BARS, Blocks.AIR, Blocks.NETHER_BRICKS),
-                arrayOf(Blocks.IRON_BLOCK, Blocks.NETHER_BRICKS, Blocks.IRON_BLOCK)
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Blocks.NETHER_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
             ),
             arrayOf(
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
-                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
+                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
             )
         )
 

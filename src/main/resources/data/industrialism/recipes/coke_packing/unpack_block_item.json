@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "industrialism:coke_block"
+        }
+    ],
+    "result": {
+        "item": "industrialism:coke",
+        "count": 9
+    }
+}

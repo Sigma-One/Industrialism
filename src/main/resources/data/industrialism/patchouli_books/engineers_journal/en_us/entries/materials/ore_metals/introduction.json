@@ -1,0 +1,16 @@
+{
+    "name": "Natural Metals",
+    "icon": "industrialism:malachite_ore",
+    "category": "industrialism:ore_metals",
+    "sortnum" : 0,
+    "pages": [
+        {
+            "type" : "text",
+            "text" : "Various metallic minerals can be naturally found underground:$(br)$(li)$(l:materials/ore_metals/iron)Iron$()$(li)$(l:materials/ore_metals/gold)Gold$()$(li)$(l:materials/ore_metals/copper)Copper$()$(li)$(l:materials/ore_metals/lead)Lead$()"
+        },
+        {
+            "type" : "text",
+            "text" : "These minerals can then be processed into more refined materials and components suitable for a multitude of applications, along with tools and in some cases armour."
+        }
+    ]
+}

@@ -49,21 +49,25 @@
     "item.industrialism.coke"        : "Coke",
     "block.industrialism.coke_block" : "Block of Coke",
 
-    "block.industrialism.coke_oven_multiblock"     : "Coke Oven",
+    "item.industrialism.coke_oven_dummy"           : "Coke Oven",
+    "block.industrialism.coke_oven_multiblock"     : "Basic Coke Oven",
+    "item.industrialism.blast_furnace_dummy"       : "Blast Furnace",
     "block.industrialism.blast_furnace_multiblock" : "Basic Blast Furnace",
 
     "item.industrialism.raw_fire_brick"      : "Unfired Fire Brick",
     "item.industrialism.fire_brick"          : "Fire Brick",
     "block.industrialism.fire_bricks"        : "Fire Bricks",
-    "block.industrialism.iron_fire_bricks"   : "Plated Fire Bricks",
+    "block.industrialism.braced_fire_bricks" : "Braced Fire Bricks",
 
     "item.industrialism.wrench"       : "Wrench",
     "item.industrialism.screwdriver"  : "Screwdriver",
     "item.industrialism.forge_hammer" : "Forge Hammer",
 
+    "item.industrialism.engineers_journal" : "Engineer's Journal",
+
     "item.industrialism.debug_linker" : "Infinite Wire Generator (Creative)",
 
-    "item.industrialism.ceramic_disk" : "Ceramic Disk",
+    "item.industrialism.ceramic_disc" : "Ceramic Disc",
 
     "itemGroup.industrialism.materials" : "Industrialism: Materials",
     "itemGroup.industrialism.tools"     : "Industrialism: Tools",

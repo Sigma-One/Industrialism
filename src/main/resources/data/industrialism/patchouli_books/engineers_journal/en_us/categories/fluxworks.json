@@ -1,0 +1,6 @@
+{
+    "name" : "Fluxworks",
+    "description" : "Working with and manipulating flux fields.",
+    "sortnum" : 2,
+    "icon" : "industrialism:copper_wire_spool"
+}

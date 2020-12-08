@@ -25,7 +25,7 @@ class BlastingRecipe(
 {
     @Environment(EnvType.CLIENT)
     override fun getRecipeKindIcon(): ItemStack {
-        return ItemStack(Industrialism.STEEL.ingot)
+        return Industrialism.BLAST_FURNACE_DUMMY_ITEM.defaultStack
     }
 
     override fun getSerializer(): RecipeSerializer<*> {

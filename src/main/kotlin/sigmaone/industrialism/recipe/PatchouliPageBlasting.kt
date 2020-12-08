@@ -1,0 +1,5 @@
+package sigmaone.industrialism.recipe
+import sigmaone.industrialism.Industrialism
+import vazkii.patchouli.client.book.page.abstr.PageSimpleProcessingRecipe
+
+class PatchouliPageBlasting: PageSimpleProcessingRecipe<BlastingRecipe>(Industrialism.BLASTING_RECIPE_TYPE)
