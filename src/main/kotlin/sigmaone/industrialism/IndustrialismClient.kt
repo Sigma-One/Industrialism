@@ -22,9 +22,12 @@ import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_DUMMY
 import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_T0
+import sigmaone.industrialism.Industrialism.Companion.CRANK_HANDLE
+import sigmaone.industrialism.Industrialism.Companion.CRANK_HANDLE_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.TATER
 import sigmaone.industrialism.block.EnergyContainerRenderer
+import sigmaone.industrialism.block.machine.BlockEntityCrankHandleRenderer
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGui
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGuiDescription
 import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblockRenderer
@@ -66,10 +69,12 @@ class IndustrialismClient : ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(MULTIBLOCK_CHILD_BLOCK, RenderLayer.getCutout())
         BlockRenderLayerMap.INSTANCE.putBlock(COKE_OVEN_MULTIBLOCK_BLOCK, RenderLayer.getCutout())
         BlockRenderLayerMap.INSTANCE.putBlock(BLAST_FURNACE_MULTIBLOCK_BLOCK, RenderLayer.getCutout())
+        BlockRenderLayerMap.INSTANCE.putBlock(CRANK_HANDLE_BLOCK, RenderLayer.getCutout())
         BlockEntityRendererRegistry.INSTANCE.register(BATTERY) { dispatcher: BlockEntityRenderDispatcher? -> EnergyContainerRenderer(dispatcher) }
         BlockEntityRendererRegistry.INSTANCE.register(CONNECTOR_T0) { dispatcher: BlockEntityRenderDispatcher? -> WireRenderer(dispatcher) }
         BlockEntityRendererRegistry.INSTANCE.register(BLAST_FURNACE_MULTIBLOCK) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityBlastFurnaceMultiblockRenderer(dispatcher) }
         BlockEntityRendererRegistry.INSTANCE.register(COKE_OVEN_MULTIBLOCK) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityCokeOvenMultiblockRenderer(dispatcher) }
+        BlockEntityRendererRegistry.INSTANCE.register(CRANK_HANDLE) { dispatcher: BlockEntityRenderDispatcher? -> BlockEntityCrankHandleRenderer(dispatcher) }
         //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T1, WireRenderer::new);
         //BlockEntityRendererRegistry.INSTANCE.register(Industrialism.CONNECTOR_T2, WireRenderer::new);
         ScreenRegistry.register(

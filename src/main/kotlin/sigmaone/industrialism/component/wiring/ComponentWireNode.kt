@@ -37,35 +37,35 @@ open class ComponentWireNode(
     }
 
     val networkEndpoints: ArrayList<BlockPos>
-        get() {
-            val visited = ArrayList<BlockPos>()
-            val endpoints = ArrayList<BlockPos>()
-            val stack = Stack<BlockPos>()
-            // Add connected nodes to stack and self to visited nodes
-            stack.push(this.owner.pos)
-            visited.add(this.owner.pos)
+    get() {
+        val visited = ArrayList<BlockPos>()
+        val endpoints = ArrayList<BlockPos>()
+        val stack = Stack<BlockPos>()
+        // Add connected nodes to stack and self to visited nodes
+        stack.push(this.owner.pos)
+        visited.add(this.owner.pos)
 
-            // Loop until stack is empty
-            while (!stack.isEmpty()) {
-                val current = owner.world!!.getBlockEntity(stack.pop())
-                if (current is IComponentWireNode) {
-                    // Loop through connections
-                    for (pos in current.componentWireNode.connections.keys) {
-                        val connection = owner.world!!.getBlockEntity(pos)
-                        if (!visited.contains(pos) && connection is IComponentWireNode) {
-                            // Add any found sinks to sink set
-                            if (!connection.componentWireNode.isRelay) {
-                                endpoints.add(pos)
-                            }
-                            // Add connected nodes to stack and self to visited nodes
-                            stack.push(pos)
-                            visited.add(pos)
+        // Loop until stack is empty
+        while (!stack.isEmpty()) {
+            val current = owner.world!!.getBlockEntity(stack.pop())
+            if (current is IComponentWireNode) {
+                // Loop through connections
+                for (pos in current.componentWireNode.connections.keys) {
+                    val connection = owner.world!!.getBlockEntity(pos)
+                    if (!visited.contains(pos) && connection is IComponentWireNode) {
+                        // Add any found sinks to sink set
+                        if (!connection.componentWireNode.isRelay) {
+                            endpoints.add(pos)
                         }
+                        // Add connected nodes to stack and self to visited nodes
+                        stack.push(pos)
+                        visited.add(pos)
                     }
                 }
             }
-            return endpoints
         }
+        return endpoints
+    }
 
     fun addConnection(target: BlockPos, targetFacing: Direction, targetHeight: Double, wireType: ItemWireSpool): Boolean {
         if (connections.size < maxConnections) {

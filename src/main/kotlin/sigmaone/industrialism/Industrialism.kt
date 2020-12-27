@@ -24,10 +24,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.block.BlockConnectorDummy
 import sigmaone.industrialism.block.BlockTater
-import sigmaone.industrialism.block.machine.BlockBattery
-import sigmaone.industrialism.block.machine.BlockEntityBattery
-import sigmaone.industrialism.block.machine.BlockEntityManualGenerator
-import sigmaone.industrialism.block.machine.BlockManualGenerator
+import sigmaone.industrialism.block.machine.*
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChild
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
@@ -149,6 +146,8 @@ class Industrialism : ModInitializer {
         val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:basic_battery", BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null))
         val MANUAL_GENERATOR_BLOCK: Block = registerBlock("manual_generator", BlockManualGenerator(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
         val MANUAL_GENERATOR: BlockEntityType<BlockEntityManualGenerator> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:manual_generator", BlockEntityType.Builder.create({ BlockEntityManualGenerator() }, MANUAL_GENERATOR_BLOCK).build(null))
+        val CRANK_HANDLE_BLOCK: Block = registerBlock("crank_handle", BlockCrankHandle(FabricBlockSettings.of(MATERIAL_STONE).nonOpaque()), FabricItemSettings().group(MACHINES_TAB))
+        val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:crank_handle", BlockEntityType.Builder.create({ BlockEntityCrankHandle() }, CRANK_HANDLE_BLOCK).build(null))
 
         // Debug stuff
         val DEBUG_LINKER: ItemWireSpool = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
