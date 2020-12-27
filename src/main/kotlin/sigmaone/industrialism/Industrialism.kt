@@ -48,7 +48,6 @@ import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.*
 import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
-import team.reborn.energy.EnergyTier
 import vazkii.patchouli.client.book.ClientBookRegistry
 
 class Industrialism : ModInitializer {
@@ -156,7 +155,7 @@ class Industrialism : ModInitializer {
 
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireConnectorT0(EnergyTier.LOW, 0.3, 16, arrayOf(COPPER.wireSpool!!, DEBUG_LINKER)) }, CONNECTOR_T0_BLOCK).build(null))
+        val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null))
 
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))

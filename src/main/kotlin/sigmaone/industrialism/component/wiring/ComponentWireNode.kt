@@ -97,7 +97,7 @@ open class ComponentWireNode(
 
     private fun offsetPosition(pos: BlockPos, facing: Direction, height: Double): Vec3d {
         val offsets = when (facing) {
-            Direction.DOWN  -> Vec3d(0.50, 1-height+0.15, 0.50)
+            Direction.DOWN  -> Vec3d(0.50, 1-height+0.05, 0.50)
             Direction.UP    -> Vec3d(0.50, height, 0.50)
             Direction.NORTH -> Vec3d(0.50, 0.50, 1-height)
             Direction.SOUTH -> Vec3d(0.50, 0.50, height)

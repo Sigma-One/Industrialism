@@ -3,7 +3,6 @@ package sigmaone.industrialism.item
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemUsageContext
-import net.minecraft.state.property.Properties
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.ActionResult
 import sigmaone.industrialism.block.wiring.BlockEntityWireConnectorT0
@@ -71,8 +70,8 @@ class ItemWireSpool(
                                 return ActionResult.PASS
                             }
                             if (!linkEntity.componentWireNode.addConnection(
-                                        context.blockPos,
-                                        context.world.getBlockState(context.blockPos).get(Properties.FACING),
+                                        entity.pos,
+                                        entity.componentWireNode.facing!!,
                                         entity.componentWireNode.height,
                                         this
                                     )
@@ -83,7 +82,7 @@ class ItemWireSpool(
                             }
                             if (!entity.componentWireNode.addConnection(
                                         linkEntity.pos,
-                                        context.world.getBlockState(linkEntity.pos).get(Properties.FACING),
+                                        linkEntity.componentWireNode.facing!!,
                                         linkEntity.componentWireNode.height,
                                         this
                                     )

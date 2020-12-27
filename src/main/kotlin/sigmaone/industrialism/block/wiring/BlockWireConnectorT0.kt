@@ -9,6 +9,6 @@ import team.reborn.energy.EnergyTier
 
 class BlockWireConnectorT0(settings: Settings?) : BlockWireNode(settings!!, 5), BlockEntityProvider {
     override fun createBlockEntity(world: BlockView): BlockEntity? {
-        return BlockEntityWireConnectorT0(EnergyTier.LOW, 0.23, 16, arrayOf(Industrialism.COPPER.wireSpool as ItemWireSpool, Industrialism.DEBUG_LINKER as ItemWireSpool))
+        return BlockEntityWireConnectorT0()
     }
 }

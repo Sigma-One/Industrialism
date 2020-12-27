@@ -5,19 +5,12 @@ import sigmaone.industrialism.item.ItemWireSpool
 import team.reborn.energy.EnergyTier
 
 
-class BlockEntityWireConnectorT0(
-    energyTier: EnergyTier,
-    height: Double,
-    maxConnections: Int,
-    wireTypes: Array<ItemWireSpool>,
-) :
+class BlockEntityWireConnectorT0() :
     BlockEntityEnergyWireNode(
         Industrialism.CONNECTOR_T0,
-        energyTier,
-        height,
-        maxConnections,
-        wireTypes
+        EnergyTier.LOW,
+        0.20,
+        16,
+        arrayOf(Industrialism.COPPER.wireSpool as ItemWireSpool, Industrialism.DEBUG_LINKER as ItemWireSpool)
     )
-{
-
-}
+{}

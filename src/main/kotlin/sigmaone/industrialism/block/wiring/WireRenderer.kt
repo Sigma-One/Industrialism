@@ -1,6 +1,6 @@
 package sigmaone.industrialism.block.wiring
 
-import net.minecraft.client.render.*
+import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.util.math.MatrixStack
@@ -8,10 +8,12 @@ import net.minecraft.client.util.math.Vector3f
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
-import sigmaone.industrialism.component.wiring.IComponentWireNode
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
-import kotlin.math.*
+import kotlin.math.PI
+import kotlin.math.atan2
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<BlockEntityWireConnectorT0>(dispatcher) {
@@ -26,7 +28,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 val targetEntity = entity.world!!.getBlockEntity(conn.key) as BlockEntityWireConnectorT0
 
                 val targetOffsets = when (targetFacing) {
-                    Direction.DOWN  -> Vec3d(0.50, 1-targetEntity.componentWireNode.height+0.15, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-targetEntity.componentWireNode.height+0.05, 0.50)
                     Direction.UP    -> Vec3d(0.50, targetEntity.componentWireNode.height, 0.50)
                     Direction.NORTH -> Vec3d(0.50, 0.50, 1-targetEntity.componentWireNode.height)
                     Direction.SOUTH -> Vec3d(0.50, 0.50, targetEntity.componentWireNode.height)
@@ -36,7 +38,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                 }
 
                 val offsets = when (facing) {
-                    Direction.DOWN  -> Vec3d(0.50, 1-entity.componentWireNode.height+0.15, 0.50)
+                    Direction.DOWN  -> Vec3d(0.50, 1-entity.componentWireNode.height+0.05, 0.50)
                     Direction.UP    -> Vec3d(0.50, entity.componentWireNode.height, 0.50)
                     Direction.NORTH -> Vec3d(0.50, 0.50, 1-entity.componentWireNode.height)
                     Direction.SOUTH -> Vec3d(0.50, 0.50, entity.componentWireNode.height)
