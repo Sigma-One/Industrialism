@@ -46,7 +46,7 @@ class ComponentMechanicalDevice(
         for (dir in Direction.values()) {
             if (sideConfig[dir] == IO.OUTPUT) {
                 val neighbour = owner.world!!.getBlockEntity(owner.pos.offset(dir))
-                if (neighbour is IComponentMechanicalDevice) {
+                if (neighbour is IComponentMechanicalDevice && neighbour.componentMechanicalDevice.sideConfig[dir.opposite] == IO.INPUT) {
                     list.add(neighbour.componentMechanicalDevice)
                 }
             }
@@ -58,10 +58,7 @@ class ComponentMechanicalDevice(
         val rpt = rpm / 60 / 20
         visualDegrees += rpt * 360
         for (n in neighbours) {
-            if (n.rpm > rpm) {
-                rpm = n.rpm
-            }
-            else {
+            if (rpm > n.rpm) {
                 n.rpm = rpm
             }
         }

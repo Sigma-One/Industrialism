@@ -31,12 +31,12 @@ class BlockEntityCrankHandle:
         1.0,
         999.0,
         hashMapOf(
-            Direction.UP    to IO.INPUT,
-            Direction.DOWN  to IO.INPUT,
-            Direction.NORTH to IO.INPUT,
-            Direction.EAST  to IO.INPUT,
-            Direction.SOUTH to IO.INPUT,
-            Direction.WEST  to IO.INPUT
+            Direction.UP    to IO.NONE,
+            Direction.DOWN  to IO.OUTPUT,
+            Direction.NORTH to IO.NONE,
+            Direction.EAST  to IO.NONE,
+            Direction.SOUTH to IO.NONE,
+            Direction.WEST  to IO.NONE
         )
     )
 
