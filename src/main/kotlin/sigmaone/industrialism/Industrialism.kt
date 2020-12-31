@@ -144,8 +144,8 @@ class Industrialism : ModInitializer {
         // Single block machines
         val BATTERY_BLOCK: Block = registerBlock("basic_battery", BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
         val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:basic_battery", BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null))
-        val MANUAL_GENERATOR_BLOCK: Block = registerBlock("manual_generator", BlockManualGenerator(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val MANUAL_GENERATOR: BlockEntityType<BlockEntityManualGenerator> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:manual_generator", BlockEntityType.Builder.create({ BlockEntityManualGenerator() }, MANUAL_GENERATOR_BLOCK).build(null))
+        val DYNAMO_BLOCK: Block = registerBlock("dynamo", BlockDynamo(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
+        val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:dynamo", BlockEntityType.Builder.create({ BlockEntityDynamo() }, DYNAMO_BLOCK).build(null))
         val CRANK_HANDLE_BLOCK: Block = registerBlock("crank_handle", BlockCrankHandle(FabricBlockSettings.of(MATERIAL_STONE).nonOpaque()), FabricItemSettings().group(MACHINES_TAB))
         val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:crank_handle", BlockEntityType.Builder.create({ BlockEntityCrankHandle() }, CRANK_HANDLE_BLOCK).build(null))
 
@@ -212,6 +212,8 @@ class Industrialism : ModInitializer {
 
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
+        val CRANK_HANDLE_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "crank_handle_dummy"), Block(FabricBlockSettings.of(Material.AIR)))
+
 
         // Misc
         val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), FabricItemSettings().group(TOOLS_TAB))

@@ -21,23 +21,41 @@ class ComponentMechanicalDevice(
     var visualDegrees = 0.0
 
     fun toClientTag(tag: CompoundTag?): CompoundTag {
-        tag!!.putDouble("rpm", rpm)
-        tag.putDouble("degrees", visualDegrees)
+        val subTag = CompoundTag()
+        subTag.putDouble("rpm", rpm)
+        subTag.putDouble("degrees", visualDegrees)
+        for (dir in sideConfig.keys) {
+            subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
+        }
+        tag!!.put("mechanicalComponent", subTag)
         return tag
     }
 
     fun fromClientTag(tag: CompoundTag?) {
-        rpm = tag!!.getDouble("rpm")
-        visualDegrees = tag.getDouble("degrees")
+        val subTag = tag!!.getCompound("mechanicalComponent")
+        rpm = subTag!!.getDouble("rpm")
+        visualDegrees = subTag.getDouble("degrees")
+        for (dir in sideConfig.keys) {
+            sideConfig[dir] = IO.values()[subTag.getInt(dir.toString())]
+        }
     }
 
     fun toTag(tag: CompoundTag?): CompoundTag {
-        tag!!.putDouble("rpm", rpm)
+        val subTag = CompoundTag()
+        subTag.putDouble("rpm", rpm)
+        for (dir in sideConfig.keys) {
+            subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
+        }
+        tag!!.put("mechanicalComponent", subTag)
         return tag
     }
 
     fun fromTag(tag: CompoundTag?) {
-        rpm = tag!!.getDouble("rpm")
+        val subTag = tag!!.getCompound("mechanicalComponent")
+        rpm = subTag!!.getDouble("rpm")
+        for (dir in sideConfig.keys) {
+            sideConfig[dir] = IO.values()[subTag.getInt(dir.toString())]
+        }
     }
 
     val neighbours: ArrayList<ComponentMechanicalDevice>

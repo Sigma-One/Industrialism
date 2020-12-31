@@ -29,7 +29,7 @@ class BlockEntityCrankHandle:
     override val componentMechanicalDevice = ComponentMechanicalDevice(
         this,
         1.0,
-        999.0,
+        30.0,
         hashMapOf(
             Direction.UP    to IO.NONE,
             Direction.DOWN  to IO.OUTPUT,
@@ -49,10 +49,12 @@ class BlockEntityCrankHandle:
     }
 
     override fun fromTag(state: BlockState?, tag: CompoundTag?) {
+        super.fromTag(state, tag)
         componentMechanicalDevice.fromClientTag(tag)
     }
 
     override fun toTag(tag: CompoundTag?): CompoundTag {
+        super.toTag(tag)
         return componentMechanicalDevice.toClientTag(tag)
     }
 

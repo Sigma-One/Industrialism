@@ -29,6 +29,9 @@ class BlockCrankHandle(settings: Settings?) : Block(settings), BlockEntityProvid
         val entity = world!!.getBlockEntity(pos)
         if (entity is IComponentMechanicalDevice) {
             entity.componentMechanicalDevice.rpm += 10.0
+            if (entity.componentMechanicalDevice.rpm > entity.componentMechanicalDevice.maxRpm) {
+                entity.componentMechanicalDevice.rpm = entity.componentMechanicalDevice.maxRpm
+            }
         }
         return ActionResult.SUCCESS
     }

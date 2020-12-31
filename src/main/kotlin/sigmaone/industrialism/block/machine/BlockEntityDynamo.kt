@@ -1,5 +1,6 @@
 package sigmaone.industrialism.block.machine
 
+import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.nbt.CompoundTag
@@ -14,11 +15,12 @@ import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
 import sigmaone.industrialism.util.IO
 import team.reborn.energy.EnergyTier
 
-class BlockEntityManualGenerator :
-    BlockEntity(Industrialism.MANUAL_GENERATOR),
+class BlockEntityDynamo :
+    BlockEntity(Industrialism.DYNAMO),
     IComponentEnergyContainer,
     IComponentMechanicalDevice,
     Tickable,
+    BlockEntityClientSerializable,
     IBlockEntityRefreshable
 {
     override val componentEnergyContainer = ComponentEnergyContainer(
@@ -31,7 +33,7 @@ class BlockEntityManualGenerator :
             Direction.SOUTH to IO.OUTPUT,
             Direction.EAST  to IO.OUTPUT,
             Direction.WEST  to IO.OUTPUT,
-            Direction.UP    to IO.NONE,
+            Direction.UP    to IO.OUTPUT,
             Direction.DOWN  to IO.OUTPUT
         )
     )
@@ -41,7 +43,7 @@ class BlockEntityManualGenerator :
         1.0,
         999.0,
         hashMapOf(
-            Direction.UP    to IO.INPUT,
+            Direction.UP    to IO.NONE,
             Direction.DOWN  to IO.NONE,
             Direction.NORTH to IO.NONE,
             Direction.EAST  to IO.NONE,
@@ -57,14 +59,27 @@ class BlockEntityManualGenerator :
     }
 
     override fun toTag(tag: CompoundTag): CompoundTag {
-        return componentEnergyContainer.toTag(tag)
+        super.toTag(tag)
+        var tag = componentMechanicalDevice.toTag(tag)
+        tag = componentEnergyContainer.toTag(tag)
+        return tag
     }
 
     override fun fromTag(state: BlockState, tag: CompoundTag) {
+        super.fromTag(state, tag)
+        componentMechanicalDevice.fromTag(tag)
         componentEnergyContainer.fromTag(state, tag)
     }
 
     override fun refresh() {
         markDirty()
+    }
+
+    override fun fromClientTag(tag: CompoundTag?) {
+        componentMechanicalDevice.fromClientTag(tag)
+    }
+
+    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+        return componentMechanicalDevice.toClientTag(tag)
     }
 }

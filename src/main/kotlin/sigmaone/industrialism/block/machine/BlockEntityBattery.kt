@@ -26,7 +26,7 @@ class BlockEntityBattery :
     override val componentEnergyContainer = ComponentEnergyContainer(
         this,
         EnergyTier.LOW,
-        1600.0,
+        32000.0,
         0.0,
         hashMapOf(
             Direction.NORTH to IO.NONE,

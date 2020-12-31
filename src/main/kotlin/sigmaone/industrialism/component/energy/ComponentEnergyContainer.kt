@@ -8,6 +8,8 @@ import sigmaone.industrialism.block.IBlockEntityRefreshable
 import sigmaone.industrialism.component.Component
 import sigmaone.industrialism.util.IO
 import team.reborn.energy.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ComponentEnergyContainer(
     owner: BlockEntity,
@@ -64,30 +66,38 @@ class ComponentEnergyContainer(
     }
 
     fun toTag(tag: CompoundTag): CompoundTag {
-        tag.putDouble("energy", storedEnergy)
+        val subTag = CompoundTag()
+        subTag.putDouble("energy", storedEnergy)
         for (dir in sideConfig.keys) {
-            tag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
+            subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
         }
+        tag.put("energyComponent", subTag)
         return tag
     }
 
     fun fromTag(state: BlockState, tag: CompoundTag) {
-        storedEnergy = tag.getDouble("energy")
+        val subTag = tag.getCompound("energyComponent")
+        storedEnergy = subTag.getDouble("energy")
         for (dir in sideConfig.keys) {
-            sideConfig[dir] = IO.values()[tag.getInt(dir.toString())]
+            sideConfig[dir] = IO.values()[subTag.getInt(dir.toString())]
         }
     }
 
     fun toClientTag(tag: CompoundTag): CompoundTag {
+        val subTag = CompoundTag()
+        subTag.putDouble("energy", storedEnergy)
         for (dir in sideConfig.keys) {
-            tag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
+            subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
         }
+        tag.put("energyComponent", subTag)
         return tag
     }
 
     fun fromClientTag(tag: CompoundTag) {
+        val subTag = tag.getCompound("energyComponent")
+        storedEnergy = subTag.getDouble("energy")
         for (dir in sideConfig.keys) {
-            sideConfig[dir] = IO.values()[tag.getInt(dir.toString())]
+            sideConfig[dir] = IO.values()[subTag.getInt(dir.toString())]
         }
     }
 

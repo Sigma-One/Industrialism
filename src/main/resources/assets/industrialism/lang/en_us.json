@@ -77,7 +77,7 @@
     "block.industrialism.tater" : "Tiny Engineer Potato",
 
     "block.industrialism.basic_battery"    : "Basic Battery",
-    "block.industrialism.manual_generator" : "Hand Crank Generator",
+    "block.industrialism.dynamo"           : "Basic Dynamo",
     "block.industrialism.crank_handle"     : "Crank Handle",
 
     "block.industrialism.connector_t0" : "Cable Connector (Tier 0)",
