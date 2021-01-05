@@ -24,16 +24,21 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.block.BlockConnectorDummy
 import sigmaone.industrialism.block.BlockTater
-import sigmaone.industrialism.block.machine.*
+import sigmaone.industrialism.block.battery.BlockBattery
+import sigmaone.industrialism.block.battery.BlockEntityBattery
+import sigmaone.industrialism.block.crankhandle.BlockCrankHandle
+import sigmaone.industrialism.block.crankhandle.BlockEntityCrankHandle
+import sigmaone.industrialism.block.dynamo.BlockDynamo
+import sigmaone.industrialism.block.dynamo.BlockEntityDynamo
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockChild
 import sigmaone.industrialism.block.multiblock.BlockMultiblockChild
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGuiDescription
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockBlastFurnaceMultiblock
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblock
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockCokeOvenMultiblock
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblock
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlastFurnaceGuiDescription
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlockBlastFurnaceMultiblock
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlockEntityBlastFurnaceMultiblock
+import sigmaone.industrialism.block.multiblock.cokeoven.BlockCokeOvenMultiblock
+import sigmaone.industrialism.block.multiblock.cokeoven.BlockEntityCokeOvenMultiblock
+import sigmaone.industrialism.block.multiblock.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.BlockEntityWireConnectorT0
 import sigmaone.industrialism.block.wiring.BlockWireConnectorT0
 import sigmaone.industrialism.item.ItemEngineersJournal
@@ -213,7 +218,6 @@ class Industrialism : ModInitializer {
         // Dummy blocks for rendering etc.
         val CONNECTOR_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "connector_dummy"), BlockConnectorDummy(FabricBlockSettings.of(Material.AIR)))
         val CRANK_HANDLE_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "crank_handle_dummy"), Block(FabricBlockSettings.of(Material.AIR)))
-
 
         // Misc
         val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), FabricItemSettings().group(TOOLS_TAB))

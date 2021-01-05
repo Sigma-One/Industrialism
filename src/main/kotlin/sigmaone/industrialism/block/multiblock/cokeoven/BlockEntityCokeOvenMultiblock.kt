@@ -1,14 +1,12 @@
-package sigmaone.industrialism.block.multiblock.machine.blastfurnace
+package sigmaone.industrialism.block.multiblock.cokeoven
 
 import io.github.cottonmc.cotton.gui.PropertyDelegateHolder
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
-import net.fabricmc.fabric.api.registry.FuelRegistry
 import net.minecraft.block.BlockState
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.SidedInventory
-import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
@@ -24,47 +22,37 @@ import net.minecraft.util.Tickable
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.Industrialism.Companion.BLAST_FURNACE_MULTIBLOCK
+import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
-import sigmaone.industrialism.recipe.BlastingRecipe
+import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNACE_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRoot(COKE_OVEN_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
     @JvmField
-    val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
+    val items: DefaultedList<ItemStack> = DefaultedList.ofSize(2, ItemStack.EMPTY)
     var progress = 0
-    var burnProgress = 100
     var startedProcessing: Long = 0
-    var startedBurning: Long = 0
     var isProcessing = false
-    var isBurning = false
-    var burnTime = 0
-    val acceptedFuels: HashSet<Item> = hashSetOf(
-            Industrialism.COKE,
-            Industrialism.COKE_BLOCK.asItem()
-    )
 
     @JvmField
     val propertyDelegate: PropertyDelegate = object : PropertyDelegate {
         override fun get(index: Int): Int {
             return when (index) {
-                1 -> progress
-                0 -> 100
-                2 -> burnProgress
+                0 -> progress
+                1 -> 100
                 else -> throw IndexOutOfBoundsException("Invalid PropertyDelegate index")
             }
         }
 
         override fun set(index: Int, value: Int) {
             when (index) {
-                1 -> progress = value
-                2 -> burnProgress = value
+                0 -> progress = value
                 else -> throw IndexOutOfBoundsException("Invalid PropertyDelegate index")
             }
         }
 
         override fun size(): Int {
-            return 3
+            return 2
         }
     }
 
@@ -110,30 +98,27 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
     }
 
     override fun createMenu(syncId: Int, inv: PlayerInventory?, player: PlayerEntity?): ScreenHandler? {
-        return BlastFurnaceGuiDescription(syncId, inv, ScreenHandlerContext.create(world, pos))
+        return CokeOvenGuiDescription(syncId, inv, ScreenHandlerContext.create(world, pos))
     }
 
     override fun fromTag(state: BlockState?, tag: CompoundTag?) {
         super.fromTag(state, tag)
         Inventories.fromTag(tag, items)
         startedProcessing = tag!!.getLong("started_processing")
-        startedBurning = tag!!.getLong("started_burning")
-
     }
 
     override fun toTag(tag: CompoundTag?): CompoundTag {
         Inventories.toTag(tag, items)
         tag!!.putLong("started_processing", startedProcessing)
-        tag!!.putLong("started_burning", startedBurning)
         return super.toTag(tag)
     }
 
     override fun fromClientTag(tag: CompoundTag?) {
-        isBurning = tag!!.getBoolean("is_burning")
+        isProcessing = tag!!.getBoolean("is_processing")
     }
 
     override fun toClientTag(tag: CompoundTag?): CompoundTag {
-        tag!!.putBoolean("is_burning", startedBurning != 0L)
+        tag!!.putBoolean("is_processing", startedProcessing != 0L)
         return tag
     }
 
@@ -151,27 +136,18 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
     }
 
     override fun tick() {
-        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.BLASTING_RECIPE_TYPE, this, world).orElse(null)
+        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
         val currentTime = world!!.time
-
         // Check:
         // * Is recipe a thing
         // * Can recipe be crafted
         // * No crafting in progress
+        if (!world!!.isClient && startedProcessing == 0L) {
+            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
+        }
         if (recipe != null && canProcessRecipe(recipe) && startedProcessing == 0L) {
-            // Make sure furnace is fueled
-            if (startedBurning == 0L) {
-                if (!items[2].isEmpty && items[2].item in acceptedFuels) {
-                    startedBurning = world!!.time
-                    burnTime = FuelRegistry.INSTANCE.get(items[2].item as ItemConvertible)
-                    items[2].decrement(1)
-                    world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, true))
-                }
-            }
-            // Check for fuel level and start processing
-            if (startedBurning != 0L) {
-                startedProcessing = world!!.time
-            }
+            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, true))
+            startedProcessing = world!!.time
             refresh()
         }
         // Check:
@@ -180,7 +156,7 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
         // * No crafting in progress
         else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
             // If processing is done, do craft
-            if (startedProcessing + (recipe as BlastingRecipe).processingTime< currentTime) {
+            if (startedProcessing + (recipe as CokingRecipe).processingTime < currentTime) {
                 startedProcessing = 0
                 progress = 0
                 items[0].decrement(1)
@@ -190,33 +166,12 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
                 else {
                     items[1].increment(1)
                 }
+                world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
             }
             // Otherwise, increment progress
             else {
                 progress = (((currentTime - startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
             }
-        }
-        // Increment burning progress
-        if (startedBurning != 0L) {
-            burnProgress = (((currentTime - startedBurning).toFloat() / burnTime) * 100).toInt()
-        }
-        // Handle running out of fuel and stop processing
-        if (startedBurning + burnTime < currentTime && startedBurning != 0L) {
-            // Attempt to refuel
-            if (!items[2].isEmpty && items[2].item in acceptedFuels) {
-                startedBurning = world!!.time
-                burnTime = FuelRegistry.INSTANCE.get(items[2].item as ItemConvertible)
-                items[2].decrement(1)
-            }
-            // Otherwise end processing
-            else {
-                startedBurning = 0L
-                startedProcessing = 0L
-                burnProgress = 100
-                progress = 0
-                world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
-            }
-            refresh()
         }
         if (recipe == null || !canProcessRecipe(recipe)) {
             progress = 0

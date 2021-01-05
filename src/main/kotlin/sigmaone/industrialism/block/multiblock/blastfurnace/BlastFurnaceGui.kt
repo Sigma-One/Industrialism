@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.multiblock.machine.blastfurnace
+package sigmaone.industrialism.block.multiblock.blastfurnace
 
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen

@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.machine
+package sigmaone.industrialism.block.crankhandle
 
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.MinecraftClient

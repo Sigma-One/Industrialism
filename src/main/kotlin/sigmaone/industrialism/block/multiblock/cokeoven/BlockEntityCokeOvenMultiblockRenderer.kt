@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.multiblock.machine.blastfurnace
+package sigmaone.industrialism.block.multiblock.cokeoven
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.render.RenderLayer
@@ -11,26 +11,25 @@ import net.minecraft.client.util.math.Vector3f
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.IndustrialismClient
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblock
 import java.lang.IllegalStateException
 import java.util.*
 
 
-class BlockEntityBlastFurnaceMultiblockRenderer<T : BlockEntityBlastFurnaceMultiblock?>(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<T>(dispatcher) {
+class BlockEntityCokeOvenMultiblockRenderer<T : BlockEntityCokeOvenMultiblock?>(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<T>(dispatcher) {
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
         val blockState = entity!!.world!!.getBlockState(entity.pos)
 
-        val model: BakedModel = if (entity.isBurning) {
-            MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.blastFurnaceModelIDs[1])
+        val model: BakedModel = if (entity.isProcessing) {
+            MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.cokeOvenModelIDs[1])
         }
         else {
-            MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.blastFurnaceModelIDs[0])
+            MinecraftClient.getInstance().bakedModelManager.getModel(IndustrialismClient.cokeOvenModelIDs[0])
         }
 
         matrices.push()
 
         when (blockState.get(Properties.HORIZONTAL_FACING)) {
-            Direction.NORTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(0f));   matrices.translate( 0.0, 0.0, 1.0) }
+            Direction.NORTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(0f));   matrices.translate(0.0, 0.0, 1.0) }
             Direction.SOUTH -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(180f)); matrices.translate(-1.0, 0.0, 0.0) }
             Direction.EAST  -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(270f)) }
             Direction.WEST  -> { matrices.multiply(Vector3f.POSITIVE_Y.getDegreesQuaternion(90f));  matrices.translate(-1.0, 0.0, 1.0) }

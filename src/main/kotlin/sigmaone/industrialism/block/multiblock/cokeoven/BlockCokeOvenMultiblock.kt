@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.multiblock.machine.blastfurnace
+package sigmaone.industrialism.block.multiblock.cokeoven
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockEntityProvider
@@ -21,23 +21,23 @@ import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
 
-class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(settings), BlockEntityProvider {
+class BlockCokeOvenMultiblock(settings: Settings?): BlockMultiblockRoot(settings), BlockEntityProvider {
     override val layout: Array<Array<Array<Block>>>
         get() = arrayOf(
             arrayOf(
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
             ),
             arrayOf(
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Blocks.NETHER_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
-                arrayOf(Blocks.IRON_BARS, Blocks.AIR, Blocks.NETHER_BRICKS),
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Blocks.NETHER_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Blocks.AIR, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
             ),
             arrayOf(
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS),
-                arrayOf(Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS, Industrialism.BRACED_FIRE_BRICKS)
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS),
+                arrayOf(Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS, Industrialism.FIRE_BRICKS)
             )
         )
 
@@ -64,11 +64,7 @@ class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(set
         )
 
     override fun createBlockEntity(world: BlockView): BlockEntity {
-        return BlockEntityBlastFurnaceMultiblock()
-    }
-
-    override fun appendProperties(stateManager: StateManager.Builder<Block, BlockState>) {
-        stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.LIT)
+        return BlockEntityCokeOvenMultiblock()
     }
 
     override fun onUse(state: BlockState?, world: World?, pos: BlockPos?, player: PlayerEntity?, hand: Hand?, hit: BlockHitResult?): ActionResult {
@@ -79,6 +75,10 @@ class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(set
     override fun createScreenHandlerFactory(state: BlockState?, world: World, pos: BlockPos?): NamedScreenHandlerFactory? {
         val blockEntity = world.getBlockEntity(pos)
         return if (blockEntity is NamedScreenHandlerFactory) blockEntity else null
+    }
+
+    override fun appendProperties(stateManager: StateManager.Builder<Block, BlockState>) {
+        stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.LIT)
     }
 
     init {

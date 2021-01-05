@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.machine
+package sigmaone.industrialism.block.crankhandle
 
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState

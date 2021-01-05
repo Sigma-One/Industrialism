@@ -1,4 +1,4 @@
-package sigmaone.industrialism.block.multiblock.machine.cokeoven
+package sigmaone.industrialism.block.multiblock.cokeoven
 
 import io.github.cottonmc.cotton.gui.SyncedGuiDescription
 import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen
@@ -6,7 +6,6 @@ import io.github.cottonmc.cotton.gui.widget.WBar
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
 import io.github.cottonmc.cotton.gui.widget.WItemSlot
 import io.github.cottonmc.cotton.gui.widget.data.Texture
-import net.minecraft.client.util.SpriteIdentifier
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.screen.ScreenHandlerContext

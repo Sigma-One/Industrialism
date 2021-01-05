@@ -27,13 +27,13 @@ import sigmaone.industrialism.Industrialism.Companion.CRANK_HANDLE_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
 import sigmaone.industrialism.Industrialism.Companion.TATER
 import sigmaone.industrialism.block.EnergyContainerRenderer
-import sigmaone.industrialism.block.machine.BlockEntityCrankHandleRenderer
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGui
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlastFurnaceGuiDescription
-import sigmaone.industrialism.block.multiblock.machine.blastfurnace.BlockEntityBlastFurnaceMultiblockRenderer
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.BlockEntityCokeOvenMultiblockRenderer
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGui
-import sigmaone.industrialism.block.multiblock.machine.cokeoven.CokeOvenGuiDescription
+import sigmaone.industrialism.block.crankhandle.BlockEntityCrankHandleRenderer
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlastFurnaceGui
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlastFurnaceGuiDescription
+import sigmaone.industrialism.block.multiblock.blastfurnace.BlockEntityBlastFurnaceMultiblockRenderer
+import sigmaone.industrialism.block.multiblock.cokeoven.BlockEntityCokeOvenMultiblockRenderer
+import sigmaone.industrialism.block.multiblock.cokeoven.CokeOvenGui
+import sigmaone.industrialism.block.multiblock.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.WireRenderer
 import java.util.function.Consumer
 
