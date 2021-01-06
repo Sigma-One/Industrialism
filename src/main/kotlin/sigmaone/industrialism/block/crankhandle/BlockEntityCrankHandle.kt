@@ -32,7 +32,7 @@ class BlockEntityCrankHandle:
         30.0,
         hashMapOf(
             Direction.UP    to IO.NONE,
-            Direction.DOWN  to IO.OUTPUT,
+            Direction.DOWN  to IO.NONE,
             Direction.NORTH to IO.NONE,
             Direction.EAST  to IO.NONE,
             Direction.SOUTH to IO.NONE,
