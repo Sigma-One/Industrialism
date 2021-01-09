@@ -9,10 +9,12 @@ import net.minecraft.item.ArmorItem
 import net.minecraft.item.Item
 import net.minecraft.item.ToolItem
 import net.minecraft.recipe.Ingredient
+import net.minecraft.util.Identifier
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.tool.*
 import sigmaone.industrialism.util.RegistryHelper
+import sigmaone.industrialism.util.datagen.CraftingRecipeGenerator
 
 class Metal(  // Misc
         private val name: String) {
@@ -59,6 +61,21 @@ class Metal(  // Misc
 
     fun addStick(): Metal {
         stick = RegistryHelper.registerItem(name + "_stick", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        if (this.ingot != null) {
+            CraftingRecipeGenerator.generateShapedRecipe(
+                name + "_stick",
+                stick!!,
+                1,
+                tagKey = hashMapOf(
+                    '#' to Identifier("c", "${name}_ingots")
+                ),
+                pattern = arrayOf(
+                    "   ",
+                    " # ",
+                    " # "
+                )
+            )
+        }
         return this
     }
 

@@ -1,5 +1,7 @@
 package sigmaone.industrialism
 
+import com.swordglowsblue.artifice.api.Artifice
+import com.swordglowsblue.artifice.api.resource.ArtificeResource
 import dev.onyxstudios.foml.obj.OBJLoader
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -59,6 +61,8 @@ class Industrialism : ModInitializer {
 
     companion object {
         const val MOD_ID = "industrialism"
+
+        val RESOURCES: ArrayList<Pair<Identifier, ArtificeResource<*>>> = ArrayList()
 
         // Materials creative tab
         private val materialsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "materials"))
@@ -289,6 +293,13 @@ class Industrialism : ModInitializer {
     }
 
     override fun onInitialize() {
-        // :tiny_potato:
+        val RESOURCE_PACK = Artifice.registerDataPack(Identifier("artifice", "industrialism"), { pack ->
+            pack.setDisplayName("Industrialism Server-Side Resources")
+            pack.setDescription("Industrialism's automatically generated data")
+
+            for (resource in RESOURCES) {
+                pack.add(resource.first, resource.second)
+            }
+        })
     }
 }

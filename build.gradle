@@ -62,6 +62,11 @@ dependencies {
     // Fabric Kotlin module
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.kotlin_version}"
 
+
+    //Artifice
+    modImplementation "com.lettuce.fudge:artifice:${project.artifice_version}"
+    include "com.lettuce.fudge:artifice:${project.artifice_version}"
+
     //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
