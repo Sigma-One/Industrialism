@@ -84,59 +84,73 @@ class Industrialism : ModInitializer {
         val MATERIAL_STONE: Material = FabricMaterialBuilder(MaterialColor.STONE).build()
         val MATERIAL_METAL: Material = FabricMaterialBuilder(MaterialColor.GRAY).build()
 
+        // Utility items
+        val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
+        val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
+        val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
+        val ENGINEERS_JOURNAL: Item = registerItem("engineers_journal", ItemEngineersJournal(Item.Settings().group(TOOLS_TAB).maxCount(1)))
+
         // Metals
-        val COPPER: Metal = Metal("copper")
-                .addIngot()
-                .addNugget()
-                .addStick()
-                .addPlate()
-                .addWire(10, 0.05f, intArrayOf(220, 145, 85))
-                .addBlock(1, 4.5f)
-                .addOre("malachite", 1, 14, 8, 40, 64)
-                .addToolMaterial(3f, 192, 2, 5.0f, 16)
-                .addAxe(6f, 0.9f)
-                .addPickaxe(1, 1.2f)
-                .addShovel(1.5f, 1.0f)
-                .addSword(3, 1.6f)
-                .addHoe(-2, 3.0f)
-        val LEAD: Metal = Metal("lead")
-                .addIngot()
-                .addNugget()
-                .addStick()
-                .addPlate()
-                .addBlock(1, 4.0f)
-                .addOre("galena", 1, 8, 6, 10, 40)
-                .addToolMaterial(2f, 135, 1, 3.0f, 7)
-                .addAxe(6f, 0.8f)
-                .addPickaxe(1, 1.1f)
-                .addShovel(1.5f, 0.9f)
-                .addSword(3, 1.5f)
-                .addHoe(-2, 2.9f)
-        val IRON: Metal = Metal("iron")
-                .addStick()
-                .addPlate()
-        val GOLD: Metal = Metal("gold")
-                .addStick()
-                .addPlate()
-        val STEEL: Metal = Metal("steel")
-                .addIngot()
-                .addNugget()
-                .addStick()
-                .addPlate()
-                .addBlock(2, 5.5f)
-                .addToolMaterial(3.5f, 500, 3, 7.0f, 6)
-                .addAxe(6f, 0.9f)
-                .addPickaxe(1, 1.2f)
-                .addShovel(1.5f, 1.0f)
-                .addSword(3, 1.6f)
-                .addHoe(-2, 3.0f)
-                .addArmour(
-                        intArrayOf(247, 285, 304, 209), // Durabilities (Boots, Legs, Chest, Helmet)
-                        intArrayOf(2, 5, 7, 2),         // Protection values
-                        1.0f,
-                        0.1f,
-                        7
-                )
+        var COPPER: Metal = Metal("copper")
+            .addIngot()
+            .addNugget()
+            .addStick()
+            .addPlate()
+            .addWire(10, 0.05f, intArrayOf(220, 145, 85))
+            .addBlock(1, 4.5f)
+            .addOre("malachite", 1, 14, 8, 40, 64)
+            .addToolMaterial(3f, 192, 2, 5.0f, 16)
+            .addAxe(6f, 0.9f)
+            .addPickaxe(1, 1.2f)
+            .addShovel(1.5f, 1.0f)
+            .addSword(3, 1.6f)
+            .addHoe(-2, 3.0f)
+        var LEAD: Metal = Metal("lead")
+            .addIngot()
+            .addNugget()
+            .addStick()
+            .addPlate()
+            .addBlock(1, 4.0f)
+            .addOre("galena", 1, 8, 6, 10, 40)
+            .addToolMaterial(2f, 135, 1, 3.0f, 7)
+            .addAxe(6f, 0.8f)
+            .addPickaxe(1, 1.1f)
+            .addShovel(1.5f, 0.9f)
+            .addSword(3, 1.5f)
+            .addHoe(-2, 2.9f)
+        var IRON: Metal = Metal("iron")
+            .setIngot(Items.IRON_INGOT)
+            .setNugget(Items.IRON_NUGGET)
+            .setBlock(Blocks.IRON_BLOCK)
+            .setOre(Blocks.IRON_ORE)
+            .addStick()
+            .addPlate()
+        var GOLD: Metal = Metal("gold")
+            .setIngot(Items.GOLD_INGOT)
+            .setNugget(Items.GOLD_NUGGET)
+            .setBlock(Blocks.GOLD_BLOCK)
+            .setOre(Blocks.GOLD_ORE)
+            .addStick()
+            .addPlate()
+        var STEEL: Metal = Metal("steel")
+            .addIngot()
+            .addNugget()
+            .addStick()
+            .addPlate()
+            .addBlock(2, 5.5f)
+            .addToolMaterial(3.5f, 500, 3, 7.0f, 6)
+            .addAxe(6f, 0.9f)
+            .addPickaxe(1, 1.2f)
+            .addShovel(1.5f, 1.0f)
+            .addSword(3, 1.6f)
+            .addHoe(-2, 3.0f)
+            .addArmour(
+                    intArrayOf(247, 285, 304, 209), // Durabilities (Boots, Legs, Chest, Helmet)
+                    intArrayOf(2, 5, 7, 2),         // Protection values
+                    1.0f,
+                    0.1f,
+                    7
+            )
 
         // Random materials
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
@@ -164,12 +178,6 @@ class Industrialism : ModInitializer {
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))
         val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null))
-
-        // Utility items
-        val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
-        val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
-        val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
-        val ENGINEERS_JOURNAL: Item = registerItem("engineers_journal", ItemEngineersJournal(Item.Settings().group(TOOLS_TAB).maxCount(1)))
 
         // Multiblock parts
         val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
@@ -293,6 +301,44 @@ class Industrialism : ModInitializer {
     }
 
     override fun onInitialize() {
+        // Add recipes
+        COPPER = COPPER
+            //.addIngotRecipe()
+            .addNuggetRecipe()
+            .addStickRecipe()
+            .addPlateRecipe()
+            .addWireRecipe()
+            .addBlockRecipe()
+            .addAxeRecipe()
+            .addPickaxeRecipe()
+            .addShovelRecipe()
+            .addSwordRecipe()
+            .addHoeRecipe()
+        LEAD = LEAD
+            //.addIngotRecipe()
+            .addNuggetRecipe()
+            .addStickRecipe()
+            .addPlateRecipe()
+            .addBlockRecipe()
+            .addAxeRecipe()
+            .addPickaxeRecipe()
+            .addShovelRecipe()
+            .addSwordRecipe()
+            .addHoeRecipe()
+        STEEL = STEEL
+            //.addIngotRecipe()
+            .addNuggetRecipe()
+            .addStickRecipe()
+            .addPlateRecipe()
+            .addBlockRecipe()
+        IRON = IRON
+            .addStickRecipe()
+            .addPlateRecipe()
+        GOLD = GOLD
+            .addStickRecipe()
+            .addPlateRecipe()
+
+        // Create Artifice data pack
         val RESOURCE_PACK = Artifice.registerDataPack(Identifier("artifice", "industrialism"), { pack ->
             pack.setDisplayName("Industrialism Server-Side Resources")
             pack.setDescription("Industrialism's automatically generated data")

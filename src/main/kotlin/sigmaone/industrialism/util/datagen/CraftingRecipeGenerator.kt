@@ -1,6 +1,7 @@
 package sigmaone.industrialism.util.datagen
 
 import com.swordglowsblue.artifice.api.builder.data.recipe.ShapedRecipeBuilder
+import com.swordglowsblue.artifice.api.builder.data.recipe.ShapelessRecipeBuilder
 import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.Registry
@@ -26,9 +27,43 @@ object CraftingRecipeGenerator {
         for ((key, item) in itemKey) {
             builder.ingredientItem(key, Registry.ITEM.getId(item))
         }
-
         for ((key, id) in tagKey) {
             builder.ingredientTag(key, id)
+        }
+
+        builder.result(Registry.ITEM.getId(result), resultCount)
+
+        if (group != null) {
+            builder.group(group)
+        }
+
+        Industrialism.RESOURCES.add(
+            Pair(
+                Identifier(Industrialism.MOD_ID, "recipes/${name}.json"),
+                builder.build()
+            )
+        )
+    }
+
+    fun generateShapelessRecipe(
+        name: String,
+        result: Item,
+        resultCount: Int = 1,
+        itemIngredients: Array<Item> = arrayOf(),
+        tagIngredients: Array<Identifier> = arrayOf(),
+        group: Identifier? = null,
+        damagesTools: Boolean = false
+    ) {
+        val builder = ShapelessRecipeBuilder()
+        if (damagesTools) {
+            builder.type(Identifier(Industrialism.MOD_ID, "crafting_shapeless_tooldamage"))
+        }
+
+        for (item in itemIngredients) {
+            builder.ingredientItem(Registry.ITEM.getId(item))
+        }
+        for (id in tagIngredients) {
+            builder.ingredientTag(id)
         }
 
         builder.result(Registry.ITEM.getId(result), resultCount)

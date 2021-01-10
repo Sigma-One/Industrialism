@@ -7,6 +7,7 @@ import net.minecraft.block.Block
 import net.minecraft.entity.EquipmentSlot
 import net.minecraft.item.ArmorItem
 import net.minecraft.item.Item
+import net.minecraft.item.Items
 import net.minecraft.item.ToolItem
 import net.minecraft.recipe.Ingredient
 import net.minecraft.util.Identifier
@@ -16,16 +17,10 @@ import sigmaone.industrialism.item.tool.*
 import sigmaone.industrialism.util.RegistryHelper
 import sigmaone.industrialism.util.datagen.CraftingRecipeGenerator
 
-class Metal(  // Misc
-        private val name: String) {
+class Metal(private val name: String) {
     // Intermediates
     var ingot: Item? = null
     var nugget: Item? = null
-
-    /*
-    public Item dust;
-    public Item gear;
-     */
     var plate: Item? = null
     var stick: Item? = null
     var wire: Item? = null
@@ -49,8 +44,14 @@ class Metal(  // Misc
     var shovel: ToolItem? = null
     var sword: ToolItem? = null
     var hoe: ToolItem? = null
+
     fun addIngot(): Metal {
         ingot = RegistryHelper.registerItem(name + "_ingot", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        return this
+    }
+
+    fun setIngot(item: Item): Metal {
+        ingot = item
         return this
     }
 
@@ -59,23 +60,55 @@ class Metal(  // Misc
         return this
     }
 
+    fun setNugget(item: Item): Metal {
+        nugget = item
+        return this
+    }
+
+    fun addNuggetRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapelessRecipe(
+            name + "_ingot_nugget_unpack",
+            nugget!!,
+            resultCount = 9,
+            itemIngredients = arrayOf(ingot!!)
+        )
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_nugget_ingot_pack",
+            ingot!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_nuggets")
+            ),
+            itemKey = hashMapOf(
+                '=' to nugget!!
+            ),
+            pattern = arrayOf(
+                "###",
+                "#=#",
+                "###"
+            )
+        )
+        return this
+    }
+
     fun addStick(): Metal {
         stick = RegistryHelper.registerItem(name + "_stick", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
-        if (this.ingot != null) {
-            CraftingRecipeGenerator.generateShapedRecipe(
-                name + "_stick",
-                stick!!,
-                1,
-                tagKey = hashMapOf(
-                    '#' to Identifier("c", "${name}_ingots")
-                ),
-                pattern = arrayOf(
-                    "   ",
-                    " # ",
-                    " # "
-                )
+        return this
+    }
+
+    fun addStickRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_stick",
+            stick!!,
+            resultCount = 4,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots")
+            ),
+            pattern = arrayOf(
+                "   ",
+                " # ",
+                " # "
             )
-        }
+        )
         return this
     }
 
@@ -84,9 +117,46 @@ class Metal(  // Misc
         return this
     }
 
+    fun addPlateRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapelessRecipe(
+            name + "_plate",
+            plate!!,
+            itemIngredients = arrayOf(Industrialism.FORGE_HAMMER),
+            tagIngredients = arrayOf(Identifier("c", "${name}_ingots")),
+            damagesTools = true
+        )
+        return this
+    }
+
     fun addWire(maxLength: Int, thickness: Float, colour: IntArray): Metal {
         wire = RegistryHelper.registerItem(name + "_wire", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         wireSpool = RegistryHelper.registerItem(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength, thickness, colour))
+        return this
+    }
+
+    fun addWireRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapelessRecipe(
+            name + "_wire",
+            wire!!,
+            resultCount = 4,
+            itemIngredients = arrayOf(Items.SHEARS),
+            tagIngredients = arrayOf(Identifier("c", "${name}_plates")),
+            damagesTools = true
+        )
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_wire_spool",
+            wireSpool!!,
+            resultCount = 4,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_wires"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                "###",
+                "#|#",
+                "###"
+            )
+        )
         return this
     }
 
@@ -98,6 +168,36 @@ class Metal(  // Misc
                         .breakByTool(FabricToolTags.PICKAXES, miningLevel)
                         .requiresTool()),
                 FabricItemSettings().group(Industrialism.MATERIALS_TAB)
+        )
+        return this
+    }
+
+    fun setBlock(item: Block): Metal {
+        block = item
+        return this
+    }
+
+    fun addBlockRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapelessRecipe(
+            name + "_block_ingot_unpack",
+            ingot!!,
+            resultCount = 9,
+            itemIngredients = arrayOf(block!!.asItem())
+        )
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_ingot_block_pack",
+            block!!.asItem(),
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots")
+            ),
+            itemKey = hashMapOf(
+                '=' to ingot!!
+            ),
+            pattern = arrayOf(
+                "###",
+                "#=#",
+                "###"
+            )
         )
         return this
     }
@@ -115,37 +215,127 @@ class Metal(  // Misc
         return this
     }
 
+    fun setOre(item: Block): Metal {
+        ore = item
+        return this
+    }
+
     fun addToolMaterial(baseAttackDamage: Float, durability: Int, miningLevel: Int, miningSpeed: Float, enchantability: Int): Metal {
         toolMaterial = MetalToolMaterial(miningLevel, durability, miningSpeed, (baseAttackDamage - 1f), enchantability) { Ingredient.ofItems(ingot) }
         return this
     }
 
-    fun addPickaxe(attackDamage: Int, attackSpeed: Float): Metal {
+    fun addPickaxe(attackDamage: Int, attackSpeed: Float, skipRecipe: Boolean = false): Metal {
         pickaxe = RegistryHelper.registerItem(name + "_pickaxe", ToolPickaxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 
-    fun addAxe(attackDamage: Float, attackSpeed: Float): Metal {
+    fun addPickaxeRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_pickaxe",
+            pickaxe!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                "###",
+                " | ",
+                " | "
+            )
+        )
+        return this
+    }
+
+    fun addAxe(attackDamage: Float, attackSpeed: Float, skipRecipe: Boolean = false): Metal {
         axe = RegistryHelper.registerItem(name + "_axe", ToolAxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 
-    fun addShovel(attackDamage: Float, attackSpeed: Float): Metal {
+    fun addAxeRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_axe",
+            axe!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                "## ",
+                "#| ",
+                " | "
+            )
+        )
+        return this
+    }
+
+    fun addShovel(attackDamage: Float, attackSpeed: Float, skipRecipe: Boolean = false): Metal {
         shovel = RegistryHelper.registerItem(name + "_shovel", ToolShovel(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 
-    fun addSword(attackDamage: Int, attackSpeed: Float): Metal {
+    fun addShovelRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_shovel",
+            shovel!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                " # ",
+                " | ",
+                " | "
+            )
+        )
+        return this
+    }
+
+    fun addSword(attackDamage: Int, attackSpeed: Float, skipRecipe: Boolean = false): Metal {
         sword = RegistryHelper.registerItem(name + "_sword", ToolSword(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 
-    fun addHoe(attackDamage: Int, attackSpeed: Float): Metal {
+    fun addSwordRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_sword",
+            sword!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                " # ",
+                " # ",
+                " | "
+            )
+        )
+        return this
+    }
+
+    fun addHoe(attackDamage: Int, attackSpeed: Float, skipRecipe: Boolean = false): Metal {
         hoe = RegistryHelper.registerItem(name + "_hoe", ToolHoe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
         return this
     }
 
-    fun addArmour(durability: IntArray, protection: IntArray, toughness: Float, knockbackResistance: Float, enchantability: Int): Metal {
+    fun addHoeRecipe(): Metal {
+        CraftingRecipeGenerator.generateShapedRecipe(
+            name + "_hoe",
+            hoe!!,
+            tagKey = hashMapOf(
+                '#' to Identifier("c", "${name}_ingots"),
+                '|' to Identifier("c", "wood_sticks")
+            ),
+            pattern = arrayOf(
+                "## ",
+                " | ",
+                " | "
+            )
+        )
+        return this
+    }
+
+    fun addArmour(durability: IntArray, protection: IntArray, toughness: Float, knockbackResistance: Float, enchantability: Int, skipRecipe: Boolean = false): Metal {
         armourMaterial = MetalArmourMaterial(name, durability, protection, toughness, knockbackResistance, enchantability) { Ingredient.ofItems(ingot) }
         helmet = RegistryHelper.registerItem(name+"_helmet", ArmorItem(armourMaterial, EquipmentSlot.HEAD, Item.Settings().group(Industrialism.TOOLS_TAB)))
         chestplace = RegistryHelper.registerItem(name+"_chestplate", ArmorItem(armourMaterial, EquipmentSlot.CHEST, Item.Settings().group(Industrialism.TOOLS_TAB)))
