@@ -35,6 +35,7 @@ import sigmaone.industrialism.block.multiblock.cokeoven.BlockEntityCokeOvenMulti
 import sigmaone.industrialism.block.multiblock.cokeoven.CokeOvenGui
 import sigmaone.industrialism.block.multiblock.cokeoven.CokeOvenGuiDescription
 import sigmaone.industrialism.block.wiring.WireRenderer
+import sigmaone.industrialism.util.datagen.DataGenerator
 import java.util.function.Consumer
 
 @Environment(EnvType.CLIENT)
@@ -52,6 +53,7 @@ class IndustrialismClient : ClientModInitializer {
     }
 
     override fun onInitializeClient() {
+        DataGenerator.commitClient()
 
         ModelLoadingRegistry.INSTANCE.registerAppender { _: ResourceManager, ids: Consumer<ModelIdentifier> ->
             run {

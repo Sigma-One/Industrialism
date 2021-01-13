@@ -6,3 +6,9 @@ accessible field net/minecraft/world/biome/GenerationSettings features Ljava/uti
 
 # Accessible RecipeFactory in CookingRecipeSerializer
 accessible class net/minecraft/recipe/CookingRecipeSerializer
+
+# Accessible TagWrapper in RequiredTagList
+accessible class net/minecraft/tag/RequiredTagList$TagWrapper
+
+# Accessible ItemTags list thing
+accessible field net/minecraft/tag/ItemTags REQUIRED_TAGS Lnet/minecraft/tag/RequiredTagList;

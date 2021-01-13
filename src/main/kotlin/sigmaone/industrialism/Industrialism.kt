@@ -1,7 +1,5 @@
 package sigmaone.industrialism
 
-import com.swordglowsblue.artifice.api.Artifice
-import com.swordglowsblue.artifice.api.resource.ArtificeResource
 import dev.onyxstudios.foml.obj.OBJLoader
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.`object`.builder.v1.block.FabricBlockSettings
@@ -50,8 +48,9 @@ import sigmaone.industrialism.item.ItemWrench
 import sigmaone.industrialism.item.tool.ToolSword
 import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.*
-import sigmaone.industrialism.util.RegistryHelper.registerBlock
 import sigmaone.industrialism.util.RegistryHelper.registerItem
+import sigmaone.industrialism.util.content.RegisteredBlockBuilder
+import sigmaone.industrialism.util.datagen.DataGenerator
 import vazkii.patchouli.client.book.ClientBookRegistry
 
 class Industrialism : ModInitializer {
@@ -61,8 +60,6 @@ class Industrialism : ModInitializer {
 
     companion object {
         const val MOD_ID = "industrialism"
-
-        val RESOURCES: ArrayList<Pair<Identifier, ArtificeResource<*>>> = ArrayList()
 
         // Materials creative tab
         private val materialsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "materials"))
@@ -83,6 +80,7 @@ class Industrialism : ModInitializer {
         // Materials to fix mining levels
         val MATERIAL_STONE: Material = FabricMaterialBuilder(MaterialColor.STONE).build()
         val MATERIAL_METAL: Material = FabricMaterialBuilder(MaterialColor.GRAY).build()
+        val MATERIAL_WOOD : Material = FabricMaterialBuilder(MaterialColor.WOOD).build()
 
         // Utility items
         val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
@@ -154,38 +152,106 @@ class Industrialism : ModInitializer {
 
         // Random materials
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
-        val COKE_BLOCK = registerBlock("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)), FabricItemSettings().group(MATERIALS_TAB))
+        val COKE_BLOCK = RegisteredBlockBuilder(
+            "coke_block",
+            Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK))
+        )
+            .withGeneratedModel()
+            .withGeneratedBlockState()
+            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB))
+            .build()
 
         // Intermediates
         val CERAMIC_DISC: Item = registerItem("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
         val RAW_FIRE_BRICK = registerItem("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
         val FIRE_BRICK = registerItem("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
 
-        val FIRE_BRICKS = registerBlock("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.BRICKS)), FabricItemSettings().group(MATERIALS_TAB).fireproof())
-        val BRACED_FIRE_BRICKS = registerBlock("braced_fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.BRICKS).strength(2.5F, 6.5F)), FabricItemSettings().group(MATERIALS_TAB).fireproof())
+        val FIRE_BRICKS = RegisteredBlockBuilder(
+            "fire_bricks",
+            Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS))
+        )
+            .withGeneratedModel()
+            .withGeneratedBlockState()
+            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
+            .build()
+
+        val BRACED_FIRE_BRICKS = RegisteredBlockBuilder(
+            "braced_fire_bricks",
+            Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f))
+        )
+            .withGeneratedModel()
+            .withGeneratedBlockState()
+            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
+            .build()
 
         // Single block machines
-        val BATTERY_BLOCK: Block = registerBlock("basic_battery", BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:basic_battery", BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null))
-        val DYNAMO_BLOCK: Block = registerBlock("dynamo", BlockDynamo(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:dynamo", BlockEntityType.Builder.create({ BlockEntityDynamo() }, DYNAMO_BLOCK).build(null))
-        val CRANK_HANDLE_BLOCK: Block = registerBlock("crank_handle", BlockCrankHandle(FabricBlockSettings.of(MATERIAL_STONE).nonOpaque()), FabricItemSettings().group(MACHINES_TAB))
-        val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:crank_handle", BlockEntityType.Builder.create({ BlockEntityCrankHandle() }, CRANK_HANDLE_BLOCK).build(null))
+        // Battery
+        val BATTERY_BLOCK: Block = RegisteredBlockBuilder(
+            "basic_battery",
+            BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f))
+        )
+            .withSimpleSidedModel()
+            .withGeneratedBlockState()
+            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .build()
+        val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            "$MOD_ID:basic_battery",
+            BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null)
+        )
+
+        // Dynamo
+        val DYNAMO_BLOCK: Block = RegisteredBlockBuilder(
+            "dynamo",
+            BlockDynamo(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f))
+        )
+            .withSimpleSidedModel()
+            .withFacingBlockState()
+            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .build()
+        val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            "$MOD_ID:dynamo",
+            BlockEntityType.Builder.create({ BlockEntityDynamo() }, DYNAMO_BLOCK).build(null)
+        )
+
+        // Crank
+        val CRANK_HANDLE_BLOCK: Block = RegisteredBlockBuilder(
+            "crank_handle",
+            BlockCrankHandle(FabricBlockSettings.of(MATERIAL_WOOD).nonOpaque())
+        )
+            .withEmptyBlock()
+            .withNoModelItem(FabricItemSettings().group(MACHINES_TAB))
+            .build()
+        val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            "$MOD_ID:crank_handle",
+            BlockEntityType.Builder.create({ BlockEntityCrankHandle() }, CRANK_HANDLE_BLOCK)
+                .build(null)
+        )
 
         // Debug stuff
         val DEBUG_LINKER: ItemWireSpool = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
 
         // Wiring
-        val CONNECTOR_T0_BLOCK: Block = registerBlock("connector_t0", BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f)), FabricItemSettings().group(MACHINES_TAB))
-        val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(Registry.BLOCK_ENTITY_TYPE, "$MOD_ID:connector_t0", BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null))
-
-        // Multiblock parts
-        val MULTIBLOCK_CHILD_BLOCK: Block = Registry.register(
-            Registry.BLOCK,
-            Identifier(MOD_ID, "multiblock_child"),
-            BlockMultiblockChild(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque()
-                )
+        val CONNECTOR_T0_BLOCK: Block = RegisteredBlockBuilder(
+            "connector_t0",
+            BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f))
         )
+            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .build()
+        val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(
+            Registry.BLOCK_ENTITY_TYPE,
+            "$MOD_ID:connector_t0",
+            BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null)
+        )
+
+        val MULTIBLOCK_CHILD_BLOCK: Block = RegisteredBlockBuilder(
+            "multiblock_child",
+            BlockMultiblockChild(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque())
+        )
+            .withEmptyBlock()
+            .build()
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChild> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:multiblock_child",
@@ -232,7 +298,12 @@ class Industrialism : ModInitializer {
         val CRANK_HANDLE_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "crank_handle_dummy"), Block(FabricBlockSettings.of(Material.AIR)))
 
         // Misc
-        val TATER: Block = registerBlock("tater", BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f)), FabricItemSettings().group(TOOLS_TAB))
+        val TATER: Block = RegisteredBlockBuilder(
+            "tater",
+            BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f))
+        )
+            .withGeneratedItem(FabricItemSettings().group(TOOLS_TAB))
+            .build()
 
         // Recipes
         val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(
@@ -338,14 +409,6 @@ class Industrialism : ModInitializer {
             .addStickRecipe()
             .addPlateRecipe()
 
-        // Create Artifice data pack
-        val RESOURCE_PACK = Artifice.registerDataPack(Identifier("artifice", "industrialism"), { pack ->
-            pack.setDisplayName("Industrialism Server-Side Resources")
-            pack.setDescription("Industrialism's automatically generated data")
-
-            for (resource in RESOURCES) {
-                pack.add(resource.first, resource.second)
-            }
-        })
+        DataGenerator.commit()
     }
 }

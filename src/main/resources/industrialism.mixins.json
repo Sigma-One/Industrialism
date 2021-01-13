@@ -1,16 +1,17 @@
 {
-  "required": true,
-  "minVersion": "0.8",
-  "package": "sigmaone.industrialism.mixin",
-  "compatibilityLevel": "JAVA_14",
-  "mixins": [
-    "MixinMultiblockExplosionFix",
-    "MixinWiringExplosionFix",
+  "required" : true,
+  "minVersion" : "0.8",
+  "package" : "sigmaone.industrialism.mixin",
+  "compatibilityLevel" : "JAVA_14",
+  "mixins" : [
     "MixinArmourKnockbackFix",
-    "MixinNoEntityRaycast"
+    "MixinMultiblockExplosionFix",
+    "MixinNoEntityRaycast",
+    "MixinRecipeInjector",
+    "MixinWiringExplosionFix"
   ],
-  "client": [],
-  "injectors": {
-    "defaultRequire": 1
+  "client" : [],
+  "injectors" : {
+    "defaultRequire" : 1
   }
 }

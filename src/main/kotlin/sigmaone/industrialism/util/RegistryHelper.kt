@@ -2,11 +2,8 @@ package sigmaone.industrialism.util
 
 import com.google.common.collect.ImmutableList
 import com.google.common.collect.Lists
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
-import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
-import net.minecraft.item.ItemGroup
 import net.minecraft.util.Identifier
 import net.minecraft.util.registry.BuiltinRegistries
 import net.minecraft.util.registry.Registry
@@ -19,20 +16,10 @@ import net.minecraft.world.gen.feature.Feature
 import net.minecraft.world.gen.feature.OreFeatureConfig
 import sigmaone.industrialism.Industrialism
 import java.util.function.Supplier
-import java.util.stream.Collectors
 
 object RegistryHelper {
-    @JvmStatic
-    fun <I : Item?> registerItem(id: String?, item: I): I {
-        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), item)
-        return item
-    }
-
-    @JvmStatic
-    fun registerBlock(id: String, block: Block, itemSettings: Item.Settings = Item.Settings()): Block {
-        Registry.register(Registry.BLOCK, Identifier(Industrialism.MOD_ID, id), block)
-        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, itemSettings))
-        return block
+    fun <I : Item> registerItem(id: String, item: I): I {
+        return Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), item)
     }
 
     fun registerFeature(id: String?, configuredFeature: ConfiguredFeature<*, *>?): ConfiguredFeature<*, *> {
