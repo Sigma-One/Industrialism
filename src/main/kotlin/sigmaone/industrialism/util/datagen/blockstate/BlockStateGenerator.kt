@@ -12,7 +12,7 @@ object BlockStateGenerator {
 
         for ((name, variant) in variants) {
             val jsonVariant = JsonObject()
-            jsonVariant.addProperty("model", variant.toString())
+            jsonVariant.addProperty("model", "${variant.namespace}:block/${variant.path}")
             jsonVariants.add(name, jsonVariant)
         }
         jsonRoot.add("variants", jsonVariants)
@@ -27,7 +27,7 @@ object BlockStateGenerator {
 
         for ((name, variant) in variants) {
             val jsonVariant = JsonObject()
-            jsonVariant.addProperty("model", variant.first.toString())
+            jsonVariant.addProperty("model", "${variant.first.namespace}:block/${variant.first.path}")
             jsonVariant.addProperty("x", variant.second)
             jsonVariant.addProperty("y", variant.third)
             jsonVariants.add(name, jsonVariant)

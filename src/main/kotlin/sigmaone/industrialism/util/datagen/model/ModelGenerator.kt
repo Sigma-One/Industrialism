@@ -1,8 +1,10 @@
 package sigmaone.industrialism.util.datagen.model
 
 import com.google.gson.JsonObject
+import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
+import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.util.datagen.DataGenerator
 
 object ModelGenerator {
@@ -16,7 +18,6 @@ object ModelGenerator {
         DataGenerator.BLOCK_MODELS[id] = jsonRoot
     }
 
-    @JvmName("generateBlockModelSided")
     fun generateBlockModel(id: Identifier, textures: HashMap<Direction, Identifier>) {
         val jsonRoot = JsonObject()
         jsonRoot.addProperty("parent", "block/cube_all")
@@ -36,21 +37,43 @@ object ModelGenerator {
         DataGenerator.ITEM_MODELS[id] = jsonRoot
     }
 
-    fun generateItemModel(id: Identifier, texture: Identifier) {
+    fun generateItemModel(item: Item, texture: Identifier) {
         val jsonRoot = JsonObject()
         jsonRoot.addProperty("parent", "item/generated")
         val jsonTextures = JsonObject()
         jsonTextures.addProperty("layer0", Identifier(texture.namespace, "item/${texture.path}").toString())
         jsonRoot.add("textures", jsonTextures)
 
+        DataGenerator.ITEM_MODELS[Registry.ITEM.getId(item)] = jsonRoot
+    }
+
+    fun generateItemModel(item: Item) {
+        val id = Registry.ITEM.getId(item)
+        val jsonRoot = JsonObject()
+        jsonRoot.addProperty("parent", "item/generated")
+        val jsonTextures = JsonObject()
+        jsonTextures.addProperty("layer0", Identifier(id.namespace, "item/${id.path}").toString())
+        jsonRoot.add("textures", jsonTextures)
+
         DataGenerator.ITEM_MODELS[id] = jsonRoot
     }
 
-    fun generateToolItemModel(id: Identifier, texture: Identifier) {
+    fun generateToolItemModel(item: Item, texture: Identifier) {
         val jsonRoot = JsonObject()
         jsonRoot.addProperty("parent", "item/handheld")
         val jsonTextures = JsonObject()
         jsonTextures.addProperty("layer0", Identifier(texture.namespace, "item/${texture.path}").toString())
+        jsonRoot.add("textures", jsonTextures)
+
+        DataGenerator.ITEM_MODELS[Registry.ITEM.getId(item)] = jsonRoot
+    }
+
+    fun generateToolItemModel(item: Item) {
+        val id = Registry.ITEM.getId(item)
+        val jsonRoot = JsonObject()
+        jsonRoot.addProperty("parent", "item/handheld")
+        val jsonTextures = JsonObject()
+        jsonTextures.addProperty("layer0", Identifier(id.namespace, "item/${id.path}").toString())
         jsonRoot.add("textures", jsonTextures)
 
         DataGenerator.ITEM_MODELS[id] = jsonRoot

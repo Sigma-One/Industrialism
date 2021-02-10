@@ -21,6 +21,7 @@ import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.screen.ScreenHandlerType
 import net.minecraft.state.property.Properties
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.Direction
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.block.BlockConnectorDummy
 import sigmaone.industrialism.block.BlockTater
@@ -49,7 +50,7 @@ import sigmaone.industrialism.item.tool.ToolSword
 import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.*
 import sigmaone.industrialism.util.RegistryHelper.registerItem
-import sigmaone.industrialism.util.content.RegisteredBlockBuilder
+import sigmaone.industrialism.util.contentbuilder.BlockBuilder
 import sigmaone.industrialism.util.datagen.DataGenerator
 import vazkii.patchouli.client.book.ClientBookRegistry
 
@@ -137,11 +138,11 @@ class Industrialism : ModInitializer {
             .addPlate()
             .addBlock(2, 5.5f)
             .addToolMaterial(3.5f, 500, 3, 7.0f, 6)
-            .addAxe(6f, 0.9f)
-            .addPickaxe(1, 1.2f)
-            .addShovel(1.5f, 1.0f)
-            .addSword(3, 1.6f)
-            .addHoe(-2, 3.0f)
+            .addAxe(6f, 0.9f, withDefaultRecipe = false)
+            .addPickaxe(1, 1.2f, withDefaultRecipe = false)
+            .addShovel(1.5f, 1.0f, withDefaultRecipe = false)
+            .addSword(3, 1.6f, withDefaultRecipe = false)
+            .addHoe(-2, 3.0f, withDefaultRecipe = false)
             .addArmour(
                     intArrayOf(247, 285, 304, 209), // Durabilities (Boots, Legs, Chest, Helmet)
                     intArrayOf(2, 5, 7, 2),         // Protection values
@@ -152,47 +153,51 @@ class Industrialism : ModInitializer {
 
         // Random materials
         val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
-        val COKE_BLOCK = RegisteredBlockBuilder(
+        /*val COKE_BLOCK = RegistryHelper.registerBlock(
+            "coke_block",
+            Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK))
+        )*/
+        val COKE_BLOCK = BlockBuilder(
             "coke_block",
             Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK))
         )
-            .withGeneratedModel()
-            .withGeneratedBlockState()
-            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB))
-            .build()
+        .generateModel()
+        .generateBlockState()
+        .generateItem(FabricItemSettings().group(MATERIALS_TAB))
+        .build()
 
         // Intermediates
         val CERAMIC_DISC: Item = registerItem("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
         val RAW_FIRE_BRICK = registerItem("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
         val FIRE_BRICK = registerItem("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
 
-        val FIRE_BRICKS = RegisteredBlockBuilder(
+        val FIRE_BRICKS = BlockBuilder(
             "fire_bricks",
             Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS))
         )
-            .withGeneratedModel()
-            .withGeneratedBlockState()
-            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
+            .generateModel()
+            .generateBlockState()
+            .generateItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
             .build()
 
-        val BRACED_FIRE_BRICKS = RegisteredBlockBuilder(
+        val BRACED_FIRE_BRICKS = BlockBuilder(
             "braced_fire_bricks",
             Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f))
         )
-            .withGeneratedModel()
-            .withGeneratedBlockState()
-            .withGeneratedItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
+            .generateModel()
+            .generateBlockState()
+            .generateItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
             .build()
 
         // Single block machines
         // Battery
-        val BATTERY_BLOCK: Block = RegisteredBlockBuilder(
+        val BATTERY_BLOCK: Block = BlockBuilder(
             "basic_battery",
             BlockBattery(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f))
         )
-            .withSimpleSidedModel()
-            .withGeneratedBlockState()
-            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .generateModel(arrayOf(Direction.DOWN, Direction.UP))
+            .generateBlockState()
+            .generateItem(FabricItemSettings().group(MACHINES_TAB))
             .build()
         val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
@@ -201,13 +206,13 @@ class Industrialism : ModInitializer {
         )
 
         // Dynamo
-        val DYNAMO_BLOCK: Block = RegisteredBlockBuilder(
+        val DYNAMO_BLOCK: Block = BlockBuilder(
             "dynamo",
             BlockDynamo(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f))
         )
-            .withSimpleSidedModel()
-            .withFacingBlockState()
-            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .generateModel(arrayOf(Direction.DOWN, Direction.UP))
+            .generateBlockState(withFacing = true)
+            .generateItem(FabricItemSettings().group(MACHINES_TAB))
             .build()
         val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
@@ -216,12 +221,12 @@ class Industrialism : ModInitializer {
         )
 
         // Crank
-        val CRANK_HANDLE_BLOCK: Block = RegisteredBlockBuilder(
+        val CRANK_HANDLE_BLOCK: Block = BlockBuilder(
             "crank_handle",
             BlockCrankHandle(FabricBlockSettings.of(MATERIAL_WOOD).nonOpaque())
         )
-            .withEmptyBlock()
-            .withNoModelItem(FabricItemSettings().group(MACHINES_TAB))
+            .generateBlockState(empty = true)
+            .generateItem(FabricItemSettings().group(MACHINES_TAB), withModel = false)
             .build()
         val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
@@ -234,11 +239,11 @@ class Industrialism : ModInitializer {
         val DEBUG_LINKER: ItemWireSpool = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
 
         // Wiring
-        val CONNECTOR_T0_BLOCK: Block = RegisteredBlockBuilder(
+        val CONNECTOR_T0_BLOCK: Block = BlockBuilder(
             "connector_t0",
             BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f))
         )
-            .withGeneratedItem(FabricItemSettings().group(MACHINES_TAB))
+            .generateItem(FabricItemSettings().group(MACHINES_TAB))
             .build()
         val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
@@ -246,11 +251,11 @@ class Industrialism : ModInitializer {
             BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null)
         )
 
-        val MULTIBLOCK_CHILD_BLOCK: Block = RegisteredBlockBuilder(
+        val MULTIBLOCK_CHILD_BLOCK: Block = BlockBuilder(
             "multiblock_child",
             BlockMultiblockChild(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque())
         )
-            .withEmptyBlock()
+            .generateBlockState(empty = true)
             .build()
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChild> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
@@ -298,11 +303,11 @@ class Industrialism : ModInitializer {
         val CRANK_HANDLE_DUMMY: Block = Registry.register(Registry.BLOCK, Identifier(MOD_ID, "crank_handle_dummy"), Block(FabricBlockSettings.of(Material.AIR)))
 
         // Misc
-        val TATER: Block = RegisteredBlockBuilder(
+        val TATER: Block = BlockBuilder(
             "tater",
             BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f))
         )
-            .withGeneratedItem(FabricItemSettings().group(TOOLS_TAB))
+            .generateItem(FabricItemSettings().group(TOOLS_TAB))
             .build()
 
         // Recipes
@@ -372,43 +377,6 @@ class Industrialism : ModInitializer {
     }
 
     override fun onInitialize() {
-        // Add recipes
-        COPPER = COPPER
-            //.addIngotRecipe()
-            .addNuggetRecipe()
-            .addStickRecipe()
-            .addPlateRecipe()
-            .addWireRecipe()
-            .addBlockRecipe()
-            .addAxeRecipe()
-            .addPickaxeRecipe()
-            .addShovelRecipe()
-            .addSwordRecipe()
-            .addHoeRecipe()
-        LEAD = LEAD
-            //.addIngotRecipe()
-            .addNuggetRecipe()
-            .addStickRecipe()
-            .addPlateRecipe()
-            .addBlockRecipe()
-            .addAxeRecipe()
-            .addPickaxeRecipe()
-            .addShovelRecipe()
-            .addSwordRecipe()
-            .addHoeRecipe()
-        STEEL = STEEL
-            //.addIngotRecipe()
-            .addNuggetRecipe()
-            .addStickRecipe()
-            .addPlateRecipe()
-            .addBlockRecipe()
-        IRON = IRON
-            .addStickRecipe()
-            .addPlateRecipe()
-        GOLD = GOLD
-            .addStickRecipe()
-            .addPlateRecipe()
-
         DataGenerator.commit()
     }
 }

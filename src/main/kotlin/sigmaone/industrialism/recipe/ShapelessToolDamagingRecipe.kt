@@ -13,7 +13,12 @@ import net.minecraft.util.collection.DefaultedList
 import sigmaone.industrialism.Industrialism
 import java.util.*
 
-class ShapelessToolDamagingRecipe(id: Identifier?, group: String?, output: ItemStack?, input: DefaultedList<Ingredient>?): ShapelessRecipe(id, group, output, input) {
+class ShapelessToolDamagingRecipe(
+    id: Identifier?,
+    group: String?,
+    output: ItemStack?,
+    input: DefaultedList<Ingredient>?
+): ShapelessRecipe(id, group, output, input) {
     override fun getRemainingStacks(inventory: CraftingInventory?): DefaultedList<ItemStack> {
         val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY)
 

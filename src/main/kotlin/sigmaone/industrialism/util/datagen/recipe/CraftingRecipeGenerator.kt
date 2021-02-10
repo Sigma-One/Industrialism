@@ -70,7 +70,7 @@ object CraftingRecipeGenerator {
         damagesTools: Boolean = false
     ) {
         val jsonRoot = JsonObject()
-        if (damagesTools) {
+        if (!damagesTools) {
             jsonRoot.addProperty("type", "minecraft:crafting_shapeless")
         }
         else {

@@ -22,6 +22,14 @@ object RegistryHelper {
         return Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), item)
     }
 
+    fun registerBlock(
+        id: String,
+        block: Block
+    ): Block {
+        Registry.register(Registry.BLOCK, Identifier(Industrialism.MOD_ID, id), block)
+        return block
+    }
+
     fun registerFeature(id: String?, configuredFeature: ConfiguredFeature<*, *>?): ConfiguredFeature<*, *> {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, configuredFeature)!!
     }
