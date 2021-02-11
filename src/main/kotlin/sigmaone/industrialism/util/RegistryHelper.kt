@@ -18,18 +18,20 @@ import sigmaone.industrialism.Industrialism
 import java.util.function.Supplier
 
 object RegistryHelper {
-    fun <I : Item> registerItem(id: String, item: I): I {
+    fun <I: Item> registerItem(id: String, item: I): I {
         return Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), item)
     }
 
-    fun registerBlock(
+    fun <T: Block> registerBlock(
         id: String,
-        block: Block
-    ): Block {
+        block: T
+    ): T {
         Registry.register(Registry.BLOCK, Identifier(Industrialism.MOD_ID, id), block)
         return block
     }
 
+
+    // TODO: Replace with proper FAPI system
     fun registerFeature(id: String?, configuredFeature: ConfiguredFeature<*, *>?): ConfiguredFeature<*, *> {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, id, configuredFeature)!!
     }

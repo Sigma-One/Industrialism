@@ -7,10 +7,29 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.Industrialism
+import sigmaone.industrialism.util.RegistryHelper
 import sigmaone.industrialism.util.datagen.blockstate.BlockStateGenerator
 import sigmaone.industrialism.util.datagen.model.ModelGenerator
 
 class BlockBuilder<T: Block>(val id: String, val block: T) {
+    companion object {
+        fun <T: Block> getStandard(id: String, block: T): T {
+            return BlockBuilder(id, block)
+                .generateBlockState()
+                .generateItem()
+                .generateModel()
+                .get()
+        }
+
+        fun <T: Block> getHorizontalFacing(id: String, block: T): T {
+            return BlockBuilder(id, block)
+                .generateBlockState(withFacing = true)
+                .generateItem()
+                .generateModel()
+                .get()
+        }
+    }
+
     fun generateItem(settings: FabricItemSettings = FabricItemSettings(), withModel: Boolean = true): BlockBuilder<T> {
         Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, settings))
         if (withModel) {
@@ -72,7 +91,11 @@ class BlockBuilder<T: Block>(val id: String, val block: T) {
         return this
     }
 
-    fun build(): T {
-        return Registry.register(Registry.BLOCK, Identifier(Industrialism.MOD_ID, id), block)
+    fun get(): T {
+        return block
+    }
+
+    init {
+        RegistryHelper.registerBlock(id, block)
     }
 }

@@ -30,16 +30,16 @@ object ModelGenerator {
         DataGenerator.BLOCK_MODELS[id] = jsonRoot
     }
 
-    fun generateBlockItemModel(id: Identifier) {
+    fun generateBlockItemModel(id: Identifier, isTool: Boolean = false) {
         val jsonRoot = JsonObject()
         jsonRoot.addProperty("parent", Identifier(id.namespace, "block/${id.path}").toString())
 
         DataGenerator.ITEM_MODELS[id] = jsonRoot
     }
 
-    fun generateItemModel(item: Item, texture: Identifier) {
+    fun generateItemModel(item: Item, texture: Identifier, isTool: Boolean = false) {
         val jsonRoot = JsonObject()
-        jsonRoot.addProperty("parent", "item/generated")
+        jsonRoot.addProperty("parent", if (isTool) "item/handheld" else "item/generated")
         val jsonTextures = JsonObject()
         jsonTextures.addProperty("layer0", Identifier(texture.namespace, "item/${texture.path}").toString())
         jsonRoot.add("textures", jsonTextures)
@@ -47,25 +47,9 @@ object ModelGenerator {
         DataGenerator.ITEM_MODELS[Registry.ITEM.getId(item)] = jsonRoot
     }
 
-    fun generateItemModel(item: Item) {
+    fun generateItemModel(item: Item, isTool: Boolean = false) {
         val id = Registry.ITEM.getId(item)
-        val jsonRoot = JsonObject()
-        jsonRoot.addProperty("parent", "item/generated")
-        val jsonTextures = JsonObject()
-        jsonTextures.addProperty("layer0", Identifier(id.namespace, "item/${id.path}").toString())
-        jsonRoot.add("textures", jsonTextures)
-
-        DataGenerator.ITEM_MODELS[id] = jsonRoot
-    }
-
-    fun generateToolItemModel(item: Item, texture: Identifier) {
-        val jsonRoot = JsonObject()
-        jsonRoot.addProperty("parent", "item/handheld")
-        val jsonTextures = JsonObject()
-        jsonTextures.addProperty("layer0", Identifier(texture.namespace, "item/${texture.path}").toString())
-        jsonRoot.add("textures", jsonTextures)
-
-        DataGenerator.ITEM_MODELS[Registry.ITEM.getId(item)] = jsonRoot
+        generateItemModel(item, id, isTool)
     }
 
     fun generateToolItemModel(item: Item) {

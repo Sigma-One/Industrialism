@@ -51,6 +51,7 @@ import sigmaone.industrialism.material.metal.Metal
 import sigmaone.industrialism.recipe.*
 import sigmaone.industrialism.util.RegistryHelper.registerItem
 import sigmaone.industrialism.util.contentbuilder.BlockBuilder
+import sigmaone.industrialism.util.contentbuilder.ItemBuilder
 import sigmaone.industrialism.util.datagen.DataGenerator
 import vazkii.patchouli.client.book.ClientBookRegistry
 
@@ -84,10 +85,10 @@ class Industrialism : ModInitializer {
         val MATERIAL_WOOD : Material = FabricMaterialBuilder(MaterialColor.WOOD).build()
 
         // Utility items
-        val SCREWDRIVER: Item = registerItem("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
-        val WRENCH: Item = registerItem("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
-        val FORGE_HAMMER: Item = registerItem("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
-        val ENGINEERS_JOURNAL: Item = registerItem("engineers_journal", ItemEngineersJournal(Item.Settings().group(TOOLS_TAB).maxCount(1)))
+        val SCREWDRIVER: Item = ItemBuilder.getTool("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
+        val WRENCH: Item = ItemBuilder.getTool("wrench", ItemWrench(ToolMaterials.IRON, 4, -3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
+        val FORGE_HAMMER: Item = ItemBuilder.getTool("forge_hammer", ToolSword(ToolMaterials.IRON, 5, -3.5f, Item.Settings().maxCount(1).group(TOOLS_TAB)))
+        val ENGINEERS_JOURNAL: Item = ItemBuilder.getStandard("engineers_journal", ItemEngineersJournal(Item.Settings().group(TOOLS_TAB).maxCount(1)))
 
         // Metals
         var COPPER: Metal = Metal("copper")
@@ -152,42 +153,20 @@ class Industrialism : ModInitializer {
             )
 
         // Random materials
-        val COKE: Item = registerItem("coke", Item(Item.Settings().group(MATERIALS_TAB)))
-        /*val COKE_BLOCK = RegistryHelper.registerBlock(
-            "coke_block",
-            Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK))
-        )*/
-        val COKE_BLOCK = BlockBuilder(
-            "coke_block",
-            Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK))
-        )
-        .generateModel()
-        .generateBlockState()
-        .generateItem(FabricItemSettings().group(MATERIALS_TAB))
-        .build()
+        val COKE = ItemBuilder.getStandard("coke", Item(Item.Settings().group(MATERIALS_TAB)))
+        val COKE_BLOCK = BlockBuilder.getStandard("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)))
 
         // Intermediates
-        val CERAMIC_DISC: Item = registerItem("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
-        val RAW_FIRE_BRICK = registerItem("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
-        val FIRE_BRICK = registerItem("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
+        val CERAMIC_DISC = ItemBuilder.getStandard("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
+        val RAW_FIRE_BRICK = ItemBuilder.getStandard("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
+        val FIRE_BRICK = ItemBuilder.getStandard("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
 
-        val FIRE_BRICKS = BlockBuilder(
-            "fire_bricks",
-            Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS))
-        )
-            .generateModel()
-            .generateBlockState()
-            .generateItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
-            .build()
+        val FIRE_BRICKS = BlockBuilder.getStandard("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS)))
 
-        val BRACED_FIRE_BRICKS = BlockBuilder(
+        val BRACED_FIRE_BRICKS = BlockBuilder.getStandard(
             "braced_fire_bricks",
             Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f))
         )
-            .generateModel()
-            .generateBlockState()
-            .generateItem(FabricItemSettings().group(MATERIALS_TAB).fireproof())
-            .build()
 
         // Single block machines
         // Battery
@@ -198,7 +177,8 @@ class Industrialism : ModInitializer {
             .generateModel(arrayOf(Direction.DOWN, Direction.UP))
             .generateBlockState()
             .generateItem(FabricItemSettings().group(MACHINES_TAB))
-            .build()
+            .get()
+
         val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:basic_battery",
@@ -213,7 +193,8 @@ class Industrialism : ModInitializer {
             .generateModel(arrayOf(Direction.DOWN, Direction.UP))
             .generateBlockState(withFacing = true)
             .generateItem(FabricItemSettings().group(MACHINES_TAB))
-            .build()
+            .get()
+
         val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:dynamo",
@@ -227,7 +208,8 @@ class Industrialism : ModInitializer {
         )
             .generateBlockState(empty = true)
             .generateItem(FabricItemSettings().group(MACHINES_TAB), withModel = false)
-            .build()
+            .get()
+
         val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:crank_handle",
@@ -236,7 +218,16 @@ class Industrialism : ModInitializer {
         )
 
         // Debug stuff
-        val DEBUG_LINKER: ItemWireSpool = registerItem("debug_linker", ItemWireSpool(Item.Settings().maxCount(1).group(DEBUG_TAB), Int.MAX_VALUE, 0.1f, intArrayOf(255, 0, 255), true))
+        val DEBUG_LINKER: ItemWireSpool = ItemBuilder.getTool(
+            "debug_linker",
+            ItemWireSpool(
+                Item.Settings().maxCount(1).group(DEBUG_TAB),
+                Int.MAX_VALUE,
+                0.1f,
+                intArrayOf(255, 0, 255),
+                true
+            )
+        )
 
         // Wiring
         val CONNECTOR_T0_BLOCK: Block = BlockBuilder(
@@ -244,7 +235,8 @@ class Industrialism : ModInitializer {
             BlockWireConnectorT0(FabricBlockSettings.of(Material.STONE).hardness(1.0f))
         )
             .generateItem(FabricItemSettings().group(MACHINES_TAB))
-            .build()
+            .get()
+
         val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:connector_t0",
@@ -256,7 +248,8 @@ class Industrialism : ModInitializer {
             BlockMultiblockChild(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).nonOpaque())
         )
             .generateBlockState(empty = true)
-            .build()
+            .get()
+
         val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChild> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:multiblock_child",
@@ -265,35 +258,42 @@ class Industrialism : ModInitializer {
 
         // Multiblocks
         val MULTIBLOCKS: HashSet<BlockMultiblockRoot> = HashSet()
+
         val COKE_OVEN_DUMMY_ITEM: Item = registerItem("coke_oven_dummy", Item(FabricItemSettings()))
+
         val COKE_OVEN_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "coke_oven_multiblock"),
                 BlockCokeOvenMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).luminance { state -> if (state.get(Properties.LIT)) {7} else {0} }
                 )
         )
+
         val COKE_OVEN_MULTIBLOCK: BlockEntityType<BlockEntityCokeOvenMultiblock> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:coke_oven_multiblock",
                 BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null)
         )
+
         val COKE_OVEN_SCREEN_HANDLER_TYPE: ScreenHandlerType<CokeOvenGuiDescription> = ScreenHandlerRegistry.registerSimple(
                 Identifier(MOD_ID, "coke_oven_multiblock"),
                 { syncId, inventory -> CokeOvenGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
         )
 
         val BLAST_FURNACE_DUMMY_ITEM: Item = registerItem("blast_furnace_dummy", Item(FabricItemSettings()))
+
         val BLAST_FURNACE_MULTIBLOCK_BLOCK: BlockMultiblockRoot = Registry.register(
                 Registry.BLOCK,
                 Identifier(MOD_ID, "blast_furnace_multiblock"),
                 BlockBlastFurnaceMultiblock(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f).luminance { state -> if (state.get(Properties.LIT)) {7} else {0} }
                 )
         )
+
         val BLAST_FURNACE_MULTIBLOCK: BlockEntityType<BlockEntityBlastFurnaceMultiblock> = Registry.register(
                 Registry.BLOCK_ENTITY_TYPE,
                 "$MOD_ID:blast_furnace_multiblock",
                 BlockEntityType.Builder.create({ BlockEntityBlastFurnaceMultiblock() }, BLAST_FURNACE_MULTIBLOCK_BLOCK).build(null)
         )
+
         val BLAST_FURNACE_SCREEN_HANDLER_TYPE: ScreenHandlerType<BlastFurnaceGuiDescription> = ScreenHandlerRegistry.registerSimple(
                 Identifier(MOD_ID, "blast_furnace_multiblock")
         ) { syncId, inventory -> BlastFurnaceGuiDescription(syncId, inventory, ScreenHandlerContext.EMPTY) }
@@ -305,10 +305,10 @@ class Industrialism : ModInitializer {
         // Misc
         val TATER: Block = BlockBuilder(
             "tater",
-            BlockTater(FabricBlockSettings.of(MATERIAL_STONE).hardness(2.0f))
+            BlockTater(FabricBlockSettings.of(MATERIAL_WOOD).hardness(2.0f))
         )
-            .generateItem(FabricItemSettings().group(TOOLS_TAB))
-            .build()
+            .generateItem(FabricItemSettings().group(DEBUG_TAB))
+            .get()
 
         // Recipes
         val COKING_RECIPE_TYPE: RecipeType<CokingRecipe> = Registry.register(

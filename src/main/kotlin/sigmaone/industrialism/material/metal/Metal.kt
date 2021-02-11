@@ -16,6 +16,7 @@ import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.tool.*
 import sigmaone.industrialism.util.RegistryHelper
 import sigmaone.industrialism.util.contentbuilder.BlockBuilder
+import sigmaone.industrialism.util.contentbuilder.ItemBuilder
 import sigmaone.industrialism.util.datagen.model.ModelGenerator
 import sigmaone.industrialism.util.datagen.recipe.CraftingRecipeGenerator
 import sigmaone.industrialism.util.datagen.tag.TagGenerator
@@ -49,7 +50,7 @@ class Metal(private val name: String) {
     var hoe: ToolItem? = null
 
     fun addIngot(): Metal {
-        ingot = RegistryHelper.registerItem(name + "_ingot", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        ingot = ItemBuilder.getStandard(name + "_ingot", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         TagGenerator.tagItem(Identifier("c", "${name}_ingots"), ingot!!)
         return this
     }
@@ -61,7 +62,7 @@ class Metal(private val name: String) {
     }
 
     fun addNugget(withDefaultRecipe: Boolean = true): Metal {
-        nugget = RegistryHelper.registerItem(name + "_nugget", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        nugget = ItemBuilder.getStandard(name + "_nugget", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         TagGenerator.tagItem(Identifier("c", "${name}_nuggets"), nugget!!)
         if (withDefaultRecipe) {
             CraftingRecipeGenerator.generateShapelessRecipe(
@@ -96,7 +97,7 @@ class Metal(private val name: String) {
     }
 
     fun addStick(withDefaultRecipe: Boolean = true): Metal {
-        stick = RegistryHelper.registerItem(name + "_stick", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        stick = ItemBuilder.getStandard(name + "_stick", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         TagGenerator.tagItem(Identifier("c", "${name}_sticks"), stick!!)
         if (withDefaultRecipe) {
             CraftingRecipeGenerator.generateShapedRecipe(
@@ -117,7 +118,7 @@ class Metal(private val name: String) {
     }
 
     fun addPlate(withDefaultRecipe: Boolean = true): Metal {
-        plate = RegistryHelper.registerItem(name + "_plate", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        plate = ItemBuilder.getStandard(name + "_plate", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         TagGenerator.tagItem(Identifier("c", "${name}_plates"), plate!!)
         if (withDefaultRecipe) {
             CraftingRecipeGenerator.generateShapelessRecipe(
@@ -136,11 +137,10 @@ class Metal(private val name: String) {
         thickness: Float,
         colour: IntArray,
         withDefaultRecipe: Boolean = true,
-        withDefaultModel: Boolean = true
     ): Metal {
-        wire = RegistryHelper.registerItem(name + "_wire", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        wire = ItemBuilder.getStandard(name + "_wire", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
         TagGenerator.tagItem(Identifier("c", "${name}_wires"), wire!!)
-        wireSpool = RegistryHelper.registerItem(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength, thickness, colour))
+        wireSpool = ItemBuilder.getStandard(name + "_wire_spool", ItemWireSpool(Item.Settings().group(Industrialism.MATERIALS_TAB), maxLength, thickness, colour))
         TagGenerator.tagItem(Identifier("c", "${name}_wire_spools"), wireSpool!!)
         if (withDefaultRecipe) {
             CraftingRecipeGenerator.generateShapelessRecipe(
@@ -167,11 +167,6 @@ class Metal(private val name: String) {
             )
         }
 
-        if (withDefaultModel) {
-            ModelGenerator.generateItemModel(wire!!)
-            ModelGenerator.generateItemModel(wireSpool!!)
-        }
-
         return this
     }
 
@@ -192,7 +187,7 @@ class Metal(private val name: String) {
         builder.generateModel()
         builder.generateBlockState()
 
-        block = builder.build()
+        block = builder.get()
 
         TagGenerator.tagItem(Identifier("c", "${name}_blocks"), block!!.asItem())
         TagGenerator.tagBlock(Identifier("c", "${name}_blocks"), block!!)
@@ -257,7 +252,7 @@ class Metal(private val name: String) {
         builder.generateModel()
         builder.generateBlockState()
 
-        ore = builder.build()
+        ore = builder.get()
 
         RegistryHelper.registerOreGen(oreName + "ore", 0, ore!!, size, veins, lowY, 0, highY)
         TagGenerator.tagItem(Identifier("c", "${name}_ores"), ore!!.asItem())
@@ -278,7 +273,14 @@ class Metal(private val name: String) {
     }
 
     fun addPickaxe(attackDamage: Int, attackSpeed: Float, withDefaultRecipe: Boolean = true, withDefaultModel: Boolean = true): Metal {
-        pickaxe = RegistryHelper.registerItem(name + "_pickaxe", ToolPickaxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        val builder = ItemBuilder(
+            name + "_pickaxe",
+            ToolPickaxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB))
+        )
+        if (withDefaultModel) {
+            builder.generateModel(true)
+        }
+        pickaxe = builder.get()
         TagGenerator.tagItem(Identifier("c", "${name}_pickaxes"), pickaxe!!)
         TagGenerator.tagItem(Identifier("fabric", "pickaxes"), pickaxe!!)
         if (withDefaultRecipe) {
@@ -296,14 +298,18 @@ class Metal(private val name: String) {
                 )
             )
         }
-        if (withDefaultModel) {
-            ModelGenerator.generateToolItemModel(pickaxe!!)
-        }
         return this
     }
 
     fun addAxe(attackDamage: Float, attackSpeed: Float, withDefaultRecipe: Boolean = true, withDefaultModel: Boolean = true): Metal {
-        axe = RegistryHelper.registerItem(name + "_axe", ToolAxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        val builder = ItemBuilder(
+            name + "_axe",
+            ToolAxe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB))
+        )
+        if (withDefaultModel) {
+            builder.generateModel(true)
+        }
+        axe = builder.get()
         TagGenerator.tagItem(Identifier("c", "${name}_axes"), axe!!)
         TagGenerator.tagItem(Identifier("fabric", "axes"), axe!!)
         if (withDefaultRecipe) {
@@ -328,7 +334,14 @@ class Metal(private val name: String) {
     }
 
     fun addShovel(attackDamage: Float, attackSpeed: Float, withDefaultRecipe: Boolean = true, withDefaultModel: Boolean = true): Metal {
-        shovel = RegistryHelper.registerItem(name + "_shovel", ToolShovel(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        val builder = ItemBuilder(
+            name + "_shovel",
+            ToolShovel(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB))
+        )
+        if (withDefaultModel) {
+            builder.generateModel(true)
+        }
+        shovel = builder.get()
         TagGenerator.tagItem(Identifier("c", "${name}_shovels"), shovel!!)
         TagGenerator.tagItem(Identifier("fabric", "shovels"), shovel!!)
         ModelGenerator.generateToolItemModel(shovel!!)
@@ -354,7 +367,14 @@ class Metal(private val name: String) {
     }
 
     fun addSword(attackDamage: Int, attackSpeed: Float, withDefaultRecipe: Boolean = true, withDefaultModel: Boolean = true): Metal {
-        sword = RegistryHelper.registerItem(name + "_sword", ToolSword(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        val builder = ItemBuilder(
+            name + "_sword",
+            ToolSword(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB))
+        )
+        if (withDefaultModel) {
+            builder.generateModel(true)
+        }
+        sword = builder.get()
         TagGenerator.tagItem(Identifier("c", "${name}_swords"), sword!!)
         TagGenerator.tagItem(Identifier("fabric", "swords"), sword!!)
         if (withDefaultRecipe) {
@@ -379,7 +399,14 @@ class Metal(private val name: String) {
     }
 
     fun addHoe(attackDamage: Int, attackSpeed: Float, withDefaultRecipe: Boolean = true, withDefaultModel: Boolean = true): Metal {
-        hoe = RegistryHelper.registerItem(name + "_hoe", ToolHoe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB)))
+        val builder = ItemBuilder(
+            name + "_hoe",
+            ToolHoe(toolMaterial, attackDamage, attackSpeed - 4.0f, Item.Settings().group(Industrialism.TOOLS_TAB))
+        )
+        if (withDefaultModel) {
+            builder.generateModel(true)
+        }
+        hoe = builder.get()
         TagGenerator.tagItem(Identifier("c", "${name}_hoes"), hoe!!)
         TagGenerator.tagItem(Identifier("fabric", "hoes"), hoe!!)
         if (withDefaultRecipe) {

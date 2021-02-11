@@ -1,6 +1,0 @@
-{
-    "parent": "item/generated",
-    "textures": {
-        "layer0": "industrialism:item/steel_ingot"
-    }
-}
