@@ -1,0 +1,52 @@
+image: gradle:jdk15-hotspot
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  CI_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}"
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+  - build
+  - release
+
+build:
+  stage: build
+  script: 
+    - gradle --build-cache clean genSources build
+    - ls build/libs/
+    - rm -rf build/libs/*-dev.jar
+    - mv build/libs/*-sources.jar ./${CI_PROJECT_NAME}-nightly-${CI_COMMIT_SHORT_SHA}-sources.jar
+    - mv build/libs/*.jar ./${CI_PROJECT_NAME}-nightly-${CI_COMMIT_SHORT_SHA}-release.jar
+    - echo "BUILD_ID=$CI_JOB_ID" >> build.env
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      changes: 
+        - /*
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
+    paths:
+      - build
+      - .gradle
+  artifacts:
+    expire_in: never
+    paths:
+      - ${CI_PROJECT_NAME}-nightly-${CI_COMMIT_SHORT_SHA}-sources.jar
+      - ${CI_PROJECT_NAME}-nightly-${CI_COMMIT_SHORT_SHA}-release.jar
+    reports:
+      dotenv: build.env
+
+release:
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  stage: release
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+      changes: 
+        - /*
+  needs:
+    - job: build
+  script:
+    - release-cli create --name "nightly-$CI_COMMIT_SHORT_SHA" --description "Nightly build from commit $CI_COMMIT_SHORT_SHA on $CI_COMMIT_TIMESTAMP" --assets-link "{\"name\":\"Main jar\", \"url\":\"$CI_URL/jobs/$BUILD_ID/artifacts/$CI_PROJECT_NAME-nightly-$CI_COMMIT_SHORT_SHA-release.jar\", \"link_type\":\"other\"}" --assets-link "{\"name\":\"Sources jar\", \"url\":\"$CI_URL/jobs/$BUILD_ID/artifacts/$CI_PROJECT_NAME-nightly-$CI_COMMIT_SHORT_SHA-sources.jar\", \"link_type\":\"other\"}" --tag-name "nightly-$CI_COMMIT_SHORT_SHA"
+
