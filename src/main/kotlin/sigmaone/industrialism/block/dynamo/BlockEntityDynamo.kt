@@ -55,7 +55,7 @@ class BlockEntityDynamo :
     override fun tick() {
         componentEnergyContainer.tick()
         componentMechanicalDevice.tick()
-        componentEnergyContainer.storedEnergy += (componentMechanicalDevice.rpm / 10)
+        componentEnergyContainer.storedEnergy += (componentMechanicalDevice.rpm / 5)
     }
 
     override fun toTag(tag: CompoundTag): CompoundTag {

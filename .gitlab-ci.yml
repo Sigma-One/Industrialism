@@ -22,8 +22,6 @@ build:
     - echo "BUILD_ID=$CI_JOB_ID" >> build.env
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule"'
-      changes: 
-        - /*
   cache:
     key: "$CI_COMMIT_REF_NAME"
     policy: push
@@ -41,10 +39,9 @@ build:
 release:
   image: registry.gitlab.com/gitlab-org/release-cli:latest
   stage: release
-  rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  only:
       changes: 
-        - /*
+        - *
   needs:
     - job: build
   script:

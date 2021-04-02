@@ -42,6 +42,7 @@
 
     "item.industrialism.iron_stick" : "Iron Rod",
     "item.industrialism.iron_plate" : "Iron Plate",
+    "item.industrialism.iron_gear"  : "Iron Gear",
 
     "item.industrialism.gold_stick" : "Golden Rod",
     "item.industrialism.gold_plate" : "Golden Plate",
@@ -76,8 +77,8 @@
 
     "block.industrialism.tater" : "Tiny Engineer Potato",
 
-    "block.industrialism.basic_battery"    : "Basic Battery",
-    "block.industrialism.dynamo"           : "Basic Dynamo",
+    "block.industrialism.basic_battery"    : "Voltaic Pile",
+    "block.industrialism.dynamo"           : "Simple Dynamo",
     "block.industrialism.crank_handle"     : "Crank Handle",
 
     "block.industrialism.connector_t0" : "Cable Connector (Tier 0)",

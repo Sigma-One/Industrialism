@@ -1,9 +1,6 @@
 package sigmaone.industrialism.block.crankhandle
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockEntityProvider
-import net.minecraft.block.BlockState
-import net.minecraft.block.FacingBlock
+import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
@@ -15,6 +12,8 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
+import net.minecraft.util.shape.VoxelShape
+import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
@@ -56,6 +55,27 @@ class BlockCrankHandle(settings: Settings?) : FacingBlock(settings), BlockEntity
             }
         }
         return ActionResult.SUCCESS
+    }
+
+    override fun getCollisionShape(
+        state: BlockState?,
+        world: BlockView?,
+        pos: BlockPos?,
+        context: ShapeContext?
+    ): VoxelShape {
+        return VoxelShapes.empty()
+    }
+
+    override fun getOutlineShape(
+        state: BlockState?,
+        world: BlockView?,
+        pos: BlockPos?,
+        context: ShapeContext?
+    ): VoxelShape {
+        return VoxelShapes.cuboid(
+            (1.0/16)*4.0,  (1.0/16)*0.0,  (1.0/16)*4.0,
+            (1.0/16)*12.0, (1.0/16)*10.0, (1.0/16)*12.0
+        )
     }
 
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {

@@ -27,6 +27,7 @@ class Metal(private val name: String) {
     var nugget: Item? = null
     var plate: Item? = null
     var stick: Item? = null
+    var gear: Item? = null
     var wire: Item? = null
     var wireSpool: ItemWireSpool? = null
 
@@ -127,6 +128,28 @@ class Metal(private val name: String) {
                 itemIngredients = arrayOf(Industrialism.FORGE_HAMMER),
                 tagIngredients = arrayOf(Identifier("c", "${name}_ingots")),
                 damagesTools = true
+            )
+        }
+        return this
+    }
+
+    fun addGear(withDefaultRecipe: Boolean = true): Metal {
+        gear = ItemBuilder.getStandard(name + "_gear", Item(Item.Settings().group(Industrialism.MATERIALS_TAB)))
+        TagGenerator.tagItem(Identifier("c", "${name}_gears"), gear!!)
+        if (withDefaultRecipe) {
+            CraftingRecipeGenerator.generateShapedRecipe(
+                Identifier(Industrialism.MOD_ID, name + "_gear"),
+                result = gear!!,
+                resultCount = 4,
+                tagKeys = hashMapOf(
+                    '#' to Identifier("c", "${name}_plates"),
+                    '|' to Identifier("c", "${name}_sticks")
+                ),
+                pattern = arrayOf(
+                    " | ",
+                    "|#|",
+                    " | "
+                )
             )
         }
         return this

@@ -29,6 +29,8 @@ class EnergyContainerRenderer <T: BlockEntity>(dispatcher: BlockEntityRenderDisp
                     IO.OUTPUT -> Industrialism.CONNECTOR_DUMMY.defaultState.with(FACING, dir).with(IntProperty.of("state", 0, 2), 2)
                     else      -> throw IllegalStateException("Invalid IO state")
                 }
+                matrices.scale(1.0001f, 1.0001f, 1.0001f)
+                matrices.translate(-0.00005, -0.00005, -0.00005)
                 MinecraftClient.getInstance().blockRenderManager.renderBlock(state, entity.pos, entity.world, matrices, vertexConsumers.getBuffer(RenderLayer.getCutout()), false, Random())
             }
             matrices.pop()

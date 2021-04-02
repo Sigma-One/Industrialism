@@ -125,6 +125,7 @@ class Industrialism : ModInitializer {
             .setOre(Blocks.IRON_ORE)
             .addStick()
             .addPlate()
+            .addGear()
         var GOLD: Metal = Metal("gold")
             .setIngot(Items.GOLD_INGOT)
             .setNugget(Items.GOLD_NUGGET)

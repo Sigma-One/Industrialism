@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CWP",
+    "CBP",
+    "IWI"
+  ],
+  "key": {
+    "C": { "tag": "c:copper_plates" },
+    "I": { "tag": "c:iron_plates" },
+    "W": { "tag": "minecraft:planks" },
+    "P": { "item": "minecraft:paper" },
+    "B": { "item": "minecraft:water_bucket"}
+  },
+  "result": {
+    "item": "industrialism:basic_battery",
+    "count": 1
+  }
+}
