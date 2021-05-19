@@ -8,5 +8,5 @@ A technology-based Minecraft mod with a focus on multiblock machinery rather tha
 ![No Forge](https://i.imgur.com/77kxz8xt.png)
 
 ### Links
-* Discord guild :  https://discord.gg/NQpy8GtWFt
+* Matrix space : https://matrix.to/#/!RasXDpzmKJkOjQWsnN:matrix.org?via=matrix.org
 * Trello board : https://trello.com/b/pYA8SpRE/industrialism 
