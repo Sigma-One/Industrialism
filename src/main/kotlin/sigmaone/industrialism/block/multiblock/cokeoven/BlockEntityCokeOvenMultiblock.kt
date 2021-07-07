@@ -22,7 +22,7 @@ import net.minecraft.util.Tickable
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
-import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
+import sigmaone.industrialism.Industrialism.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory

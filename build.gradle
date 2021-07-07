@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '0.5.11'
+    id 'org.quiltmc.loom' version '0.7.16'
     id 'maven-publish'
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
 }
@@ -12,62 +12,83 @@ version = project.mod_version
 group = project.maven_group
 
 repositories {
-    maven /* LibGui */ {
+    maven { // LibGui
         name = "CottonMC"
         url = "https://server.bbkr.space/artifactory/libs-release"
     }
-    maven /* FOML */ {
+    maven { // FOML
         name = "OnyxStudios"
         url = "https://maven.abusedmaster.xyz"
     }
-    maven /* Kotlin */ {
+    maven { // Fabric Kotlin
         name = "Fabric"
         url = "http://maven.fabricmc.net"
     }
-    maven /* Patchouli */ {
+    maven { // Patchouli
         name = "BlameJared"
         url = "https://maven.blamejared.com"
     }
+    jcenter()
 }
 
 dependencies {
     //to change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+    mappings "org.quiltmc:yarn:${project.yarn_mappings}"
+    modImplementation ("org.quiltmc:quilt-loader:${project.loader_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
+    modImplementation ("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
 
     // TeamReborn's Energy API (https://github.com/TechReborn/Energy)
-    modApi "teamreborn:energy:${project.energy_version}"
+    modApi ("teamreborn:energy:${project.energy_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "teamreborn:energy:${project.energy_version}"
 
     // LibGui
-    modCompile "io.github.cottonmc:LibGui:${project.libgui_version}"
+    modCompile ("io.github.cottonmc:LibGui:${project.libgui_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "io.github.cottonmc:LibGui:${project.libgui_version}"
 
     // FOML
-    modCompile "dev.onyxstudios:FOML:${project.foml_version}"
+    modCompile ("dev.onyxstudios:FOML:${project.foml_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "dev.onyxstudios:FOML:${project.foml_version}"
 
     // Patchouli
-    modImplementation "vazkii.patchouli:Patchouli:${project.patchouli_version}"
+    modImplementation ("vazkii.patchouli:Patchouli:${project.patchouli_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "vazkii.patchouli:Patchouli:${project.patchouli_version}"
 
 
     // Fabric Kotlin module
-    modImplementation "net.fabricmc:fabric-language-kotlin:${project.kotlin_version}"
+    // modImplementation "net.fabricmc:fabric-language-kotlin:${project.kotlin_version}"
 
-
-    //Artifice
-    modImplementation "com.lettuce.fudge:artifice:${project.artifice_version}"
+    // Artifice
+    modImplementation ("com.lettuce.fudge:artifice:${project.artifice_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "com.lettuce.fudge:artifice:${project.artifice_version}"
 
-    //implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // Loader deps
+
+    // log4j
+    implementation "org.apache.logging.log4j:log4j-core:${project.log4j_version}"
+    implementation "org.apache.logging.log4j:log4j-api:${project.log4j_version}"
+    annotationProcessor "org.apache.logging.log4j:log4j-core:${project.log4j_version}"
+    annotationProcessor "org.apache.logging.log4j:log4j-api:${project.log4j_version}"
+
+    // gson
+    implementation "com.google.code.gson:gson:${project.gson_version}"
+
+    // guava
+    implementation "com.google.guava:guava:${project.guava_version}"
+
+    // asm
+    implementation "org.ow2.asm:asm:${project.asm_version}"
+    implementation "org.ow2.asm:asm-commons:${project.asm_version}"
+    implementation "org.ow2.asm:asm-util:${project.asm_version}"
+    implementation "org.ow2.asm:asm-tree:${project.asm_version}"
+    implementation "org.ow2.asm:asm-analysis:${project.asm_version}"
+
+    // quilt things
+    implementation "org.quiltmc:quilt-json5:${project.json5_version}"
+    implementation "org.quiltmc:quilt-loader-sat4j:${project.sat4j_version}"
 }
 
 processResources {

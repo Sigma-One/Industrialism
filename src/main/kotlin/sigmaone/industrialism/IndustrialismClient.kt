@@ -14,18 +14,18 @@ import net.minecraft.entity.player.PlayerInventory
 import net.minecraft.resource.ResourceManager
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
-import sigmaone.industrialism.Industrialism.Companion.BATTERY
-import sigmaone.industrialism.Industrialism.Companion.BATTERY_BLOCK
-import sigmaone.industrialism.Industrialism.Companion.BLAST_FURNACE_MULTIBLOCK
-import sigmaone.industrialism.Industrialism.Companion.BLAST_FURNACE_MULTIBLOCK_BLOCK
-import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK
-import sigmaone.industrialism.Industrialism.Companion.COKE_OVEN_MULTIBLOCK_BLOCK
-import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_DUMMY
-import sigmaone.industrialism.Industrialism.Companion.CONNECTOR_T0
-import sigmaone.industrialism.Industrialism.Companion.CRANK_HANDLE
-import sigmaone.industrialism.Industrialism.Companion.CRANK_HANDLE_BLOCK
-import sigmaone.industrialism.Industrialism.Companion.MULTIBLOCK_CHILD_BLOCK
-import sigmaone.industrialism.Industrialism.Companion.TATER
+import sigmaone.industrialism.Industrialism.BATTERY
+import sigmaone.industrialism.Industrialism.BATTERY_BLOCK
+import sigmaone.industrialism.Industrialism.BLAST_FURNACE_MULTIBLOCK
+import sigmaone.industrialism.Industrialism.BLAST_FURNACE_MULTIBLOCK_BLOCK
+import sigmaone.industrialism.Industrialism.COKE_OVEN_MULTIBLOCK
+import sigmaone.industrialism.Industrialism.COKE_OVEN_MULTIBLOCK_BLOCK
+import sigmaone.industrialism.Industrialism.CONNECTOR_DUMMY
+import sigmaone.industrialism.Industrialism.CONNECTOR_T0
+import sigmaone.industrialism.Industrialism.CRANK_HANDLE
+import sigmaone.industrialism.Industrialism.CRANK_HANDLE_BLOCK
+import sigmaone.industrialism.Industrialism.MULTIBLOCK_CHILD_BLOCK
+import sigmaone.industrialism.Industrialism.TATER
 import sigmaone.industrialism.block.EnergyContainerRenderer
 import sigmaone.industrialism.block.crankhandle.BlockEntityCrankHandleRenderer
 import sigmaone.industrialism.block.multiblock.blastfurnace.BlastFurnaceGui
@@ -39,18 +39,16 @@ import sigmaone.industrialism.util.datagen.DataGenerator
 import java.util.function.Consumer
 
 @Environment(EnvType.CLIENT)
-class IndustrialismClient : ClientModInitializer {
-    companion object {
-        val cokeOvenModelIDs: Array<ModelIdentifier> = arrayOf(
-                ModelIdentifier(Identifier(Industrialism.MOD_ID, "coke_oven_off"), ""),
-                ModelIdentifier(Identifier(Industrialism.MOD_ID, "coke_oven_on"), "")
-        )
+object IndustrialismClient : ClientModInitializer {
+    val cokeOvenModelIDs: Array<ModelIdentifier> = arrayOf(
+            ModelIdentifier(Identifier(Industrialism.MOD_ID, "coke_oven_off"), ""),
+            ModelIdentifier(Identifier(Industrialism.MOD_ID, "coke_oven_on"), "")
+    )
 
-        val blastFurnaceModelIDs: Array<ModelIdentifier> = arrayOf(
-                ModelIdentifier(Identifier(Industrialism.MOD_ID, "blast_furnace_off"), ""),
-                ModelIdentifier(Identifier(Industrialism.MOD_ID, "blast_furnace_on"), "")
-        )
-    }
+    val blastFurnaceModelIDs: Array<ModelIdentifier> = arrayOf(
+            ModelIdentifier(Identifier(Industrialism.MOD_ID, "blast_furnace_off"), ""),
+            ModelIdentifier(Identifier(Industrialism.MOD_ID, "blast_furnace_on"), "")
+    )
 
     override fun onInitializeClient() {
         DataGenerator.commitClient()

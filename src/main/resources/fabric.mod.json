@@ -15,14 +15,12 @@
   "entrypoints": {
     "client": [
       {
-        "adapter": "kotlin",
-        "value": "sigmaone.industrialism.IndustrialismClient"
+        "value": "sigmaone.industrialism.IndustrialismClient::INSTANCE"
       }
     ],
     "main": [
       {
-        "adapter": "kotlin",
-        "value": "sigmaone.industrialism.Industrialism"
+        "value": "sigmaone.industrialism.Industrialism::INSTANCE"
       }
     ]
   },
@@ -30,9 +28,7 @@
     "industrialism.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.9.0+build.204",
-    "fabric": "*",
-    "fabric-language-kotlin": ">=1.4.0",
+    "fabric" : "*",
     "minecraft": ">=1.16.3"
   },
   "custom": {
