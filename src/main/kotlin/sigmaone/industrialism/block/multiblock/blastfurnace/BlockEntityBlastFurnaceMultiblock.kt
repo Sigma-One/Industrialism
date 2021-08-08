@@ -11,7 +11,7 @@ import net.minecraft.inventory.SidedInventory
 import net.minecraft.item.Item
 import net.minecraft.item.ItemConvertible
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.recipe.Recipe
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.PropertyDelegate
@@ -20,8 +20,8 @@ import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
-import net.minecraft.util.Tickable
 import net.minecraft.util.collection.DefaultedList
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.BLAST_FURNACE_MULTIBLOCK
@@ -29,7 +29,18 @@ import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
 import sigmaone.industrialism.recipe.BlastingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNACE_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityBlastFurnaceMultiblock(blockPos: BlockPos?, blockState: BlockState?) :
+    BlockEntityMultiblockRoot(
+        BLAST_FURNACE_MULTIBLOCK,
+        blockPos,
+        blockState
+    ),
+    IInventory,
+    SidedInventory,
+    NamedScreenHandlerFactory,
+    PropertyDelegateHolder,
+    BlockEntityClientSerializable
+{
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(3, ItemStack.EMPTY)
     var progress = 0
@@ -113,26 +124,26 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
         return BlastFurnaceGuiDescription(syncId, inv, ScreenHandlerContext.create(world, pos))
     }
 
-    override fun fromTag(state: BlockState?, tag: CompoundTag?) {
-        super.fromTag(state, tag)
-        Inventories.fromTag(tag, items)
+    override fun readNbt(tag: NbtCompound?) {
+        super.readNbt(tag)
+        Inventories.readNbt(tag, items)
         startedProcessing = tag!!.getLong("started_processing")
         startedBurning = tag!!.getLong("started_burning")
 
     }
 
-    override fun toTag(tag: CompoundTag?): CompoundTag {
-        Inventories.toTag(tag, items)
+    override fun writeNbt(tag: NbtCompound?): NbtCompound {
+        Inventories.writeNbt(tag, items)
         tag!!.putLong("started_processing", startedProcessing)
         tag!!.putLong("started_burning", startedBurning)
-        return super.toTag(tag)
+        return super.writeNbt(tag)
     }
 
-    override fun fromClientTag(tag: CompoundTag?) {
+    override fun fromClientTag(tag: NbtCompound?) {
         isBurning = tag!!.getBoolean("is_burning")
     }
 
-    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+    override fun toClientTag(tag: NbtCompound?): NbtCompound {
         tag!!.putBoolean("is_burning", startedBurning != 0L)
         return tag
     }
@@ -150,7 +161,7 @@ class BlockEntityBlastFurnaceMultiblock : BlockEntityMultiblockRoot(BLAST_FURNAC
         return true
     }
 
-    override fun tick() {
+    fun tick() {
         val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.BLASTING_RECIPE_TYPE, this, world).orElse(null)
         val currentTime = world!!.time
 

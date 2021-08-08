@@ -20,9 +20,7 @@
         "items": [
           {
             "item": "industrialism:wrench",
-            "count": {
-              "min": 1
-            }
+            "count": 1
           }
         ]
       }

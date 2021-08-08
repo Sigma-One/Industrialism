@@ -19,7 +19,7 @@ class ShapelessToolDamagingRecipe(
     output: ItemStack?,
     input: DefaultedList<Ingredient>?
 ): ShapelessRecipe(id, group, output, input) {
-    override fun getRemainingStacks(inventory: CraftingInventory?): DefaultedList<ItemStack> {
+    override fun getRemainder(inventory: CraftingInventory?): DefaultedList<ItemStack> {
         val defaultedList = DefaultedList.ofSize(inventory!!.size(), ItemStack.EMPTY)
 
         for (i in defaultedList.indices) {
@@ -47,11 +47,11 @@ class ShapelessToolDamagingRecipe(
 class ShapelessToolDamagingRecipeSerializer(): ShapelessRecipe.Serializer() {
     override fun read(identifier: Identifier?, jsonObject: JsonObject?): ShapelessToolDamagingRecipe {
         val recipe = super.read(identifier, jsonObject)
-        return ShapelessToolDamagingRecipe(recipe.id, recipe.group, recipe.output, recipe.previewInputs)
+        return ShapelessToolDamagingRecipe(recipe.id, recipe.group, recipe.output, recipe.ingredients)
     }
 
     override fun read(identifier: Identifier?, packetByteBuf: PacketByteBuf?): ShapelessToolDamagingRecipe {
         val recipe = super.read(identifier, packetByteBuf)
-        return ShapelessToolDamagingRecipe(recipe.id, recipe.group, recipe.output, recipe.previewInputs)
+        return ShapelessToolDamagingRecipe(recipe.id, recipe.group, recipe.output, recipe.ingredients)
     }
 }

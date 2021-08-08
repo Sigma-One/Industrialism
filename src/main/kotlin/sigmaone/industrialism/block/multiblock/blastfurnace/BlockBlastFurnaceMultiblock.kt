@@ -16,7 +16,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
-import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
@@ -63,8 +62,8 @@ class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(set
             )
         )
 
-    override fun createBlockEntity(world: BlockView): BlockEntity {
-        return BlockEntityBlastFurnaceMultiblock()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityBlastFurnaceMultiblock(blockPos, blockState)
     }
 
     override fun appendProperties(stateManager: StateManager.Builder<Block, BlockState>) {

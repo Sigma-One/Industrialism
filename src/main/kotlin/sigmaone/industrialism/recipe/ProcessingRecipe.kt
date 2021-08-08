@@ -54,7 +54,7 @@ abstract class ProcessingRecipe(
         return recipeType
     }
 
-    override fun getPreviewInputs(): DefaultedList<Ingredient> {
+    override fun getIngredients(): DefaultedList<Ingredient> {
         val dl = DefaultedList.of<Ingredient>()
         for (i in inputs) {
             dl.add(i)

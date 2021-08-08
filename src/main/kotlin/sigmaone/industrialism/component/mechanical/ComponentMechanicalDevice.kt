@@ -1,7 +1,7 @@
 package sigmaone.industrialism.component.mechanical
 
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.component.Component
 import sigmaone.industrialism.util.IO
@@ -20,8 +20,8 @@ class ComponentMechanicalDevice(
 ) : Component(owner) {
     var visualDegrees = 0.0
 
-    fun toClientTag(tag: CompoundTag?): CompoundTag {
-        val subTag = CompoundTag()
+    fun toClientTag(tag: NbtCompound?): NbtCompound {
+        val subTag = NbtCompound()
         subTag.putDouble("rpm", rpm)
         subTag.putDouble("degrees", visualDegrees)
         for (dir in sideConfig.keys) {
@@ -31,7 +31,7 @@ class ComponentMechanicalDevice(
         return tag
     }
 
-    fun fromClientTag(tag: CompoundTag?) {
+    fun fromClientTag(tag: NbtCompound?) {
         val subTag = tag!!.getCompound("mechanicalComponent")
         rpm = subTag!!.getDouble("rpm")
         visualDegrees = subTag.getDouble("degrees")
@@ -40,8 +40,8 @@ class ComponentMechanicalDevice(
         }
     }
 
-    fun toTag(tag: CompoundTag?): CompoundTag {
-        val subTag = CompoundTag()
+    fun writeNbt(tag: NbtCompound?): NbtCompound {
+        val subTag = NbtCompound()
         subTag.putDouble("rpm", rpm)
         for (dir in sideConfig.keys) {
             subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
@@ -50,7 +50,7 @@ class ComponentMechanicalDevice(
         return tag
     }
 
-    fun fromTag(tag: CompoundTag?) {
+    fun readNbt(tag: NbtCompound?) {
         val subTag = tag!!.getCompound("mechanicalComponent")
         rpm = subTag!!.getDouble("rpm")
         for (dir in sideConfig.keys) {

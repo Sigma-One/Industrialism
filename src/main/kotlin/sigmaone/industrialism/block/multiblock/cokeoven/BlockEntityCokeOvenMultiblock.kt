@@ -9,7 +9,7 @@ import net.minecraft.inventory.Inventories
 import net.minecraft.inventory.SidedInventory
 import net.minecraft.item.ItemConvertible
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.recipe.Recipe
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.screen.PropertyDelegate
@@ -18,8 +18,8 @@ import net.minecraft.screen.ScreenHandlerContext
 import net.minecraft.state.property.Properties
 import net.minecraft.text.Text
 import net.minecraft.text.TranslatableText
-import net.minecraft.util.Tickable
 import net.minecraft.util.collection.DefaultedList
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.COKE_OVEN_MULTIBLOCK
@@ -27,7 +27,18 @@ import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
 import sigmaone.industrialism.recipe.CokingRecipe
 import sigmaone.industrialism.util.IInventory
 
-class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRoot(COKE_OVEN_MULTIBLOCK), IInventory, SidedInventory, NamedScreenHandlerFactory, Tickable, PropertyDelegateHolder, BlockEntityClientSerializable {
+class BlockEntityCokeOvenMultiblock(blockPos: BlockPos?, blockState: BlockState?) :
+    BlockEntityMultiblockRoot(
+        COKE_OVEN_MULTIBLOCK,
+        blockPos,
+        blockState
+    ),
+    IInventory,
+    SidedInventory,
+    NamedScreenHandlerFactory,
+    PropertyDelegateHolder,
+    BlockEntityClientSerializable
+{
     @JvmField
     val items: DefaultedList<ItemStack> = DefaultedList.ofSize(2, ItemStack.EMPTY)
     var progress = 0
@@ -101,23 +112,23 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRoot(COKE_OVEN_MULTIB
         return CokeOvenGuiDescription(syncId, inv, ScreenHandlerContext.create(world, pos))
     }
 
-    override fun fromTag(state: BlockState?, tag: CompoundTag?) {
-        super.fromTag(state, tag)
-        Inventories.fromTag(tag, items)
+    override fun readNbt(tag: NbtCompound?) {
+        super.readNbt(tag)
+        Inventories.readNbt(tag, items)
         startedProcessing = tag!!.getLong("started_processing")
     }
 
-    override fun toTag(tag: CompoundTag?): CompoundTag {
-        Inventories.toTag(tag, items)
+    override fun writeNbt(tag: NbtCompound?): NbtCompound {
+        Inventories.writeNbt(tag, items)
         tag!!.putLong("started_processing", startedProcessing)
-        return super.toTag(tag)
+        return super.writeNbt(tag)
     }
 
-    override fun fromClientTag(tag: CompoundTag?) {
+    override fun fromClientTag(tag: NbtCompound?) {
         isProcessing = tag!!.getBoolean("is_processing")
     }
 
-    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+    override fun toClientTag(tag: NbtCompound?): NbtCompound {
         tag!!.putBoolean("is_processing", startedProcessing != 0L)
         return tag
     }
@@ -135,7 +146,7 @@ class BlockEntityCokeOvenMultiblock : BlockEntityMultiblockRoot(COKE_OVEN_MULTIB
         return true
     }
 
-    override fun tick() {
+    fun tick() {
         val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
         val currentTime = world!!.time
         // Check:

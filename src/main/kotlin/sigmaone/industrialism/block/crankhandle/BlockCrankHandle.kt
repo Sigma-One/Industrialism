@@ -20,8 +20,8 @@ import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
 import sigmaone.industrialism.util.IO
 
 class BlockCrankHandle(settings: Settings?) : FacingBlock(settings), BlockEntityProvider {
-    override fun createBlockEntity(world: BlockView?): BlockEntity {
-        return BlockEntityCrankHandle()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityCrankHandle(blockPos, blockState)
     }
 
     override fun onPlaced(

@@ -16,7 +16,6 @@ import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
-import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
@@ -63,8 +62,8 @@ class BlockCokeOvenMultiblock(settings: Settings?): BlockMultiblockRoot(settings
             )
         )
 
-    override fun createBlockEntity(world: BlockView): BlockEntity {
-        return BlockEntityCokeOvenMultiblock()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityCokeOvenMultiblock(blockPos, blockState)
     }
 
     override fun onUse(state: BlockState?, world: World?, pos: BlockPos?, player: PlayerEntity?, hand: Hand?, hit: BlockHitResult?): ActionResult {

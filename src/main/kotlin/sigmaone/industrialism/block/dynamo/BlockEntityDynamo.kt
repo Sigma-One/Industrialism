@@ -3,8 +3,8 @@ package sigmaone.industrialism.block.dynamo
 import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.util.Tickable
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.IBlockEntityRefreshable
@@ -15,11 +15,10 @@ import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
 import sigmaone.industrialism.util.IO
 import team.reborn.energy.EnergyTier
 
-class BlockEntityDynamo :
-    BlockEntity(Industrialism.DYNAMO),
+class BlockEntityDynamo(blockPos: BlockPos?, blockState: BlockState?) :
+    BlockEntity(Industrialism.DYNAMO, blockPos, blockState),
     IComponentEnergyContainer,
     IComponentMechanicalDevice,
-    Tickable,
     BlockEntityClientSerializable,
     IBlockEntityRefreshable
 {
@@ -52,34 +51,34 @@ class BlockEntityDynamo :
         )
     )
 
-    override fun tick() {
+    fun tick() {
         componentEnergyContainer.tick()
         componentMechanicalDevice.tick()
         componentEnergyContainer.storedEnergy += (componentMechanicalDevice.rpm / 5)
     }
 
-    override fun toTag(tag: CompoundTag): CompoundTag {
-        super.toTag(tag)
-        var tag = componentMechanicalDevice.toTag(tag)
-        tag = componentEnergyContainer.toTag(tag)
+    override fun writeNbt(tag: NbtCompound): NbtCompound {
+        super.writeNbt(tag)
+        var tag = componentMechanicalDevice.writeNbt(tag)
+        tag = componentEnergyContainer.writeNbt(tag)
         return tag
     }
 
-    override fun fromTag(state: BlockState, tag: CompoundTag) {
-        super.fromTag(state, tag)
-        componentMechanicalDevice.fromTag(tag)
-        componentEnergyContainer.fromTag(state, tag)
+    override fun readNbt(tag: NbtCompound) {
+        super.readNbt(tag)
+        componentMechanicalDevice.readNbt(tag)
+        componentEnergyContainer.readNbt(tag)
     }
 
     override fun refresh() {
         markDirty()
     }
 
-    override fun fromClientTag(tag: CompoundTag?) {
+    override fun fromClientTag(tag: NbtCompound?) {
         componentMechanicalDevice.fromClientTag(tag)
     }
 
-    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+    override fun toClientTag(tag: NbtCompound?): NbtCompound {
         return componentMechanicalDevice.toClientTag(tag)
     }
 }

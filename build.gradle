@@ -4,8 +4,8 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.4.10'
 }
 
-sourceCompatibility = JavaVersion.VERSION_14
-targetCompatibility = JavaVersion.VERSION_14
+sourceCompatibility = JavaVersion.VERSION_16
+targetCompatibility = JavaVersion.VERSION_16
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -22,7 +22,7 @@ repositories {
     }
     maven { // Fabric Kotlin
         name = "Fabric"
-        url = "http://maven.fabricmc.net"
+        url = "https://maven.fabricmc.net"
     }
     maven { // Patchouli
         name = "BlameJared"
@@ -45,11 +45,11 @@ dependencies {
     include "teamreborn:energy:${project.energy_version}"
 
     // LibGui
-    modCompile ("io.github.cottonmc:LibGui:${project.libgui_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
+    modImplementation ("io.github.cottonmc:LibGui:${project.libgui_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "io.github.cottonmc:LibGui:${project.libgui_version}"
 
     // FOML
-    modCompile ("dev.onyxstudios:FOML:${project.foml_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
+    modImplementation ("dev.onyxstudios:FOML:${project.foml_version}") { exclude group: "net.fabricmc", module: "fabric-loader" }
     include "dev.onyxstudios:FOML:${project.foml_version}"
 
     // Patchouli
@@ -89,9 +89,12 @@ dependencies {
     // quilt things
     implementation "org.quiltmc:quilt-json5:${project.json5_version}"
     implementation "org.quiltmc:quilt-loader-sat4j:${project.sat4j_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 processResources {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+
     inputs.property "version", project.version
 
     from(sourceSets.main.resources.srcDirs) {
@@ -160,3 +163,7 @@ compileTestKotlin {
         jvmTarget = "1.8"
     }
 }
+
+/*tasks.withType( JavaCompile ).configureEach {
+    options.forkOptions.jvmArgs.addAll( ['--add-opens', 'jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED'] )
+}*/

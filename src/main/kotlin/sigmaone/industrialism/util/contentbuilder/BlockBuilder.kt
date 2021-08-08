@@ -1,8 +1,8 @@
 package sigmaone.industrialism.util.contentbuilder
 
-import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.minecraft.block.Block
 import net.minecraft.item.BlockItem
+import net.minecraft.item.Item
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
 import net.minecraft.util.registry.Registry
@@ -16,7 +16,7 @@ class BlockBuilder<T: Block>(val id: String, val block: T) {
         fun <T: Block> getStandard(id: String, block: T): T {
             return BlockBuilder(id, block)
                 .generateBlockState()
-                .generateItem()
+                .generateItem(Item.Settings())
                 .generateModel()
                 .get()
         }
@@ -24,14 +24,14 @@ class BlockBuilder<T: Block>(val id: String, val block: T) {
         fun <T: Block> getHorizontalFacing(id: String, block: T): T {
             return BlockBuilder(id, block)
                 .generateBlockState(withFacing = true)
-                .generateItem()
+                .generateItem(Item.Settings())
                 .generateModel()
                 .get()
         }
     }
 
-    fun generateItem(settings: FabricItemSettings = FabricItemSettings(), withModel: Boolean = true): BlockBuilder<T> {
-        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, settings))
+    fun generateItem(settings: Item.Settings, withModel: Boolean = true): BlockBuilder<T> {
+        Registry.register(Registry.ITEM, Identifier(Industrialism.MOD_ID, id), BlockItem(block, settings) as Item)
         if (withModel) {
             ModelGenerator.generateBlockItemModel(Identifier(Industrialism.MOD_ID, id))
         }

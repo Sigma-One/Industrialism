@@ -17,10 +17,8 @@
       "conditions": {
         "items": [
           {
-            "item": "industrialism:steel_ingot",
-            "count": {
-              "min": 1
-            }
+            "items": ["industrialism:steel_ingot"],
+            "count": 1
           }
         ]
       }

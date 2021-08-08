@@ -10,15 +10,14 @@ import net.minecraft.util.ActionResult
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.component.energy.IComponentEnergyContainer
 import kotlin.math.roundToInt
 
 class BlockBattery(settings: Settings?) : Block(settings), BlockEntityProvider {
-    override fun createBlockEntity(world: BlockView): BlockEntity {
-        return BlockEntityBattery()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityBattery(blockPos, blockState)
     }
 
     override fun onUse(state: BlockState?, world: World?, pos: BlockPos?, player: PlayerEntity?, hand: Hand?, hit: BlockHitResult?): ActionResult {

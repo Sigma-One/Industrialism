@@ -1,7 +1,7 @@
 package sigmaone.industrialism.component.wiring
 
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtHelper
 import net.minecraft.state.property.Properties.FACING
 import net.minecraft.util.Identifier
@@ -146,7 +146,7 @@ open class ComponentWireNode(
         }
     }
 
-    fun fromClientTag(tag: CompoundTag?) {
+    fun fromClientTag(tag: NbtCompound?) {
         val connectionAmount = tag!!.getInt("connection_amount")
         facing = Direction.byName(tag.getString("facing"))
         if (connectionAmount > 0) {
@@ -166,11 +166,11 @@ open class ComponentWireNode(
         }
     }
 
-    fun toClientTag(tag: CompoundTag?): CompoundTag {
+    fun toClientTag(tag: NbtCompound?): NbtCompound {
         tag!!.putInt("connection_amount", connections.size)
         if (connections.size > 0) {
             for ((i, connection) in connections.keys.withIndex()) {
-                val connTag = CompoundTag()
+                val connTag = NbtCompound()
                 val target = owner.world!!.getBlockEntity(connection)
                 if (target is IComponentWireNode) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())
@@ -185,7 +185,7 @@ open class ComponentWireNode(
         return tag
     }
 
-    fun fromTag(tag: CompoundTag?) {
+    fun readNbt(tag: NbtCompound?) {
         val connectionAmount = tag!!.getInt("connection_amount")
         facing = Direction.byName(tag.getString("facing"))
         if (connectionAmount > 0) {
@@ -205,11 +205,11 @@ open class ComponentWireNode(
         }
     }
 
-    fun toTag(tag: CompoundTag?): CompoundTag {
+    fun writeNbt(tag: NbtCompound?): NbtCompound {
         tag!!.putInt("connection_amount", connections.size)
         if (connections.size > 0) {
             for ((i, connection) in connections.keys.withIndex()) {
-                val connTag = CompoundTag()
+                val connTag = NbtCompound()
                 val target = owner.world!!.getBlockEntity(connection)
                 if (target is IComponentWireNode) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())

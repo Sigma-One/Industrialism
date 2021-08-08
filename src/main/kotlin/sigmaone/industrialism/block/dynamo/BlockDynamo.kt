@@ -11,7 +11,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
-import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.util.IO
 
@@ -32,8 +31,8 @@ class BlockDynamo(settings: Settings?) : FacingBlock(settings), BlockEntityProvi
         super.onPlaced(world, pos, state, placer, itemStack)
     }
 
-    override fun createBlockEntity(world: BlockView): BlockEntity {
-        return BlockEntityDynamo()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityDynamo(blockPos, blockState)
     }
 
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {

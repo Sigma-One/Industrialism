@@ -19,13 +19,13 @@ import net.minecraft.world.World
 
 class BlockMultiblockChild(settings: Settings?) : TransparentBlock(settings), BlockEntityProvider {
     var shape: VoxelShape = VoxelShapes.cuboid(0.0, 0.0, 0.0, 1.0, 1.0, 1.0)
-    override fun createBlockEntity(world: BlockView): BlockEntity? {
-        return BlockEntityMultiblockChild()
+    override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
+        return BlockEntityMultiblockChild(blockPos, blockState)
     }
 
-    override fun getVisualShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape? {
+    /*override fun getVisualShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape? {
         return VoxelShapes.empty()
-    }
+    }*/
 
     override fun getOutlineShape(state: BlockState, world: BlockView, pos: BlockPos, context: ShapeContext): VoxelShape {
         return shape

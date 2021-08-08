@@ -24,7 +24,7 @@ class BlastingRecipe(
     )
 {
     @Environment(EnvType.CLIENT)
-    override fun getRecipeKindIcon(): ItemStack {
+    override fun createIcon(): ItemStack {
         return Industrialism.BLAST_FURNACE_DUMMY_ITEM.defaultStack
     }
 

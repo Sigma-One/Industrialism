@@ -11,6 +11,7 @@ import net.minecraft.item.Items
 import net.minecraft.item.ToolItem
 import net.minecraft.recipe.Ingredient
 import net.minecraft.util.Identifier
+import net.minecraft.world.gen.feature.OreFeatureConfig
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.item.tool.*
@@ -253,11 +254,12 @@ class Metal(private val name: String) {
         miningLevel: Int,
         veins: Int,
         size: Int,
-        lowY: Int,
-        highY: Int,
+        bottom: Int,
+        top: Int,
         hardness: Float = 3.0f,
         withDefaultRecipe: Boolean = true,
         withDefaultItem: Boolean = true,
+        withGeneration: Boolean = true
     ): Metal {
         val builder = BlockBuilder(
             "${oreName}_ore",
@@ -277,7 +279,17 @@ class Metal(private val name: String) {
 
         ore = builder.get()
 
-        RegistryHelper.registerOreGen(oreName + "ore", 0, ore!!, size, veins, lowY, 0, highY)
+        if (withGeneration) {
+            var feature = RegistryHelper.registerOreFeature(
+                oreName + "_ore",
+                ore!!,
+                OreFeatureConfig.Rules.BASE_STONE_OVERWORLD,
+                size,
+                veins,
+                bottom,
+                top
+            )
+        }
         TagGenerator.tagItem(Identifier("c", "${name}_ores"), ore!!.asItem())
         TagGenerator.tagBlock(Identifier("c", "${name}_ores"), ore!!)
         return this

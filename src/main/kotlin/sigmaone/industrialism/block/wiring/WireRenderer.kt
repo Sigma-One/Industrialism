@@ -1,13 +1,13 @@
 package sigmaone.industrialism.block.wiring
 
+import net.minecraft.block.entity.BlockEntity
 import net.minecraft.client.render.VertexConsumerProvider
-import net.minecraft.client.render.block.entity.BlockEntityRenderDispatcher
 import net.minecraft.client.render.block.entity.BlockEntityRenderer
 import net.minecraft.client.util.math.MatrixStack
-import net.minecraft.client.util.math.Vector3f
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
+import net.minecraft.util.math.Vec3f
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
 import kotlin.math.PI
@@ -16,8 +16,15 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRenderer<BlockEntityWireConnectorT0>(dispatcher) {
-    override fun render(entity: BlockEntityWireConnectorT0, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
+class WireRenderer<T : BlockEntityWireNode> : BlockEntityRenderer<T> {
+    override fun render(
+        entity: T,
+        tickDelta: Float,
+        matrices: MatrixStack,
+        vertexConsumers: VertexConsumerProvider,
+        light: Int,
+        overlay: Int
+    ) {
         for (conn in entity.componentWireNode.connections) {
             matrices.push()
             if (entity.world!!.getBlockEntity(conn.key) != null && entity.world!!.getBlockEntity(conn.key) is BlockEntityWireConnectorT0) {
@@ -47,12 +54,12 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                     else            -> throw IllegalStateException("Illegal orientation")
                 }
 
-                val vertexB = Vector3f(
+                val vertexB = Vec3f(
                         (conn.key.x - entity.pos.x + targetOffsets.x).toFloat(),
                         (conn.key.y - entity.pos.y + targetOffsets.y).toFloat(),
                         (conn.key.z - entity.pos.z + targetOffsets.z).toFloat()
                 )
-                val vertexA = Vector3f(
+                val vertexA = Vec3f(
                         offsets.x.toFloat(),
                         entity.pos.y.toFloat() + offsets.y.toFloat(),
                         offsets.z.toFloat()
@@ -116,27 +123,27 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                             pdz = -pdz
                         }
 
-                        val vShift = Vector3f(bx, by, bz)
-                        vShift.subtract(Vector3f(ax, ay, az))
+                        val vShift = Vec3f(bx, by, bz)
+                        vShift.subtract(Vec3f(ax, ay, az))
                         vShift.normalize()
-                        vShift.cross(Vector3f(-(((conn.value.wireType.thickness/2)/100)*pdz), 0f, -(((conn.value.wireType.thickness/2)/100)*pdx)))
+                        vShift.cross(Vec3f(-(((conn.value.wireType.thickness/2)/100)*pdz), 0f, -(((conn.value.wireType.thickness/2)/100)*pdx)))
 
-                        val aa = Vector3f(
+                        val aa = Vec3f(
                                 ax + vShift.x,
                                 ay + vShift.y,
                                 az + vShift.z
                         )
-                        val ab = Vector3f(
+                        val ab = Vec3f(
                                 ax - vShift.x,
                                 ay - vShift.y,
                                 az - vShift.z
                         )
-                        val ba = Vector3f(
+                        val ba = Vec3f(
                                 bx + vShift.x,
                                 by + vShift.y,
                                 bz + vShift.z
                         )
-                        val bb = Vector3f(
+                        val bb = Vec3f(
                                 bx - vShift.x,
                                 by - vShift.y,
                                 bz - vShift.z
@@ -175,27 +182,27 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
                         val bx = vertexA.x + (i + 1) * dx
                         val bz = vertexA.z + (i + 1) * dz
 
-                        val vn = Vector3f(0f, ayb - aya, 0f)
-                        val vd = Vector3f(bx - ax, 0f, bz - az)
+                        val vn = Vec3f(0f, ayb - aya, 0f)
+                        val vd = Vec3f(bx - ax, 0f, bz - az)
                         vn.cross(vd)
                         vn.normalize()
 
-                        val aa = Vector3f(
+                        val aa = Vec3f(
                                 ax  + (conn.value.wireType.thickness / 2) * vn.x,
                                 aya + (conn.value.wireType.thickness / 2) * vn.y,
                                 az  + (conn.value.wireType.thickness / 2) * vn.z
                         )
-                        val ab = Vector3f(
+                        val ab = Vec3f(
                                 ax  - (conn.value.wireType.thickness / 2) * vn.x,
                                 aya - (conn.value.wireType.thickness / 2) * vn.y,
                                 az  - (conn.value.wireType.thickness / 2) * vn.z
                         )
-                        val ba = Vector3f(
+                        val ba = Vec3f(
                                 bx  + (conn.value.wireType.thickness / 2) * vn.x,
                                 byb + (conn.value.wireType.thickness / 2) * vn.y,
                                 bz  + (conn.value.wireType.thickness / 2) * vn.z
                         )
-                        val bb = Vector3f(
+                        val bb = Vec3f(
                                 bx  - (conn.value.wireType.thickness / 2) * vn.x,
                                 byb - (conn.value.wireType.thickness / 2) * vn.y,
                                 bz  - (conn.value.wireType.thickness / 2) * vn.z
@@ -263,7 +270,7 @@ class WireRenderer(dispatcher: BlockEntityRenderDispatcher?) : BlockEntityRender
         }
     }
 
-    override fun rendersOutsideBoundingBox(blockEntity: BlockEntityWireConnectorT0): Boolean {
+    override fun rendersOutsideBoundingBox(blockEntity: T): Boolean {
         return true
     }
 }

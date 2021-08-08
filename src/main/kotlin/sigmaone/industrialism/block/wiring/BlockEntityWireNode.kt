@@ -4,8 +4,8 @@ import net.fabricmc.fabric.api.block.entity.BlockEntityClientSerializable
 import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityType
-import net.minecraft.nbt.CompoundTag
-import net.minecraft.util.Tickable
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.util.math.BlockPos
 import sigmaone.industrialism.block.IBlockEntityConfigurable
 import sigmaone.industrialism.block.IBlockEntityRefreshable
 import sigmaone.industrialism.component.wiring.ComponentWireNode
@@ -14,16 +14,17 @@ import sigmaone.industrialism.item.ItemWireSpool
 import team.reborn.energy.EnergyTier
 
 abstract class BlockEntityWireNode(
+    blockPos: BlockPos?,
+    blockState: BlockState?,
     type: BlockEntityType<*>,
     energyTier: EnergyTier,
     height: Double,
     maxConnections: Int,
-    wireTypes: Array<ItemWireSpool>,
+    wireTypes: Array<ItemWireSpool>
 ) :
-    BlockEntity(type),
+    BlockEntity(type, blockPos, blockState),
     IComponentWireNode,
     BlockEntityClientSerializable,
-    Tickable,
     IBlockEntityRefreshable,
     IBlockEntityConfigurable
 {
@@ -41,27 +42,27 @@ abstract class BlockEntityWireNode(
         }
     }
 
-    override fun fromClientTag(tag: CompoundTag?) {
+    override fun fromClientTag(tag: NbtCompound?) {
         componentWireNode.fromClientTag(tag)
     }
 
-    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+    override fun toClientTag(tag: NbtCompound?): NbtCompound {
         val tag = componentWireNode.toClientTag(tag)
         return tag
     }
 
-    override fun fromTag(state: BlockState?, tag: CompoundTag?) {
-        super.fromTag(state, tag)
-        componentWireNode.fromTag(tag)
+    override fun readNbt(tag: NbtCompound?) {
+        super.readNbt(tag)
+        componentWireNode.readNbt(tag)
     }
 
-    override fun toTag(tag: CompoundTag?): CompoundTag {
-        var tag = super.toTag(tag)
-        tag = componentWireNode.toTag(tag)
+    override fun writeNbt(tag: NbtCompound?): NbtCompound {
+        var tag = super.writeNbt(tag)
+        tag = componentWireNode.writeNbt(tag)
         return tag
     }
 
-    override fun tick() {
+    open fun tick() {
         componentWireNode.tick()
     }
 }

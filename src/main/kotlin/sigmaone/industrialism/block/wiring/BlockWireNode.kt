@@ -30,11 +30,11 @@ abstract class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(
         val heightD = f116*height
         return when (state.get(FACING)) {
             Direction.UP    -> VoxelShapes.cuboid(midMin, 0.0, midMin, midMax, heightD, midMax)
-            Direction.DOWN  -> VoxelShapes.cuboid(midMin, 1.0, midMin, midMax, 1.0-heightD, midMax)
-            Direction.NORTH -> VoxelShapes.cuboid(midMin, midMin, 1.0, midMax, midMax, 1.0-heightD)
+            Direction.DOWN  -> VoxelShapes.cuboid(midMin, 1.0-heightD, midMin, midMax, 1.0, midMax)
+            Direction.NORTH -> VoxelShapes.cuboid(midMin, midMin, 1.0-heightD, midMax, midMax, 1.0)
             Direction.SOUTH -> VoxelShapes.cuboid(midMin, midMin, 0.0, midMax, midMax, heightD)
             Direction.EAST  -> VoxelShapes.cuboid(0.0, midMin, midMin, heightD, midMax, midMax)
-            Direction.WEST  -> VoxelShapes.cuboid(1.0, midMin, midMin, 1.0-heightD, midMax, midMax)
+            Direction.WEST  -> VoxelShapes.cuboid(1.0-heightD, midMin, midMin, 1.0, midMax, midMax)
             else -> throw IllegalStateException("Illegal side: " + state.get(FACING))
         }
     }

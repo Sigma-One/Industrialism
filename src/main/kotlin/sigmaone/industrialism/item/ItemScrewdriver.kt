@@ -2,7 +2,7 @@ package sigmaone.industrialism.item
 
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemUsageContext
-import net.minecraft.item.MiningToolItem
+import net.minecraft.item.SwordItem
 import net.minecraft.item.ToolMaterial
 import net.minecraft.text.TranslatableText
 import net.minecraft.util.ActionResult
@@ -11,9 +11,13 @@ import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.IBlockEntityConfigurable
 import sigmaone.industrialism.component.energy.IComponentEnergyContainer
-import java.util.*
 
-class ItemScrewdriver(material: ToolMaterial?, attackDamage: Int, attackSpeed: Float, settings: Settings?) : MiningToolItem(attackDamage.toFloat(), attackSpeed, material, HashSet(), settings) {
+class ItemScrewdriver(
+    material: ToolMaterial?,
+    attackDamage: Int,
+    attackSpeed: Float,
+    settings: Settings?
+) : SwordItem(material, attackDamage, attackSpeed, settings) {
     var opposite = false
     fun switchMode(world: World, user: PlayerEntity?, hand: Hand?) {
         if (!world.isClient) {

@@ -8,10 +8,10 @@ import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings
 import net.fabricmc.fabric.api.registry.FuelRegistry
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry
+import net.minecraft.block.AbstractBlock
 import net.minecraft.block.Block
 import net.minecraft.block.Blocks
 import net.minecraft.block.Material
-import net.minecraft.block.MaterialColor
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.item.*
 import net.minecraft.recipe.Ingredient
@@ -23,6 +23,7 @@ import net.minecraft.state.property.Properties
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
 import net.minecraft.util.registry.Registry
+import net.minecraft.world.gen.feature.ConfiguredFeature
 import sigmaone.industrialism.block.BlockConnectorDummy
 import sigmaone.industrialism.block.BlockTater
 import sigmaone.industrialism.block.battery.BlockBattery
@@ -63,6 +64,8 @@ object Industrialism : ModInitializer {
 
     const val MOD_ID = "industrialism"
 
+    val oreFeatures = ArrayList<ConfiguredFeature<*, *>>()
+
     // Materials creative tab
     private val materialsTabBuilder: FabricItemGroupBuilder = FabricItemGroupBuilder.create(Identifier(MOD_ID, "materials"))
     var MATERIALS_TAB: ItemGroup = materialsTabBuilder.icon { ItemStack(COPPER.ingot) }.build()
@@ -80,9 +83,9 @@ object Industrialism : ModInitializer {
     var DEBUG_TAB: ItemGroup = debugTabBuilder.icon { ItemStack(DEBUG_LINKER) }.build()
 
     // Materials to fix mining levels
-    val MATERIAL_STONE: Material = FabricMaterialBuilder(MaterialColor.STONE).build()
-    val MATERIAL_METAL: Material = FabricMaterialBuilder(MaterialColor.GRAY).build()
-    val MATERIAL_WOOD : Material = FabricMaterialBuilder(MaterialColor.WOOD).build()
+    val MATERIAL_STONE: Material = FabricMaterialBuilder(Material.STONE.color).build()
+    val MATERIAL_METAL: Material = FabricMaterialBuilder(Material.METAL.color).build()
+    val MATERIAL_WOOD : Material = FabricMaterialBuilder(Material.WOOD.color).build()
 
     // Utility items
     val SCREWDRIVER: Item = ItemBuilder.getTool("screwdriver", ItemScrewdriver(ToolMaterials.IRON, 0, 3.0f, Item.Settings().group(TOOLS_TAB).maxCount(1)))
@@ -183,7 +186,7 @@ object Industrialism : ModInitializer {
     val BATTERY: BlockEntityType<BlockEntityBattery> = Registry.register(
         Registry.BLOCK_ENTITY_TYPE,
         "$MOD_ID:basic_battery",
-        BlockEntityType.Builder.create({ BlockEntityBattery() }, BATTERY_BLOCK).build(null)
+        BlockEntityType.Builder.create(::BlockEntityBattery, BATTERY_BLOCK).build(null)
     )
 
     // Dynamo
@@ -199,7 +202,7 @@ object Industrialism : ModInitializer {
     val DYNAMO: BlockEntityType<BlockEntityDynamo> = Registry.register(
         Registry.BLOCK_ENTITY_TYPE,
         "$MOD_ID:dynamo",
-        BlockEntityType.Builder.create({ BlockEntityDynamo() }, DYNAMO_BLOCK).build(null)
+        BlockEntityType.Builder.create(::BlockEntityDynamo, DYNAMO_BLOCK).build(null)
     )
 
     // Crank
@@ -214,7 +217,7 @@ object Industrialism : ModInitializer {
     val CRANK_HANDLE: BlockEntityType<BlockEntityCrankHandle> = Registry.register(
         Registry.BLOCK_ENTITY_TYPE,
         "$MOD_ID:crank_handle",
-        BlockEntityType.Builder.create({ BlockEntityCrankHandle() }, CRANK_HANDLE_BLOCK)
+        BlockEntityType.Builder.create(::BlockEntityCrankHandle, CRANK_HANDLE_BLOCK)
             .build(null)
     )
 
@@ -241,7 +244,7 @@ object Industrialism : ModInitializer {
     val CONNECTOR_T0: BlockEntityType<BlockEntityWireConnectorT0> = Registry.register(
         Registry.BLOCK_ENTITY_TYPE,
         "$MOD_ID:connector_t0",
-        BlockEntityType.Builder.create({ BlockEntityWireConnectorT0() }, CONNECTOR_T0_BLOCK).build(null)
+        BlockEntityType.Builder.create(::BlockEntityWireConnectorT0, CONNECTOR_T0_BLOCK).build(null)
     )
 
     val MULTIBLOCK_CHILD_BLOCK: Block = BlockBuilder(
@@ -254,7 +257,7 @@ object Industrialism : ModInitializer {
     val MULTIBLOCK_CHILD: BlockEntityType<BlockEntityMultiblockChild> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:multiblock_child",
-            BlockEntityType.Builder.create({ BlockEntityMultiblockChild() }, MULTIBLOCK_CHILD_BLOCK).build(null)
+            BlockEntityType.Builder.create(::BlockEntityMultiblockChild, MULTIBLOCK_CHILD_BLOCK).build(null)
     )
 
     // Multiblocks
@@ -272,7 +275,7 @@ object Industrialism : ModInitializer {
     val COKE_OVEN_MULTIBLOCK: BlockEntityType<BlockEntityCokeOvenMultiblock> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:coke_oven_multiblock",
-            BlockEntityType.Builder.create({ BlockEntityCokeOvenMultiblock() }, COKE_OVEN_MULTIBLOCK_BLOCK).build(null)
+            BlockEntityType.Builder.create(::BlockEntityCokeOvenMultiblock, COKE_OVEN_MULTIBLOCK_BLOCK).build(null)
     )
 
     val COKE_OVEN_SCREEN_HANDLER_TYPE: ScreenHandlerType<CokeOvenGuiDescription> = ScreenHandlerRegistry.registerSimple(
@@ -292,7 +295,7 @@ object Industrialism : ModInitializer {
     val BLAST_FURNACE_MULTIBLOCK: BlockEntityType<BlockEntityBlastFurnaceMultiblock> = Registry.register(
             Registry.BLOCK_ENTITY_TYPE,
             "$MOD_ID:blast_furnace_multiblock",
-            BlockEntityType.Builder.create({ BlockEntityBlastFurnaceMultiblock() }, BLAST_FURNACE_MULTIBLOCK_BLOCK).build(null)
+            BlockEntityType.Builder.create(::BlockEntityBlastFurnaceMultiblock, BLAST_FURNACE_MULTIBLOCK_BLOCK).build(null)
     )
 
     val BLAST_FURNACE_SCREEN_HANDLER_TYPE: ScreenHandlerType<BlastFurnaceGuiDescription> = ScreenHandlerRegistry.registerSimple(
@@ -306,9 +309,9 @@ object Industrialism : ModInitializer {
     // Misc
     val TATER: Block = BlockBuilder(
         "tater",
-        BlockTater(FabricBlockSettings.of(MATERIAL_WOOD).hardness(2.0f))
+        BlockTater(AbstractBlock.Settings.of(MATERIAL_WOOD).hardness(2.0f))
     )
-        .generateItem(FabricItemSettings().group(DEBUG_TAB))
+        .generateItem(Item.Settings().group(DEBUG_TAB))
         .get()
 
     // Recipes

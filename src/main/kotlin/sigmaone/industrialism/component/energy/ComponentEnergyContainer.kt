@@ -1,15 +1,13 @@
 package sigmaone.industrialism.component.energy
 
-import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.block.IBlockEntityRefreshable
 import sigmaone.industrialism.component.Component
 import sigmaone.industrialism.util.IO
 import team.reborn.energy.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 class ComponentEnergyContainer(
     owner: BlockEntity,
@@ -65,8 +63,8 @@ class ComponentEnergyContainer(
         }
     }
 
-    fun toTag(tag: CompoundTag): CompoundTag {
-        val subTag = CompoundTag()
+    fun writeNbt(tag: NbtCompound): NbtCompound {
+        val subTag = NbtCompound()
         subTag.putDouble("energy", storedEnergy)
         for (dir in sideConfig.keys) {
             subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
@@ -75,7 +73,7 @@ class ComponentEnergyContainer(
         return tag
     }
 
-    fun fromTag(state: BlockState, tag: CompoundTag) {
+    fun readNbt(tag: NbtCompound) {
         val subTag = tag.getCompound("energyComponent")
         storedEnergy = subTag.getDouble("energy")
         for (dir in sideConfig.keys) {
@@ -83,8 +81,8 @@ class ComponentEnergyContainer(
         }
     }
 
-    fun toClientTag(tag: CompoundTag): CompoundTag {
-        val subTag = CompoundTag()
+    fun toClientTag(tag: NbtCompound): NbtCompound {
+        val subTag = NbtCompound()
         subTag.putDouble("energy", storedEnergy)
         for (dir in sideConfig.keys) {
             subTag.putInt(dir.toString(), sideConfig[dir]!!.ordinal)
@@ -93,7 +91,7 @@ class ComponentEnergyContainer(
         return tag
     }
 
-    fun fromClientTag(tag: CompoundTag) {
+    fun fromClientTag(tag: NbtCompound) {
         val subTag = tag.getCompound("energyComponent")
         storedEnergy = subTag.getDouble("energy")
         for (dir in sideConfig.keys) {

@@ -4,9 +4,10 @@ import net.minecraft.block.BlockState
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.item.ItemUsageContext
-import net.minecraft.nbt.CompoundTag
+import net.minecraft.nbt.NbtCompound
 import net.minecraft.state.property.Properties
 import net.minecraft.text.TranslatableText
+import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
 import sigmaone.industrialism.block.IBlockEntityConfigurable
 import sigmaone.industrialism.component.energy.ComponentEnergyContainer
@@ -19,18 +20,22 @@ import team.reborn.energy.EnergyTier
 import java.util.*
 
 abstract class BlockEntityEnergyWireNode(
+    blockPos: BlockPos?,
+    blockState: BlockState?,
     type: BlockEntityType<*>,
     energyTier: EnergyTier,
     height: Double,
     maxConnections: Int,
     wireTypes: Array<ItemWireSpool>
 ) : BlockEntityWireNode(
-        type,
-        energyTier,
-        height,
-        maxConnections,
-        wireTypes
-    ),
+    blockPos,
+    blockState,
+    type,
+    energyTier,
+    height,
+    maxConnections,
+    wireTypes
+),
     IBlockEntityConfigurable,
     IComponentEnergyContainer
 {
@@ -156,25 +161,25 @@ abstract class BlockEntityEnergyWireNode(
         }
     }
 
-    override fun fromClientTag(tag: CompoundTag?) {
+    override fun fromClientTag(tag: NbtCompound?) {
         componentEnergyContainer.fromClientTag(tag!!)
         super.fromClientTag(tag)
     }
 
-    override fun toClientTag(tag: CompoundTag?): CompoundTag {
+    override fun toClientTag(tag: NbtCompound?): NbtCompound {
         val tag = componentEnergyContainer.toClientTag(tag!!)
         return super.toClientTag(tag)
     }
 
-    override fun fromTag(state: BlockState?, tag: CompoundTag?) {
-        componentEnergyContainer.fromTag(state!!, tag!!)
+    override fun readNbt(tag: NbtCompound?) {
+        componentEnergyContainer.readNbt(tag!!)
         autoConfigOverridden = tag.getBoolean("autoconfig_override")
-        super.fromTag(state, tag)
+        super.readNbt(tag)
     }
 
-    override fun toTag(tag: CompoundTag?): CompoundTag {
-        val tag = componentEnergyContainer.toTag(tag!!)
+    override fun writeNbt(tag: NbtCompound?): NbtCompound {
+        val tag = componentEnergyContainer.writeNbt(tag!!)
         tag.putBoolean("autoconfig_override", autoConfigOverridden)
-        return super.toTag(tag)
+        return super.writeNbt(tag)
     }
 }
