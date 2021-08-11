@@ -45,7 +45,7 @@ public class WiringRenderLayer extends RenderLayer {
         RenderLayer.MultiPhaseParameters.builder()
             .transparency(NO_TRANSPARENCY)
             .lightmap(ENABLE_LIGHTMAP)
-            .shader(RenderPhase.ENTITY_SOLID_SHADER)
+            .shader(LEASH_SHADER)
         .build(false)
     );
 
