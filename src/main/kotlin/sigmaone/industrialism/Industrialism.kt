@@ -28,6 +28,7 @@ import sigmaone.industrialism.block.BlockConnectorDummy
 import sigmaone.industrialism.block.BlockTater
 import sigmaone.industrialism.block.battery.BlockBattery
 import sigmaone.industrialism.block.battery.BlockEntityBattery
+import sigmaone.industrialism.block.belt.BlockBeltDebug
 import sigmaone.industrialism.block.crankhandle.BlockCrankHandle
 import sigmaone.industrialism.block.crankhandle.BlockEntityCrankHandle
 import sigmaone.industrialism.block.dynamo.BlockDynamo
@@ -171,6 +172,15 @@ object Industrialism : ModInitializer {
         "braced_fire_bricks",
         Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f))
     )
+
+    // Conveyors
+    val BELT_DEBUG: Block = BlockBuilder(
+        "belt_debug",
+        BlockBeltDebug(FabricBlockSettings.of(MATERIAL_METAL).hardness(3.0f))
+    )
+        .generateBlockState(withFacing = true)
+        .generateItem(FabricItemSettings().group(DEBUG_TAB))
+        .get()
 
     // Single block machines
     // Battery
