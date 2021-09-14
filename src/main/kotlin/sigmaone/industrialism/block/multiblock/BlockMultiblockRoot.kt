@@ -2,7 +2,7 @@ package sigmaone.industrialism.block.multiblock
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.HorizontalFacingBlock
+import net.minecraft.block.BlockWithEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
@@ -11,7 +11,7 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.shape.VoxelShape
 import net.minecraft.world.World
 
-abstract class BlockMultiblockRoot(settings: Settings?) : HorizontalFacingBlock(settings) {
+abstract class BlockMultiblockRoot(settings: Settings?) : BlockWithEntity(settings) {
     abstract val layout: Array<Array<Array<Block>>>
     abstract val rootPos: IntArray
     abstract val shape: Array<Array<Array<VoxelShape>>>

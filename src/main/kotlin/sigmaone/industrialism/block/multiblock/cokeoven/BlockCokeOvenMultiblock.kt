@@ -5,6 +5,8 @@ import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.state.StateManager
@@ -80,6 +82,22 @@ class BlockCokeOvenMultiblock(settings: Settings?): BlockMultiblockRoot(settings
         stateManager.add(Properties.HORIZONTAL_FACING).add(Properties.LIT)
     }
 
+    override fun <T : BlockEntity?> getTicker(
+        blockWorld: World?,
+        blockState: BlockState?,
+        type: BlockEntityType<T>?
+    ): BlockEntityTicker<T>? {
+        return checkType(
+            type, Industrialism.COKE_OVEN_MULTIBLOCK
+        ) { world: World, pos: BlockPos, state: BlockState, entity: BlockEntityCokeOvenMultiblock ->
+            BlockEntityCokeOvenMultiblock.tick(
+                world,
+                pos,
+                state,
+                entity
+            )
+        }
+    }
     init {
         defaultState = stateManager.defaultState.with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(Properties.LIT, false)
     }

@@ -21,6 +21,7 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.COKE_OVEN_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
@@ -146,48 +147,50 @@ class BlockEntityCokeOvenMultiblock(blockPos: BlockPos?, blockState: BlockState?
         return true
     }
 
-    fun tick() {
-        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, this, world).orElse(null)
-        val currentTime = world!!.time
-        // Check:
-        // * Is recipe a thing
-        // * Can recipe be crafted
-        // * No crafting in progress
-        if (!world!!.isClient && startedProcessing == 0L) {
-            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
-        }
-        if (recipe != null && canProcessRecipe(recipe) && startedProcessing == 0L) {
-            world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, true))
-            startedProcessing = world!!.time
-            refresh()
-        }
-        // Check:
-        // * Is recipe a thing
-        // * Can recipe be crafted
-        // * No crafting in progress
-        else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
-            // If processing is done, do craft
-            if (startedProcessing + (recipe as CokingRecipe).processingTime < currentTime) {
-                startedProcessing = 0
-                progress = 0
-                items[0].decrement(1)
-                if (items[1].isEmpty) {
-                    items[1] = ItemStack(recipe.output.item as ItemConvertible, recipe.output.count)
+    companion object {
+        fun tick(world: World, pos: BlockPos, state: BlockState, entity: BlockEntityCokeOvenMultiblock) {
+            val recipe: Recipe<*>? =
+                world.recipeManager.getFirstMatch(Industrialism.COKING_RECIPE_TYPE, entity, world).orElse(null)
+            val currentTime = world.time
+            // Check:
+            // * Is recipe a thing
+            // * Can recipe be crafted
+            // * No crafting in progress
+            if (!world.isClient && entity.startedProcessing == 0L) {
+                world.setBlockState(pos, world.getBlockState(pos).with(Properties.LIT, false))
+            }
+            if (recipe != null && entity.canProcessRecipe(recipe) && entity.startedProcessing == 0L) {
+                world.setBlockState(pos, world.getBlockState(pos).with(Properties.LIT, true))
+                entity.startedProcessing = world.time
+                entity.refresh()
+            }
+            // Check:
+            // * Is recipe a thing
+            // * Can recipe be crafted
+            // * No crafting in progress
+            else if (recipe != null && entity.canProcessRecipe(recipe) && entity.startedProcessing != 0L) {
+                // If processing is done, do craft
+                if (entity.startedProcessing + (recipe as CokingRecipe).processingTime < currentTime) {
+                    entity.startedProcessing = 0
+                    entity.progress = 0
+                    entity.items[0].decrement(1)
+                    if (entity.items[1].isEmpty) {
+                        entity.items[1] = ItemStack(recipe.output.item as ItemConvertible, recipe.output.count)
+                    } else {
+                        entity.items[1].increment(1)
+                    }
+                    world.setBlockState(pos, world.getBlockState(pos).with(Properties.LIT, false))
                 }
+                // Otherwise, increment progress
                 else {
-                    items[1].increment(1)
+                    entity.progress = (((currentTime - entity.startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
                 }
-                world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
             }
-            // Otherwise, increment progress
-            else {
-                progress = (((currentTime - startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
+            if (recipe == null || !entity.canProcessRecipe(recipe)) {
+                entity.progress = 0
+                entity.startedProcessing = 0
+                entity.refresh()
             }
-        }
-        if (recipe == null || !canProcessRecipe(recipe)) {
-            progress = 0
-            startedProcessing = 0
-            refresh()
         }
     }
 }
