@@ -5,6 +5,7 @@ import io.github.cottonmc.cotton.gui.client.CottonInventoryScreen
 import io.github.cottonmc.cotton.gui.widget.WBar
 import io.github.cottonmc.cotton.gui.widget.WGridPanel
 import io.github.cottonmc.cotton.gui.widget.WItemSlot
+import io.github.cottonmc.cotton.gui.widget.data.Insets
 import io.github.cottonmc.cotton.gui.widget.data.Texture
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.player.PlayerInventory
@@ -33,6 +34,7 @@ class BlastFurnaceGuiDescription(syncId: Int, playerInventory: PlayerInventory?,
     init {
         val root = WGridPanel(1)
         setRootPanel(root)
+        root.insets = Insets.ROOT_PANEL
         val ingredientSlot = WItemSlot.of(blockInventory, 0)
         val resultSlot     = WItemSlot.outputOf(blockInventory, 1)
         val fuelSlot       = WItemSlot.of(blockInventory, 2)

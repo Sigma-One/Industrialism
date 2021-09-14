@@ -5,6 +5,8 @@ import net.minecraft.block.BlockEntityProvider
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.screen.NamedScreenHandlerFactory
 import net.minecraft.state.StateManager
@@ -19,6 +21,7 @@ import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.block.multiblock.BlockMultiblockRoot
+import sigmaone.industrialism.block.multiblock.cokeoven.BlockEntityCokeOvenMultiblock
 
 class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(settings), BlockEntityProvider {
     override val layout: Array<Array<Array<Block>>>
@@ -78,6 +81,23 @@ class BlockBlastFurnaceMultiblock(settings: Settings?) : BlockMultiblockRoot(set
     override fun createScreenHandlerFactory(state: BlockState?, world: World, pos: BlockPos?): NamedScreenHandlerFactory? {
         val blockEntity = world.getBlockEntity(pos)
         return if (blockEntity is NamedScreenHandlerFactory) blockEntity else null
+    }
+
+    override fun <T : BlockEntity?> getTicker(
+        blockWorld: World?,
+        blockState: BlockState?,
+        type: BlockEntityType<T>?
+    ): BlockEntityTicker<T>? {
+        return checkType(
+            type, Industrialism.BLAST_FURNACE_MULTIBLOCK
+        ) { world: World, pos: BlockPos, state: BlockState, entity: BlockEntityBlastFurnaceMultiblock ->
+            BlockEntityBlastFurnaceMultiblock.tick(
+                world,
+                pos,
+                state,
+                entity
+            )
+        }
     }
 
     init {

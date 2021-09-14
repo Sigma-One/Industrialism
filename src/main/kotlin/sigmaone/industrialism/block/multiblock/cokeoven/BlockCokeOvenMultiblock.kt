@@ -98,6 +98,7 @@ class BlockCokeOvenMultiblock(settings: Settings?): BlockMultiblockRoot(settings
             )
         }
     }
+
     init {
         defaultState = stateManager.defaultState.with(Properties.HORIZONTAL_FACING, Direction.NORTH).with(Properties.LIT, false)
     }

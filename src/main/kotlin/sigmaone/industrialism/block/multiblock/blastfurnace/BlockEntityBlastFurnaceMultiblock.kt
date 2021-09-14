@@ -23,6 +23,7 @@ import net.minecraft.text.TranslatableText
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Direction
+import net.minecraft.world.World
 import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.Industrialism.BLAST_FURNACE_MULTIBLOCK
 import sigmaone.industrialism.block.multiblock.BlockEntityMultiblockRoot
@@ -161,78 +162,80 @@ class BlockEntityBlastFurnaceMultiblock(blockPos: BlockPos?, blockState: BlockSt
         return true
     }
 
-    fun tick() {
-        val recipe: Recipe<*>? = world!!.recipeManager.getFirstMatch(Industrialism.BLASTING_RECIPE_TYPE, this, world).orElse(null)
-        val currentTime = world!!.time
+    companion object {
+        fun tick(world: World, pos: BlockPos, state: BlockState, entity: BlockEntityBlastFurnaceMultiblock) {
+            val recipe: Recipe<*>? =
+                world.recipeManager.getFirstMatch(Industrialism.BLASTING_RECIPE_TYPE, entity, world).orElse(null)
+            val currentTime = world.time
 
-        // Check:
-        // * Is recipe a thing
-        // * Can recipe be crafted
-        // * No crafting in progress
-        if (recipe != null && canProcessRecipe(recipe) && startedProcessing == 0L) {
-            // Make sure furnace is fueled
-            if (startedBurning == 0L) {
-                if (!items[2].isEmpty && items[2].item in acceptedFuels) {
-                    startedBurning = world!!.time
-                    burnTime = FuelRegistry.INSTANCE.get(items[2].item as ItemConvertible)
-                    items[2].decrement(1)
-                    world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, true))
+            // Check:
+            // * Is recipe a thing
+            // * Can recipe be crafted
+            // * No crafting in progress
+            if (recipe != null && entity.canProcessRecipe(recipe) && entity.startedProcessing == 0L) {
+                // Make sure furnace is fueled
+                if (entity.startedBurning == 0L) {
+                    if (!entity.items[2].isEmpty && entity.items[2].item in entity.acceptedFuels) {
+                        entity.startedBurning = world.time
+                        entity.burnTime = FuelRegistry.INSTANCE.get(entity.items[2].item as ItemConvertible)
+                        entity.items[2].decrement(1)
+                        world.setBlockState(pos, world.getBlockState(pos).with(Properties.LIT, true))
+                    }
                 }
-            }
-            // Check for fuel level and start processing
-            if (startedBurning != 0L) {
-                startedProcessing = world!!.time
-            }
-            refresh()
-        }
-        // Check:
-        // * Is recipe a thing
-        // * Can recipe be crafted
-        // * No crafting in progress
-        else if (recipe != null && canProcessRecipe(recipe) && startedProcessing != 0L) {
-            // If processing is done, do craft
-            if (startedProcessing + (recipe as BlastingRecipe).processingTime< currentTime) {
-                startedProcessing = 0
-                progress = 0
-                items[0].decrement(1)
-                if (items[1].isEmpty) {
-                    items[1] = ItemStack(recipe.output.item as ItemConvertible, recipe.output.count)
+                // Check for fuel level and start processing
+                if (entity.startedBurning != 0L) {
+                    entity.startedProcessing = world.time
                 }
+                entity.refresh()
+            }
+            // Check:
+            // * Is recipe a thing
+            // * Can recipe be crafted
+            // * No crafting in progress
+            else if (recipe != null && entity.canProcessRecipe(recipe) && entity.startedProcessing != 0L) {
+                // If processing is done, do craft
+                if (entity.startedProcessing + (recipe as BlastingRecipe).processingTime < currentTime) {
+                    entity.startedProcessing = 0
+                    entity.progress = 0
+                    entity.items[0].decrement(1)
+                    if (entity.items[1].isEmpty) {
+                        entity.items[1] = ItemStack(recipe.output.item as ItemConvertible, recipe.output.count)
+                    } else {
+                        entity.items[1].increment(1)
+                    }
+                }
+                // Otherwise, increment progress
                 else {
-                    items[1].increment(1)
+                    entity.progress = (((currentTime - entity.startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
                 }
             }
-            // Otherwise, increment progress
-            else {
-                progress = (((currentTime - startedProcessing).toFloat() / recipe.processingTime) * 100).toInt()
+            // Increment burning progress
+            if (entity.startedBurning != 0L) {
+                entity.burnProgress = (((currentTime - entity.startedBurning).toFloat() / entity.burnTime) * 100).toInt()
             }
-        }
-        // Increment burning progress
-        if (startedBurning != 0L) {
-            burnProgress = (((currentTime - startedBurning).toFloat() / burnTime) * 100).toInt()
-        }
-        // Handle running out of fuel and stop processing
-        if (startedBurning + burnTime < currentTime && startedBurning != 0L) {
-            // Attempt to refuel
-            if (!items[2].isEmpty && items[2].item in acceptedFuels) {
-                startedBurning = world!!.time
-                burnTime = FuelRegistry.INSTANCE.get(items[2].item as ItemConvertible)
-                items[2].decrement(1)
+            // Handle running out of fuel and stop processing
+            if (entity.startedBurning + entity.burnTime < currentTime && entity.startedBurning != 0L) {
+                // Attempt to refuel
+                if (!entity.items[2].isEmpty && entity.items[2].item in entity.acceptedFuels) {
+                    entity.startedBurning = world.time
+                    entity.burnTime = FuelRegistry.INSTANCE.get(entity.items[2].item as ItemConvertible)
+                    entity.items[2].decrement(1)
+                }
+                // Otherwise end processing
+                else {
+                    entity.startedBurning = 0L
+                    entity.startedProcessing = 0L
+                    entity.burnProgress = 100
+                    entity.progress = 0
+                    world.setBlockState(pos, world.getBlockState(pos).with(Properties.LIT, false))
+                }
+                entity.refresh()
             }
-            // Otherwise end processing
-            else {
-                startedBurning = 0L
-                startedProcessing = 0L
-                burnProgress = 100
-                progress = 0
-                world!!.setBlockState(pos, world!!.getBlockState(pos).with(Properties.LIT, false))
+            if (recipe == null || !entity.canProcessRecipe(recipe)) {
+                entity.progress = 0
+                entity.startedProcessing = 0
+                entity.refresh()
             }
-            refresh()
-        }
-        if (recipe == null || !canProcessRecipe(recipe)) {
-            progress = 0
-            startedProcessing = 0
-            refresh()
         }
     }
 }
