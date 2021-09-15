@@ -7,6 +7,6 @@ import net.minecraft.block.entity.BlockEntity
  *
  * @property componentWireNode The [ComponentWireNode] for the implementing [BlockEntity]
  */
-interface IComponentWireNode {
-    val componentWireNode: ComponentWireNode
+interface IComponentWireNode<T: BlockEntity> {
+    val componentWireNode: ComponentWireNode<T>
 }

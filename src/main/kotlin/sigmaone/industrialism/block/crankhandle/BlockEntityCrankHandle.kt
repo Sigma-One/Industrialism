@@ -15,7 +15,7 @@ import sigmaone.industrialism.util.IO
 class BlockEntityCrankHandle(blockPos: BlockPos?, blockState: BlockState?) :
     BlockEntity(Industrialism.CRANK_HANDLE, blockPos, blockState),
     IBlockEntityRefreshable,
-    IComponentMechanicalDevice,
+    IComponentMechanicalDevice<BlockEntityCrankHandle>,
     BlockEntityClientSerializable
 {
     override fun refresh() {
@@ -57,7 +57,9 @@ class BlockEntityCrankHandle(blockPos: BlockPos?, blockState: BlockState?) :
         return componentMechanicalDevice.toClientTag(tag)
     }
 
-    fun tick() {
-        componentMechanicalDevice.tick()
+    companion object {
+        fun tick(entity: BlockEntityCrankHandle) {
+            entity.componentMechanicalDevice.tick()
+        }
     }
 }

@@ -10,20 +10,20 @@ import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.registry.Registry
 import sigmaone.industrialism.block.IBlockEntityRefreshable
-import sigmaone.industrialism.component.Component
+import sigmaone.industrialism.component.IBlockEntityComponent
 import sigmaone.industrialism.energy.WireConnection
 import sigmaone.industrialism.item.ItemWireSpool
 import sigmaone.industrialism.util.CatenaryHelper
 import java.util.*
 
-open class ComponentWireNode(
-    owner: BlockEntity,
+open class ComponentWireNode<T: BlockEntity>(
+    override val owner: T,
     val height: Double,
     val maxConnections: Int,
     val wireTypes: Array<ItemWireSpool>,
     var isRelay: Boolean = false,
 ):
-    Component(owner)
+    IBlockEntityComponent<T>
 {
     val connections: HashMap<BlockPos, WireConnection> = hashMapOf()
     var facing: Direction? = null
@@ -48,11 +48,11 @@ open class ComponentWireNode(
         // Loop until stack is empty
         while (!stack.isEmpty()) {
             val current = owner.world!!.getBlockEntity(stack.pop())
-            if (current is IComponentWireNode) {
+            if (current is IComponentWireNode<*>) {
                 // Loop through connections
                 for (pos in current.componentWireNode.connections.keys) {
                     val connection = owner.world!!.getBlockEntity(pos)
-                    if (!visited.contains(pos) && connection is IComponentWireNode) {
+                    if (!visited.contains(pos) && connection is IComponentWireNode<*>) {
                         // Add any found sinks to sink set
                         if (!connection.componentWireNode.isRelay) {
                             endpoints.add(pos)
@@ -74,7 +74,7 @@ open class ComponentWireNode(
 
             val catenaryInfo = CatenaryHelper.solveCatenary(vertexA, vertexB, 1.0125f)
             connections[target] = WireConnection(catenaryInfo[2], catenaryInfo[0], catenaryInfo[1], wireType)
-            if (owner is IBlockEntityRefreshable) {owner.refresh()}
+            if (owner is IBlockEntityRefreshable) { (owner as IBlockEntityRefreshable).refresh() }
             return true
         }
         return false
@@ -88,11 +88,11 @@ open class ComponentWireNode(
 
     fun removeConnection(targetPos: BlockPos) {
         val target = owner.world!!.getBlockEntity(targetPos)
-        if (target is IComponentWireNode) {
+        if (target is IComponentWireNode<*>) {
             target.componentWireNode.connections.remove(owner.pos)
         }
         connections.remove(targetPos)
-        if (owner is IBlockEntityRefreshable) {owner.refresh()}
+        if (owner is IBlockEntityRefreshable) { (owner as IBlockEntityRefreshable).refresh() }
     }
 
     private fun offsetPosition(pos: BlockPos, facing: Direction, height: Double): Vec3d {
@@ -115,7 +115,7 @@ open class ComponentWireNode(
 
     private fun testConnectionCollisions(targetPos: BlockPos): Boolean {
         val target = owner.world!!.getBlockEntity(targetPos)
-        if (target !is IComponentWireNode) {
+        if (target !is IComponentWireNode<*>) {
             return false
         }
         val conn = connections[targetPos]!!
@@ -172,7 +172,7 @@ open class ComponentWireNode(
             for ((i, connection) in connections.keys.withIndex()) {
                 val connTag = NbtCompound()
                 val target = owner.world!!.getBlockEntity(connection)
-                if (target is IComponentWireNode) {
+                if (target is IComponentWireNode<*>) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())
                     connTag.put("position", NbtHelper.fromBlockPos(connection))
                     connTag.putString("facing", target.componentWireNode.facing.toString())
@@ -211,7 +211,7 @@ open class ComponentWireNode(
             for ((i, connection) in connections.keys.withIndex()) {
                 val connTag = NbtCompound()
                 val target = owner.world!!.getBlockEntity(connection)
-                if (target is IComponentWireNode) {
+                if (target is IComponentWireNode<*>) {
                     connTag.putString("wiretype", Registry.ITEM.getId(connections[connection]!!.wireType).toString())
                     connTag.put("position", NbtHelper.fromBlockPos(connection))
                     connTag.putString("facing", target.componentWireNode.facing.toString ())

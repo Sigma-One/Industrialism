@@ -1,10 +1,9 @@
 package sigmaone.industrialism.block.dynamo
 
-import net.minecraft.block.Block
-import net.minecraft.block.BlockEntityProvider
-import net.minecraft.block.BlockState
-import net.minecraft.block.FacingBlock
+import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemPlacementContext
 import net.minecraft.item.ItemStack
@@ -12,9 +11,10 @@ import net.minecraft.state.StateManager
 import net.minecraft.state.property.Properties
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
+import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.util.IO
 
-class BlockDynamo(settings: Settings?) : FacingBlock(settings), BlockEntityProvider {
+class BlockDynamo(settings: Settings?) : BlockWithEntity(settings), BlockEntityProvider {
     override fun onPlaced(
         world: World?,
         pos: BlockPos?,
@@ -40,6 +40,24 @@ class BlockDynamo(settings: Settings?) : FacingBlock(settings), BlockEntityProvi
     }
 
     override fun getPlacementState(context: ItemPlacementContext): BlockState? {
-        return defaultState.with(FACING, context.side)
+        return defaultState.with(Properties.FACING, context.side)
+    }
+
+    override fun getRenderType(state: BlockState?): BlockRenderType {
+        return BlockRenderType.MODEL
+    }
+
+    override fun <T : BlockEntity?> getTicker(
+        blockWorld: World?,
+        blockState: BlockState?,
+        type: BlockEntityType<T>?
+    ): BlockEntityTicker<T>? {
+        return checkType(
+            type, Industrialism.DYNAMO
+        ) { _: World, _: BlockPos, _: BlockState, entity: BlockEntityDynamo ->
+            BlockEntityDynamo.tick(
+                entity
+            )
+        }
     }
 }

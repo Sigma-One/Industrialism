@@ -37,7 +37,7 @@ class ItemScrewdriver(
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
         val entity = (context.world.getBlockEntity(context.blockPos))
         return if (entity is IBlockEntityConfigurable) {
-            if (entity is IComponentEnergyContainer) {
+            if (entity is IComponentEnergyContainer<*>) {
                 val side = if (opposite) {
                     context.side.opposite
                 }

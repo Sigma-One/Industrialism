@@ -8,6 +8,7 @@ import net.minecraft.state.property.Properties
 import net.minecraft.util.math.Direction
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.math.Vec3f
+import sigmaone.industrialism.component.wiring.IComponentWireNode
 import sigmaone.industrialism.util.CatenaryHelper
 import util.WiringRenderLayer
 import kotlin.math.PI
@@ -16,7 +17,7 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class WireRenderer<T : BlockEntityWireNode> : BlockEntityRenderer<T> {
+class WireRenderer<T> : BlockEntityRenderer<T> where T: IComponentWireNode<*>, T: BlockEntity {
     override fun render(
         entity: T,
         tickDelta: Float,

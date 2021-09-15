@@ -13,7 +13,7 @@ import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
 
 class BlockEntityCrankHandleRenderer<T: BlockEntity> : BlockEntityRenderer<T> {
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
-        if (entity is IComponentMechanicalDevice) {
+        if (entity is IComponentMechanicalDevice<*>) {
             matrices.push()
             val deg = entity.componentMechanicalDevice.visualDegrees
             val axis: Vec3f

@@ -2,6 +2,8 @@ package sigmaone.industrialism.block.crankhandle
 
 import net.minecraft.block.*
 import net.minecraft.block.entity.BlockEntity
+import net.minecraft.block.entity.BlockEntityTicker
+import net.minecraft.block.entity.BlockEntityType
 import net.minecraft.entity.LivingEntity
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
@@ -16,10 +18,11 @@ import net.minecraft.util.shape.VoxelShape
 import net.minecraft.util.shape.VoxelShapes
 import net.minecraft.world.BlockView
 import net.minecraft.world.World
+import sigmaone.industrialism.Industrialism
 import sigmaone.industrialism.component.mechanical.IComponentMechanicalDevice
 import sigmaone.industrialism.util.IO
 
-class BlockCrankHandle(settings: Settings?) : FacingBlock(settings), BlockEntityProvider {
+class BlockCrankHandle(settings: Settings?) : BlockWithEntity(settings), BlockEntityProvider {
     override fun createBlockEntity(blockPos: BlockPos?, blockState: BlockState?): BlockEntity {
         return BlockEntityCrankHandle(blockPos, blockState)
     }
@@ -48,7 +51,7 @@ class BlockCrankHandle(settings: Settings?) : FacingBlock(settings), BlockEntity
         hit: BlockHitResult?
     ): ActionResult {
         val entity = world!!.getBlockEntity(pos)
-        if (entity is IComponentMechanicalDevice) {
+        if (entity is IComponentMechanicalDevice<*>) {
             entity.componentMechanicalDevice.rpm += 10.0
             if (entity.componentMechanicalDevice.rpm > entity.componentMechanicalDevice.maxRpm) {
                 entity.componentMechanicalDevice.rpm = entity.componentMechanicalDevice.maxRpm
@@ -78,11 +81,29 @@ class BlockCrankHandle(settings: Settings?) : FacingBlock(settings), BlockEntity
         )
     }
 
+    override fun <T : BlockEntity?> getTicker(
+        blockWorld: World?,
+        blockState: BlockState?,
+        type: BlockEntityType<T>?
+    ): BlockEntityTicker<T>? {
+        return BlockWithEntity.checkType(
+            type, Industrialism.CRANK_HANDLE
+        ) { _: World, _: BlockPos, _: BlockState, entity: BlockEntityCrankHandle ->
+            BlockEntityCrankHandle.tick(
+                entity
+            )
+        }
+    }
+
+    override fun getRenderType(state: BlockState?): BlockRenderType {
+        return BlockRenderType.MODEL
+    }
+
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {
         stateBuilder.add(Properties.FACING)
     }
 
     override fun getPlacementState(context: ItemPlacementContext): BlockState? {
-        return defaultState.with(FACING, context.side)
+        return defaultState.with(Properties.FACING, context.side)
     }
 }

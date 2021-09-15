@@ -7,6 +7,6 @@ import net.minecraft.block.entity.BlockEntity
  *
  * @property componentMechanicalDevice The [ComponentMechanicalDevice] for the implementing [BlockEntity]
  */
-interface IComponentMechanicalDevice {
-    val componentMechanicalDevice: ComponentMechanicalDevice
+interface IComponentMechanicalDevice<T: BlockEntity> {
+    val componentMechanicalDevice: ComponentMechanicalDevice<T>
 }

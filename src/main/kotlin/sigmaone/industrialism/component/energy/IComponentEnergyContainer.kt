@@ -7,6 +7,6 @@ import net.minecraft.block.entity.BlockEntity
  *
  * @property componentEnergyContainer The [ComponentEnergyContainer] for the implementing [BlockEntity]
  */
-interface IComponentEnergyContainer {
-    val componentEnergyContainer: ComponentEnergyContainer
+interface IComponentEnergyContainer<T: BlockEntity> {
+    val componentEnergyContainer: ComponentEnergyContainer<T>
 }

@@ -2,7 +2,7 @@ package sigmaone.industrialism.block.wiring
 
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
-import net.minecraft.block.FacingBlock
+import net.minecraft.block.BlockWithEntity
 import net.minecraft.block.ShapeContext
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.ItemPlacementContext
@@ -16,7 +16,7 @@ import net.minecraft.world.BlockView
 import net.minecraft.world.World
 import sigmaone.industrialism.component.wiring.IComponentWireNode
 
-abstract class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(settings.nonOpaque()) {
+abstract class BlockWireNode(settings: Settings, val height: Int) : BlockWithEntity(settings.nonOpaque()) {
 
     override fun appendProperties(stateBuilder: StateManager.Builder<Block, BlockState>) {
         stateBuilder.add(sigmaone.industrialism.util.Properties.IO)
@@ -28,14 +28,14 @@ abstract class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(
         val midMin = f116*6
         val midMax = f116*10
         val heightD = f116*height
-        return when (state.get(FACING)) {
+        return when (state.get(Properties.FACING)) {
             Direction.UP    -> VoxelShapes.cuboid(midMin, 0.0, midMin, midMax, heightD, midMax)
             Direction.DOWN  -> VoxelShapes.cuboid(midMin, 1.0-heightD, midMin, midMax, 1.0, midMax)
             Direction.NORTH -> VoxelShapes.cuboid(midMin, midMin, 1.0-heightD, midMax, midMax, 1.0)
             Direction.SOUTH -> VoxelShapes.cuboid(midMin, midMin, 0.0, midMax, midMax, heightD)
             Direction.EAST  -> VoxelShapes.cuboid(0.0, midMin, midMin, heightD, midMax, midMax)
             Direction.WEST  -> VoxelShapes.cuboid(1.0-heightD, midMin, midMin, 1.0, midMax, midMax)
-            else -> throw IllegalStateException("Illegal side: " + state.get(FACING))
+            else -> throw IllegalStateException("Illegal side: " + state.get(Properties.FACING))
         }
     }
 
@@ -44,18 +44,20 @@ abstract class BlockWireNode(settings: Settings, val height: Int) : FacingBlock(
     }
 
     override fun getPlacementState(context: ItemPlacementContext): BlockState? {
-        return defaultState.with(FACING, context.side)
+        return defaultState.with(Properties.FACING, context.side)
     }
 
     override fun onBreak(world: World, pos: BlockPos, state: BlockState, player: PlayerEntity) {
         val blockEntity = world.getBlockEntity(pos)
-        if (blockEntity is IComponentWireNode) {
+        if (blockEntity is IComponentWireNode<*>) {
             blockEntity.componentWireNode.removeAllConnections()
         }
         super.onBreak(world, pos, state, player)
     }
 
     init {
-        defaultState = getStateManager().defaultState.with(sigmaone.industrialism.util.Properties.IO, 0).with(FACING, Direction.DOWN)
+        defaultState = getStateManager()
+            .defaultState.with(sigmaone.industrialism.util.Properties.IO, 0)
+            .with(Properties.FACING, Direction.DOWN)
     }
 }

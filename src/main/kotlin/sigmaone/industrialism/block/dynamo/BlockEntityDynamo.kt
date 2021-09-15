@@ -17,8 +17,8 @@ import team.reborn.energy.EnergyTier
 
 class BlockEntityDynamo(blockPos: BlockPos?, blockState: BlockState?) :
     BlockEntity(Industrialism.DYNAMO, blockPos, blockState),
-    IComponentEnergyContainer,
-    IComponentMechanicalDevice,
+    IComponentEnergyContainer<BlockEntityDynamo>,
+    IComponentMechanicalDevice<BlockEntityDynamo>,
     BlockEntityClientSerializable,
     IBlockEntityRefreshable
 {
@@ -51,10 +51,12 @@ class BlockEntityDynamo(blockPos: BlockPos?, blockState: BlockState?) :
         )
     )
 
-    fun tick() {
-        componentEnergyContainer.tick()
-        componentMechanicalDevice.tick()
-        componentEnergyContainer.storedEnergy += (componentMechanicalDevice.rpm / 5)
+    companion object {
+        fun tick(entity: BlockEntityDynamo) {
+            entity.componentEnergyContainer.tick()
+            entity.componentMechanicalDevice.tick()
+            entity.componentEnergyContainer.storedEnergy += (entity.componentMechanicalDevice.rpm / 5)
+        }
     }
 
     override fun writeNbt(tag: NbtCompound): NbtCompound {

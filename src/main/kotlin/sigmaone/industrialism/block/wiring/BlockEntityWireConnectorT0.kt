@@ -7,7 +7,10 @@ import sigmaone.industrialism.item.ItemWireSpool
 import team.reborn.energy.EnergyTier
 
 
-class BlockEntityWireConnectorT0(blockPos: BlockPos?, blockState: BlockState?) :
+class BlockEntityWireConnectorT0(
+    blockPos: BlockPos?,
+    blockState: BlockState?
+) :
     BlockEntityEnergyWireNode(
         blockPos,
         blockState,

@@ -3,11 +3,11 @@ package sigmaone.industrialism.component.mechanical
 import net.minecraft.block.entity.BlockEntity
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.util.math.Direction
-import sigmaone.industrialism.component.Component
+import sigmaone.industrialism.component.IBlockEntityComponent
 import sigmaone.industrialism.util.IO
 
-class ComponentMechanicalDevice(
-    owner: BlockEntity,
+class ComponentMechanicalDevice<T: BlockEntity>(
+    override val owner: T,
     val mass: Double,
     val maxRpm: Double,
     var sideConfig: HashMap<Direction, IO>,
@@ -17,7 +17,7 @@ class ComponentMechanicalDevice(
     val maxTorque: Double = 0.0,
     @Deprecated("Usage TBD")
     var torque: Double = 0.0
-) : Component(owner) {
+) : IBlockEntityComponent<T> {
     var visualDegrees = 0.0
 
     fun toClientTag(tag: NbtCompound?): NbtCompound {
@@ -58,13 +58,13 @@ class ComponentMechanicalDevice(
         }
     }
 
-    val neighbours: ArrayList<ComponentMechanicalDevice>
+    val neighbours: ArrayList<ComponentMechanicalDevice<*>>
     get() {
-        val list = ArrayList<ComponentMechanicalDevice>()
+        val list = ArrayList<ComponentMechanicalDevice<*>>()
         for (dir in Direction.values()) {
             if (sideConfig[dir] == IO.OUTPUT) {
                 val neighbour = owner.world!!.getBlockEntity(owner.pos.offset(dir))
-                if (neighbour is IComponentMechanicalDevice && neighbour.componentMechanicalDevice.sideConfig[dir.opposite] == IO.INPUT) {
+                if (neighbour is IComponentMechanicalDevice<*> && neighbour.componentMechanicalDevice.sideConfig[dir.opposite] == IO.INPUT) {
                     list.add(neighbour.componentMechanicalDevice)
                 }
             }

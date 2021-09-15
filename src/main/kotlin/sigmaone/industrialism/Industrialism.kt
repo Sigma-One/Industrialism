@@ -158,18 +158,19 @@ object Industrialism : ModInitializer {
 
     // Random materials
     val COKE = ItemBuilder.getStandard("coke", Item(Item.Settings().group(MATERIALS_TAB)))
-    val COKE_BLOCK = BlockBuilder.getStandard("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)))
+    val COKE_BLOCK = BlockBuilder.getStandard("coke_block", Block(FabricBlockSettings.copyOf(Blocks.COAL_BLOCK)), MATERIALS_TAB)
 
     // Intermediates
     val CERAMIC_DISC = ItemBuilder.getStandard("ceramic_disc", Item(FabricItemSettings().group(MATERIALS_TAB)))
     val RAW_FIRE_BRICK = ItemBuilder.getStandard("raw_fire_brick", Item(Item.Settings().group(MATERIALS_TAB)))
     val FIRE_BRICK = ItemBuilder.getStandard("fire_brick", Item(Item.Settings().fireproof().group(MATERIALS_TAB)))
 
-    val FIRE_BRICKS = BlockBuilder.getStandard("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS)))
+    val FIRE_BRICKS = BlockBuilder.getStandard("fire_bricks", Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS)), MATERIALS_TAB)
 
     val BRACED_FIRE_BRICKS = BlockBuilder.getStandard(
         "braced_fire_bricks",
-        Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f))
+        Block(FabricBlockSettings.copyOf(Blocks.NETHER_BRICKS).strength(2.5f, 6.5f)),
+        MATERIALS_TAB
     )
 
     // Single block machines

@@ -16,7 +16,7 @@ import java.util.*
 
 class EnergyContainerRenderer <T: BlockEntity> : BlockEntityRenderer<T> {
     override fun render(entity: T, tickDelta: Float, matrices: MatrixStack, vertexConsumers: VertexConsumerProvider, light: Int, overlay: Int) {
-        if (entity is IComponentEnergyContainer) {
+        if (entity is IComponentEnergyContainer<*>) {
             matrices.push()
             for (dir in Direction.values()) {
 

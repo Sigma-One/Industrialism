@@ -22,7 +22,7 @@ class ItemWireSpool(
     override fun useOnBlock(context: ItemUsageContext): ActionResult {
         if (!context.world.isClient) {
             val entity = context.world.getBlockEntity(context.blockPos)
-            if (entity is IComponentWireNode) {
+            if (entity is IComponentWireNode<*>) {
                 if (this !in entity.componentWireNode.wireTypes) {
                     context.player!!.sendMessage(
                         TranslatableText("popup.industrialism.wire.failed.type"),
@@ -53,7 +53,7 @@ class ItemWireSpool(
                 }
                 else if (linkA!!.pos !== context.blockPos) {
                     val linkEntity = linkA!!
-                    if (linkEntity is IComponentWireNode && linkA != null) {
+                    if (linkEntity is IComponentWireNode<*> && linkA != null) {
                         if (!linkEntity.componentWireNode.connections.contains(context.blockPos)
                          && !linkEntity.componentWireNode.connections.contains((linkA as BlockEntityWireConnectorT0).pos)
                         ) {

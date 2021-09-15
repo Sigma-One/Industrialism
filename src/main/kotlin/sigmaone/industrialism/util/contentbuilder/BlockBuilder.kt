@@ -3,6 +3,7 @@ package sigmaone.industrialism.util.contentbuilder
 import net.minecraft.block.Block
 import net.minecraft.item.BlockItem
 import net.minecraft.item.Item
+import net.minecraft.item.ItemGroup
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Direction
 import net.minecraft.util.registry.Registry
@@ -13,10 +14,10 @@ import sigmaone.industrialism.util.datagen.model.ModelGenerator
 
 class BlockBuilder<T: Block>(val id: String, val block: T) {
     companion object {
-        fun <T: Block> getStandard(id: String, block: T): T {
+        fun <T: Block> getStandard(id: String, block: T, itemGroup: ItemGroup): T {
             return BlockBuilder(id, block)
                 .generateBlockState()
-                .generateItem(Item.Settings())
+                .generateItem(Item.Settings().group(itemGroup))
                 .generateModel()
                 .get()
         }

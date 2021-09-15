@@ -17,7 +17,7 @@ import team.reborn.energy.EnergyTier
 
 class BlockEntityBattery(blockPos: BlockPos?, blockState: BlockState?) :
     BlockEntity(Industrialism.BATTERY, blockPos, blockState),
-    IComponentEnergyContainer,
+    IComponentEnergyContainer<BlockEntityBattery>,
     IBlockEntityConfigurable,
     BlockEntityClientSerializable,
     IBlockEntityRefreshable
@@ -37,8 +37,10 @@ class BlockEntityBattery(blockPos: BlockPos?, blockState: BlockState?) :
         )
     )
 
-    fun tick() {
-        componentEnergyContainer.tick()
+    companion object {
+        fun tick(entity: BlockEntityBattery) {
+            entity.componentEnergyContainer.tick()
+        }
     }
 
     override fun writeNbt(tag: NbtCompound): NbtCompound {
@@ -62,6 +64,7 @@ class BlockEntityBattery(blockPos: BlockPos?, blockState: BlockState?) :
     override fun configure(side: Direction, context: ItemUsageContext?) {
         componentEnergyContainer.sideConfig[side] = componentEnergyContainer.sideConfig[side]!!.next()
     }
+
 
     override fun refresh() {
         markDirty()
